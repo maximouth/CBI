@@ -36,6 +36,7 @@
 \usepackage[francais]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{color}
 
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -57,7 +58,7 @@
 %	HEADING SECTIONS
 %----------------------------------------------------------------------------------------
 
-\textsc{\LARGE Université Pierre et Marie Curie}\\[1.5cm] % Name of your university/college
+\textsc{\LARGE Universit\'e Pierre et Marie Curie}\\[1.5cm] % Name of your university/college
 \textsc{\Large Major Heading}\\[0.5cm] % Major heading such as course name
 
 %----------------------------------------------------------------------------------------
@@ -65,8 +66,8 @@
 %----------------------------------------------------------------------------------------
 
 \HRule \\[0.4cm]
-{ \huge \bfseries Rapport de pré-soutenance}\\[0.4cm] % Title of your document
-{ \huge \bfseries Développement sur FPGA \\d'un système d'aiguillage
+{ \huge \bfseries Rapport de pr\'e-soutenance}\\[0.4cm] % Title of your document
+{ \huge \bfseries D\'eveloppement sur FPGA \\d'un système d'aiguillage
   \\pour centale DCC sur train miniature}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
  
@@ -118,38 +119,48 @@ Your abstract here.
 \section{Introduction}
 \label{sec:introduction}
 
-\subsection{Contexte et encadrement}
-
-Depuis plusieurs années, le laboratoire xxx développe un projet de
+\subsection{\color{red}| \color{black}   Contexte et encadrement}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
+Depuis plusieurs ann\'ees, le laboratoire lip6 d\'eveloppe un projet de
 gestion de maquettes de trains. Ce projet se base sur une
 \emph{centrale DCC}. Cette centrale permet de recevoir la position des
 trains et des aiguilles et d'envoyer des commandes en utilisant le
 \emph{protocole DCC}.
 
-Ce projet est réalisé seul et est encadré par le Responsable de la
-valuer FPGA. Ce projet se déroule sur une durée de 6 semaines.
-Bla bla bla...
+Ce projet est r\'ealis\'e seul et est encadr\'e par le Responsable de la
+valuer FPGA. Ce projet se d\'eroule sur une dur\'ee de 6 semaines.
+Il est r\'ealis\'e dans le cardre d'un projet SESI.
 
-\subsection{Objectifs}
+\subsection{\color{red}| \color{black}   Objectifs}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 
 L'objectif de mon projet consiste, dans un premier temps, à porter la
-\emph{centrale DCC} implementée par d'autres étudiants sur une nouvelle
-carte matériel \emph{FPGA}. La version courante de la centrale tourne sur
-une carte \emph{Spartan 6}, elle est remplacée par notre \crt pour Bla
-bla bla...
+\emph{centrale DCC} implement\'ee par d'autres \'etudiants sur une nouvelle
+carte mat\'eriel \emph{FPGA}. La version courante de la centrale tourne sur
+une carte \emph{Spartan 6}, elle est remplac\'ee par notre \crt qui est
+une carte plus r\'ecente et possède une interface plus complète
+\emph{(switchs, boutons, afficheurs 7 segments...)}
 Dans un second temps, mon projet consiste à ajouter la commande de
 des aiguillages.
 
 Je propose par commencer par une gestion manuelle des aiguillages avec
-les différents switchs de la carte sans vérification de sécurité. Puis
-une fois cela fait, je vais implémenter par une gestion des
-enclenchements ferroviaire grâce aux differents capteurs présents sur
+les diff\'erents switchs de la carte sans v\'erification de s\'ecurit\'e. Puis
+une fois cela fait, je vais impl\'ementer par une gestion des
+enclenchements ferroviaire grâce aux differents capteurs pr\'esents sur
 les rails. Ceci permet de garantir qu'un train ne devra pas pouvoir
 changer de voie que si aucun autre train ne se trouve sur le chemin
 qu'il veut parcourir. 
 
-Les domaines de compétences requis sont multiples; la connaissance
-du langage VDHL et de la plateforme \emph{FPGA} pour l'implémentation
+Les domaines de comp\'etences requis sont multiples; la connaissance
+du langage VDHL et de la plateforme \emph{FPGA} pour l'impl\'ementation
 de la centrale DCC et la connaissance de la gestion des enclenchements
 ferroviaires.
 
@@ -158,46 +169,73 @@ ferroviaires.
 \section{Aspects techniques}
 \label{sec:asp_tech}
 
-\subsection{Le protocole DCC}
+\subsection{\color{red}| \color{black}   Le protocole DCC}
 \label{sec:dcc}
-Ce protocole est un protocole standardisé  communiquer entre notre carte
-\emph{FPGA} et les différents trains. Il utilise une suite de commandes envoyées sur les rails  
-jusqu'aux différents trains qui agisent en fonction de ce qu'ils recoivent.
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
+
+\newline
+\newline
+\includegraphics[scale=0.75]{trame.png}
+\newline
+\newline
+
+Ce protocole est un protocole standardis\'e  communiquer entre notre carte
+\emph{FPGA} et les diff\'erents trains. Il utilise une suite de commandes envoy\'ees sur les rails  
+jusqu'aux diff\'erents trains qui agisent en fonction de ce qu'ils recoivent.
 
 Bla bla bla...
 
-\subsection{La logique d'enclenchement}
+\subsection{\color{red}| \color{black}   La logique d'enclenchement}
 \label{sec:log_ixl}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 
-Un système ferroviaire est composé de plusieurs systèmes :
+Un système ferroviaire est compos\'e de plusieurs systèmes :
 \begin{itemize}
-  \item Les équipements de voie (rails, aiguillages...) et le matériel
+  \item Les \'equipements de voie (rails, aiguillages...) et le mat\'eriel
     roulant. C'est la partie visible des passagers
-  \item Le Poste de Commande ferroviaire qui permet à un opérateur de
-    visualiser, en temps réel, l'état du système (position des trains,
+  \item Le Poste de Commande ferroviaire qui permet à un op\'erateur de
+    visualiser, en temps r\'eel, l'\'etat du système (position des trains,
     position des aiguilles...
-  \item La logique d'enclenchement qui assure la sécurité du système
-    ferroviaire. Il est placé entre le Poste de Commande ferroviaire
-    et les équipements de voie. Il interdit les commandes lorsque les
-    conditions incompatibles avec la sécurité. 
+  \item La logique d'enclenchement qui assure la s\'ecurit\'e du système
+    ferroviaire. Il est plac\'e entre le Poste de Commande ferroviaire
+    et les \'equipements de voie. Il interdit les commandes lorsque les
+    conditions incompatibles avec la s\'ecurit\'e. 
 \end{itemize}
 
-La figure suivante présente les relations entre les différents
+La figure suivante pr\'esente les relations entre les diff\'erents
 systèmes.
 
 
-\subsection{Architecture générale}
+\subsection{\color{red}| \color{black}   Architecture g\'en\'erale}
 \label{sec:archi}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 Bla bla bla...
 
 
 
-\subsection{Outils}
+\subsection{\color{red}| \color{black}   Outils}
 \label{sec:outils}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 
-Lors de ce projet, je vais devoir utiliser différents outils :
+Lors de ce projet, je vais devoir utiliser diff\'erents outils :
 \begin{itemize}
-  \item La carte \crt comme plateforme de développement
+  \item La carte \crt comme plateforme de d\'eveloppement
   \item La locomotive \emph{Jouef ``Fret SNCF``}\cite{Jouef}  et les capteurs de
     position et des aiguillages
   \item Le protocole DCC \cite{DCC}
@@ -206,23 +244,28 @@ Lors de ce projet, je vais devoir utiliser différents outils :
 
 ainsi que plusieurs langages:
 \begin{itemize}
-  \item \emph{VHDL}\cite{VHDL} comme language de description pour mes différentes
+  \item \emph{VHDL}\cite{VHDL} comme language de description pour mes diff\'erentes
     \emph{IP}
   \item \emph{GIT}\cite{GIT} pour la gestion de configuration des logiciels
-  \item \emph{\LaTeX}\cite{LATEX} pour la rédaction de la documentation
-  \item Le langage \emph{Ocaml}\cite{OCAML} pour la génération de la logique d'enclenchement
+  \item \emph{\LaTeX}\cite{LATEX} pour la r\'edaction de la documentation
+  \item Le langage \emph{Ocaml}\cite{OCAML} pour la g\'en\'eration de la logique d'enclenchement
 \end{itemize}
 
 
-\subsection{Validation}
+\subsection{\color{red}| \color{black}   Validation}
 \label{sec:valid}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 
-Afin de tester et valider les differentes étapes de mon projet je vais
+Afin de tester et valider les differentes \'etapes de mon projet je vais
 devoir faire des \emph{bancs de tests}, des simulations ainsi que des
-expérimentations qui pourront me permettre de valider mes essais.
+exp\'erimentations qui pourront me permettre de valider mes essais.
 
-Il y a d'ailleurs plusieurs scénarios que je vais devoir réaliser qui
-me permettrons de tester de façon réelle le fonctionnement de mes travaux.
+Il y a d'ailleurs plusieurs sc\'enarios que je vais devoir r\'ealiser qui
+me permettrons de tester de façon r\'eelle le fonctionnement de mes travaux.
 
 En voici quelques un:
 
@@ -241,7 +284,7 @@ En voici quelques un:
     \item 2 trains sur la voie 1 avec 1 seul qui doit passer de voie 1 à voie 2
     \item 1 train A sur voie 2 qui s'arrête dans la zone aiguillage.
     \item 1 train B sur voie 1 qui veut passer en voie 2 --> Pas
-       possible. Redémarrage train A, vérification du changement de
+       possible. Red\'emarrage train A, v\'erification du changement de
        voie du train B.
   \end{itemize}
 \end{enumerate}
@@ -251,16 +294,31 @@ En voici quelques un:
 \section{Organisation du projet}
 \label{sec:org_proj}
 
-\subsection{Activités du projet}
+\subsection{\color{red}| \color{black}   Activit\'es du projet}
 \label{sec:activ}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 
 
-\subsection{Planning prévisionnel}
+\subsection{\color{red}| \color{black}   Planning pr\'evisionnel}
 \label{sec:planning}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 
 
-\subsection{Avancement}
+\subsection{\color{red}| \color{black}   Avancement}
 \label{sec:avanc}
+\newline
+\newline
+------------------------------------------------------
+\newline
+\newline
 
 
 \newpage
