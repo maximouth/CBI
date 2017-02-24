@@ -1,0 +1,270 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University Assignment Title Page 
+% LaTeX Template
+% Version 1.0 (27/12/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% WikiBooks (http://en.wikibooks.org/wiki/LaTeX/Title_Creation)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+% Instructions for using this template:
+% This title page is capable of being compiled as is. This is not useful for 
+% including it in another document. To do this, you have two options: 
+%
+% 1) Copy/paste everything between \begin{document} and \end{document} 
+% starting at \begin{titlepage} and paste this into another LaTeX file where you 
+% want your title page.
+% OR
+% 2) Remove everything outside the \begin{titlepage} and \end{titlepage} and 
+% move this file to the same directory as the LaTeX file you wish to add it to. 
+% Then add \input{./title_page_1.tex} to your LaTeX file where you want your
+% title page.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\title{Title page with logo}
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article}
+
+\usepackage[francais]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+% Define new command
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\newcommand{\crt}{\emph{Nexys 4 DDR\ }}
+
+
+\begin{document}
+
+\begin{titlepage}
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Université Pierre et Marie Curie}\\[1.5cm] % Name of your university/college
+\textsc{\Large Major Heading}\\[0.5cm] % Major heading such as course name
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Rapport de pré-soutenance}\\[0.4cm] % Title of your document
+{ \huge \bfseries Développement sur FPGA \\d'un système d'aiguillage
+  \\pour centale DCC sur train miniature}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{\'Etudiant:}\\
+Maxime \textsc{AYRAULT} 3203694 % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Encadrant:} \\
+Julien \textsc{DENOULET} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[2cm]
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+%%\begin{figure}
+%%  \subfigure[]{\includegraphics[scale=0.2\textwidth]{logo.png}} 
+%%\end{figure} 
+\includegraphics[width=0.2\textwidth]{logo.png}
+
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+
+
+\begin{abstract}
+Your abstract here.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Contexte et encadrement}
+
+Depuis plusieurs années, le laboratoire xxx développe un projet de
+gestion de maquettes de trains. Ce projet se base sur une
+\emph{centrale DCC}. Cette centrale permet de recevoir la position des
+trains et des aiguilles et d'envoyer des commandes en utilisant le
+\emph{protocole DCC}.
+
+Ce projet est réalisé seul et est encadré par le Responsable de la
+valuer FPGA. Ce projet se déroule sur une durée de 6 semaines.
+Bla bla bla...
+
+\subsection{Objectifs}
+
+L'objectif de mon projet consiste, dans un premier temps, à porter la
+\emph{centrale DCC} implementée par d'autres étudiants sur une nouvelle
+carte matériel \emph{FPGA}. La version courante de la centrale tourne sur
+une carte \emph{Spartan 6}, elle est remplacée par notre \crt pour Bla
+bla bla...
+Dans un second temps, mon projet consiste à ajouter la commande de
+des aiguillages.
+
+Je propose par commencer par une gestion manuelle des aiguillages avec
+les différents switchs de la carte sans vérification de sécurité. Puis
+une fois cela fait, je vais implémenter par une gestion des
+enclenchements ferroviaire grâce aux differents capteurs présents sur
+les rails. Ceci permet de garantir qu'un train ne devra pas pouvoir
+changer de voie que si aucun autre train ne se trouve sur le chemin
+qu'il veut parcourir. 
+
+Les domaines de compétences requis sont multiples; la connaissance
+du langage VDHL et de la plateforme \emph{FPGA} pour l'implémentation
+de la centrale DCC et la connaissance de la gestion des enclenchements
+ferroviaires.
+
+
+\newpage
+\section{Aspects techniques}
+\label{sec:asp_tech}
+
+\subsection{Le protocole DCC}
+\label{sec:dcc}
+Ce protocole est un protocole standardisé  communiquer entre notre carte
+\emph{FPGA} et les différents trains. Il utilise une suite de commandes envoyées sur les rails  
+jusqu'aux différents trains qui agisent en fonction de ce qu'ils recoivent.
+
+Bla bla bla...
+
+\subsection{La logique d'enclenchement}
+\label{sec:log_ixl}
+
+Un système ferroviaire est composé de plusieurs systèmes :
+\begin{itemize}
+  \item Les équipements de voie (rails, aiguillages...) et le matériel
+    roulant. C'est la partie visible des passagers
+  \item Le Poste de Commande ferroviaire qui permet à un opérateur de
+    visualiser, en temps réel, l'état du système (position des trains,
+    position des aiguilles...
+  \item La logique d'enclenchement qui assure la sécurité du système
+    ferroviaire. Il est placé entre le Poste de Commande ferroviaire
+    et les équipements de voie. Il interdit les commandes lorsque les
+    conditions incompatibles avec la sécurité. 
+\end{itemize}
+
+La figure suivante présente les relations entre les différents
+systèmes.
+
+
+\subsection{Architecture générale}
+\label{sec:archi}
+Bla bla bla...
+
+
+
+\subsection{Outils}
+\label{sec:outils}
+
+Lors de ce projet, je vais devoir utiliser différents outils :
+\begin{itemize}
+  \item La carte \crt comme plateforme de développement
+  \item La locomotive \emph{Jouef ``Fret SNCF``}\cite{Jouef}  et les capteurs de
+    position et des aiguillages
+  \item Le protocole DCC \cite{DCC}
+  \item Le logiciel Vivado comme \emph{IDE} ?????
+\end{itemize}
+
+ainsi que plusieurs langages:
+\begin{itemize}
+  \item \emph{VHDL}\cite{VHDL} comme language de description pour mes différentes
+    \emph{IP}
+  \item \emph{GIT}\cite{GIT} pour la gestion de configuration des logiciels
+  \item \emph{\LaTeX}\cite{LATEX} pour la rédaction de la documentation
+  \item Le langage \emph{Ocaml}\cite{OCAML} pour la génération de la logique d'enclenchement
+\end{itemize}
+
+
+\subsection{Validation}
+\label{sec:valid}
+
+Afin de tester et valider les differentes étapes de mon projet je vais
+devoir faire des \emph{bancs de tests}, des simulations ainsi que des
+expérimentations qui pourront me permettre de valider mes essais.
+
+Il y a d'ailleurs plusieurs scénarios que je vais devoir réaliser qui
+me permettrons de tester de façon réelle le fonctionnement de mes travaux.
+
+En voici quelques un:
+
+\begin{enumerate}[A]
+  \item Sans Capteurs
+  \begin{itemize}
+    \item 1 train doit passer de la voie ``A`` à la voie ``B``
+    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie
+       ``B``
+  \end{itemize}
+
+  \item Avec Capteurs
+  \begin{itemize}
+    \item 1 train doit passer de la voie ``A`` à la voie ``B``
+    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie ``B``
+    \item 2 trains sur la voie 1 avec 1 seul qui doit passer de voie 1 à voie 2
+    \item 1 train A sur voie 2 qui s'arrête dans la zone aiguillage.
+    \item 1 train B sur voie 1 qui veut passer en voie 2 --> Pas
+       possible. Redémarrage train A, vérification du changement de
+       voie du train B.
+  \end{itemize}
+\end{enumerate}
+
+
+\newpage
+\section{Organisation du projet}
+\label{sec:org_proj}
+
+\subsection{Activités du projet}
+\label{sec:activ}
+
+
+\subsection{Planning prévisionnel}
+\label{sec:planning}
+
+
+\subsection{Avancement}
+\label{sec:avanc}
+
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+\end{document}
