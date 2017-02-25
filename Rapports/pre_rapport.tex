@@ -172,11 +172,15 @@ ferroviaires.
 \end{figure}
 
 
-Ce protocole est un protocole standardis\'e  communiquer entre notre carte
-\emph{FPGA} et les diff\'erents trains. Il utilise une suite de commandes envoy\'ees sur les rails  
-jusqu'aux diff\'erents trains qui agisent en fonction de ce qu'ils recoivent.
-
-Bla bla bla...
+Ce protocole est un protocole standardis\'e qui permet communiquer
+entre ma cartec\emph{FPGA} et les diff\'erents trains et
+composants. Il utilise une suite de commandes envoy\'ees sur les rails
+jusqu'aux diff\'erents trains et composants qui agisent en fonction de
+ce qu'ils recoivent.
+Notre locomotive peut recevoir enormement de commandes différentes,
+klason, annonces d'entr\`ee de gare, phares...(voir datasheet
+locomotive) mais elles ne seront pas toutes implement\'ee ici, mais
+pourront \^etre rajout\'e plus tard par la suite. 
 
 \subsection{\underline{ La logique d'enclenchement}}
 \label{sec:log_ixl}
@@ -194,14 +198,65 @@ Un système ferroviaire est compos\'e de plusieurs systèmes :
     conditions incompatibles avec la s\'ecurit\'e. 
 \end{itemize}
 
-La figure suivante pr\'esente les relations entre les diff\'erents
-systèmes.
+\newpage
 
+La figure suivante pr\'esente les relations entre les diff\'erents
+systèmes.\emph{(voir fig2)}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.50]{rel.png}
+\caption{relation entre les differents systemes}
+\label{fig2}
+\end{figure}
+
+
+EXPLICATIONS....
 
 \subsection{\underline{ Architecture g\'en\'erale}}
 \label{sec:archi}
-Bla bla bla...
 
+  Voici un sch\'ema repr\'esentant l'installation que je vais
+utiliser tout au long de mon projet.
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.30]{schema.png}
+\caption{sch\'ema de l'installation}
+\label{fig3}
+\end{figure}
+
+\newpage
+
+  Notre installation\emph{(voir fig 3)} est donc compos\'e de 3 rails, de 6 aiguillages
+control\'es par X contr\^oleurs gérés par trame DCC, et de Y capteurs.
+Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.03]{loco.jpg}
+\caption{photo de la locomotive}
+\label{fig4}
+\end{figure}
+
+  Chaque locomotive poss\`ede une adresse sous forme de \emph{code
+  barre} sous elle.\emph{(voir fig 5)}.
+Le code barre est decompos\'e de la façon suivante :
+\begin{itemize}
+    \item \textbf{un pr\`eambule} ddd 
+    \item \textbf{de l'adresse} ddd
+    \item \textbf{un  \'epilogue} ddd
+\end{itemize}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.03]{add.jpg}
+\caption{photo de l'adresse sous la locomotive}
+\label{fig5}
+\end{figure}
+
+\newpage
 
 
 \subsection{\underline{ Outils}}
@@ -258,13 +313,13 @@ En voici quelques un:
   \end{itemize}
 \end{enumerate}
 
-
-\newpage
 \section{Organisation du projet}
 \label{sec:org_proj}
 
 \subsection{\underline{ Activit\'es du projet}}
 \label{sec:activ}
+
+
 
 
 \subsection{\underline{ Planning pr\'evisionnel}}
@@ -278,9 +333,10 @@ respecter pour reussir à mener à bien mon projet.
 \centering
 \includegraphics[scale=0.5]{gantt.png}
 \caption{Diagramme de Gantt}
-\label{fig2}
+\label{fig5}
 \end{figure}
 
+\newpage
 
 \subsection{\underline{ Avancement}}
 \label{sec:avanc}
