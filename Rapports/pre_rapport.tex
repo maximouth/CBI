@@ -230,7 +230,7 @@ utiliser tout au long de mon projet.
 \newpage
 
   Notre installation\emph{(voir fig 3)} est donc compos\'e de 3 rails, de 6 aiguillages
-control\'es par X contr\^oleurs gérés par trame DCC, et de Y capteurs.
+control\'es par 8 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
 Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
 
 \begin{figure}[ht]
@@ -242,11 +242,14 @@ Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
 
   Chaque locomotive poss\`ede une adresse sous forme de \emph{code
   barre} sous elle.\emph{(voir fig 5)}.
-Le code barre est decompos\'e de la façon suivante :
+Le code \barre est decompos\'e de la façon suivante :
 \begin{itemize}
-    \item \textbf{un pr\`eambule} ddd 
-    \item \textbf{de l'adresse} ddd
-    \item \textbf{un  \'epilogue} ddd
+    \item \textbf{un pr\`eambule} compos\'e de 2 bandes noires
+      s\'epa\'ees par 1 bande blanche.
+    \item \textbf{de l'adresse} le nombre de bandes noires correspond
+      à l'adresse du train. 
+    \item \textbf{un  \'epilogue} compo\'e de 3 bandes noires
+      s\'epar\'ees par 2 bandes blanche.
 \end{itemize}
 
 \begin{figure}[ht]
@@ -319,8 +322,45 @@ En voici quelques un:
 \subsection{\underline{ Activit\'es du projet}}
 \label{sec:activ}
 
+Comme dit plus haut \emph{(voir 2.5)} le projet va \^etre decoup\'e en
+plusieurs \'etapes diff\'erentes.
 
+\begin{enumerate}[1]
+  \item Avant aiguillage
+  \begin{itemize}
+    \item Dans un premier temps il faut cr\'eer une nouvelle interface
+      homme machine
+    \item Puis porter le code de l'ancienne centrale DCC et de la
+      gestion des capteurs dans mon projet
+    \item Et rajouter la gestion de l'aiguillage
+  \end{itemize}
 
+  \item Avec aiguillages
+  \begin{itemize}
+    \item Une fois l'aiguillage cr\'ee, il va falloir ajo\^uter la
+      gestion des routes avec les différents switchs
+    \item Puis pouvoir premettre de changer un aiguillage de place
+      pour faire changer de voie un train uniquement avec les switchs
+      sans aucun controle de s\'ecurit\'e.
+    \item Et enfin de r\'ealiser les diff\'erents sc\'enarios decrit
+      plus haut \emph{(voir 2.5)}
+  \end{itemize}
+
+  \item Avec aiguillages et capteurs
+    \begin{itemize}
+      \item Maintenant que j'ai la gestion de l'aiguillage et
+        l'aquisition des différents capteurs je vais pouvoir rajouter
+        de la s\'ecurit\'ee dans le systeme pour le rendre plus s\^ur.
+      \item Je vais devoir rajouter un moteur XIL qui v\'erifira
+        l'\'etat des voies avant de valider l'envoie d'une commande \`a
+        un train.
+      \item Et \`a la fin de mon projet je vais devoir r\'ealiser les
+        diff\'erents sc\'enarios decrit plus haut \emph{(voir 2.5)}
+        qui permeterons de valider les demandes de mon projet.      
+    \end{itemize}
+\end{enumerate}
+
+\newpage
 
 \subsection{\underline{ Planning pr\'evisionnel}}
 \label{sec:planning}
@@ -336,13 +376,45 @@ respecter pour reussir à mener à bien mon projet.
 \label{fig5}
 \end{figure}
 
-\newpage
-
 \subsection{\underline{ Avancement}}
 \label{sec:avanc}
 
+J'ai d\'ej\`a commenc\'e \`a travailler sur le projet en essayant de
+creer une ihm pour la s\'election des differentes valeurs que l'on
+veut envoyer, 
+  \begin{itemize}
+    \item le choix de \textbf{l'adresse} du \emph{train} qui va recevoir la commande.
+    \item le choix de \textbf{la vitesse} que \emph{le train} s\'electionn\'e
+      va recevoir.
+    \item le choix de \textbf{du numéro} de \emph{l'aiguillage} qui bougera.
+    \item le choix de \textbf{la feature} qui pourra \^etre rajout\'ee
+      au projet.
+  \end{itemize}
+
+\begin{figure}[ht]
+    \begin{minipage}[c]{.46\linewidth}
+        \centering
+        \includegraphics[scale=0.25]{exe_add.jpg}
+        \caption{exemple d'utilisation de la carte}
+        \label{fig6}
+    \end{minipage}
+    \hfill%
+    \begin{minipage}[c]{.46\linewidth}
+        \centering
+        \includegraphics[scale=0.25]{exe_aigui.jpg}
+        \caption{exemple d'utilisation de la carte}
+        \label{fig7}
+    \end{minipage}
+\end{figure}
+
+La \emph{figure 6} et la \emph{figure 7} sont un exemple du rendu de
+mon ihm.
+
+Je suis actuellement entrain de finir de porter le code de l'ancienne
+centrale DCC et de l'aquisition des capteurs sur la nouvelle carte.
 
 \newpage
+
 \bibliographystyle{plain}
 \bibliography{biblio}
 
