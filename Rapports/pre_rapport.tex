@@ -112,9 +112,9 @@ Julien \textsc{DENOULET} % Supervisor's Name
 
 
 
-\begin{abstract}
-Your abstract here.
-\end{abstract}
+%\begin{abstract}
+%Your abstract here.
+%\end{abstract}
 
 \section{Introduction}
 \label{sec:introduction}
@@ -164,13 +164,12 @@ ferroviaires.
 \label{sec:dcc}
 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.75]{trame.png}
 \caption{Exemple d'une trame DCC}
 \label{fig1}
 \end{figure}
-
 
 Ce protocole est un protocole standardis\'e qui permet communiquer
 entre ma cartec\emph{FPGA} et les diff\'erents trains et
@@ -182,51 +181,74 @@ klason, annonces d'entr\'ee de gare, phares...(voir datasheet
 locomotive) mais elles ne seront pas toutes implement\'ee ici, mais
 pourront \^etre rajout\'e ult\'erieurement. 
 
-\subsection{\underline{ La logique d'enclenchement}}
+
+\subsection{\underline{Le système d'enclenchement}}
 \label{sec:log_ixl}
 
-
-Un système ferroviaire est compos\'e de plusieurs systèmes :
+Le chapitre 2 du document \cite{sun2015} présente un système
+ferroviaire. Un système ferroviaire est compos\'e de plusieurs systèmes~:
 \begin{itemize}
   \item Les \'equipements de voie (rails, aiguillages...) et le mat\'eriel
-    roulant. C'est la partie visible des passagers
-  \item Le Poste de Commande ferroviaire qui permet à un op\'erateur de
+    roulant. C'est la partie visible des passagers.
+  \item Le Poste de Commande ferroviaire qui permet à un \emph{op\'erateur} de
     visualiser, en temps r\'eel, l'\'etat du système (position des trains,
     position des aiguilles...
-  \item La logique d'enclenchement qui assure la s\'ecurit\'e du système
+  \item Le système d'enclenchement qui assure la s\'ecurit\'e du système
     ferroviaire. Il est plac\'e entre le Poste de Commande ferroviaire
     et les \'equipements de voie. Il interdit les commandes lorsque les
-    conditions incompatibles avec la s\'ecurit\'e. 
+    conditions sont incompatibles avec la s\'ecurit\'e. 
 \end{itemize}
 
 La figure suivante pr\'esente les relations entre les diff\'erents
 systèmes.\emph{(voir fig~\ref{fig3})}
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.30]{sys_ferro.png}
 \caption{Relation entre les différents systèmes}
 \label{fig3}
 \end{figure}
 
+Un système d'enclenchement est initialement un système réalisé à base
+de relais mécanique. Lorsque les systèmes d'enclenchement se sont
+informatisés, les relais ont été remplacés par des équations
+booléennes (\cite{nyct2016}). Les équations booléennes sont basées sur
+  les mêmes principes que les relais. 
+  
+La figure~\ref{moteur} présente l'architecture retenue pour le
+projet. Elle est composée de 3 parties~:
+  \begin{itemize}
+    \item La centrale DCC. Elle gère les Entrées/Sorties avec les
+      équipements de voie et avec l'IHM. Elle fournit à la logique
+      d'enclenchement l'état des commandes IHM et des équipements de
+      voie. Ceci permet de séparer complètement la logique
+      d'enclenchement, de la gestion informatique des Entrées/Sorties. 
+    \item La logique d'enclenchement. Elle contient les équations
+      booléennes au format VHDL. 
+    \item Le moteur d'instanciation. Il permet de générer la logique
+      d'enclenchement au format VHDL à partir des équations
+      booléennes.
+  \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.30]{moteur.png}
 \caption{Sch\'ema du moteur de gestion du circuit}
-\label{fig2}
+\label{moteur}
 \end{figure}
 
+Le moteur DCC sera développé en VHDL. Le moteur d'instanciation est
+exécuté hors-ligne. Il sera développé en OCaml \cite{OCAML}.
 
 
 \newpage
-\subsection{\underline{ Architecture g\'en\'erale}}
+\subsection{\underline{Architecture g\'en\'erale du circuit}}
 \label{sec:archi}
 
 Voici le sch\'ema repr\'esentant l'installation ferroviaire utilis\'e
 tout au long du projet. 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.80]{circuit.png}
 \caption{Sch\'ema de l'installation}
@@ -238,7 +260,7 @@ circuits imbriqués, de 6??? aiguillages control\'es par 8
 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
 Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.05]{loco.jpg}
 \caption{Photo d'une locomotive}
@@ -258,7 +280,7 @@ Le code barre est decompos\'e de la façon suivante :
       s\'epar\'ees par 2 bandes blanche.
 \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.05]{add.jpg}
 \caption{Photo de l'adresse sous la locomotive}
@@ -375,7 +397,7 @@ respecter pour r\'eussir \`a mener \`a bien mon projet. La
 figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{gantt.png}
 \caption{Diagramme de Gantt}
@@ -395,11 +417,11 @@ veut r\'ealiser~:
     \item le choix de la \textbf{vitesse} que \emph{le train} s\'electionn\'e
       va recevoir. 
     \item le choix de \textbf{du numéro} de la \emph{route} \`a \'etablir.
-    \item les\textbf{features} qui pourront \^etre rajout\'ees au
+    \item les \textbf{features} qui pourront \^etre rajout\'ees au
       projet. 
   \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{minipage}[c]{.46\linewidth}
         \centering
         \includegraphics[scale=0.04]{exe_add.jpg}
