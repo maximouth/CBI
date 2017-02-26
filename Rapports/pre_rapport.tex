@@ -185,6 +185,16 @@ pourront \^etre rajout\'e plus tard par la suite.
 \subsection{\underline{ La logique d'enclenchement}}
 \label{sec:log_ixl}
 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.30]{moteur.png}
+\caption{sch\'ema du moteur de gestion du circuit}
+\label{fig2}
+\end{figure}
+
+\newpage
+
 Un système ferroviaire est compos\'e de plusieurs systèmes :
 \begin{itemize}
   \item Les \'equipements de voie (rails, aiguillages...) et le mat\'eriel
@@ -198,20 +208,23 @@ Un système ferroviaire est compos\'e de plusieurs systèmes :
     conditions incompatibles avec la s\'ecurit\'e. 
 \end{itemize}
 
-\newpage
+
+
 
 La figure suivante pr\'esente les relations entre les diff\'erents
-systèmes.\emph{(voir fig2)}
+systèmes.\emph{(voir fig3)}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.50]{rel.png}
+\includegraphics[scale=0.30]{sys_ferro.png}
 \caption{relation entre les differents systemes}
-\label{fig2}
+\label{fig3}
 \end{figure}
 
 
 EXPLICATIONS....
+
+\newpage
 
 \subsection{\underline{ Architecture g\'en\'erale}}
 \label{sec:archi}
@@ -224,10 +237,8 @@ utiliser tout au long de mon projet.
 \centering
 \includegraphics[scale=0.30]{schema.png}
 \caption{sch\'ema de l'installation}
-\label{fig3}
+\label{fig4}
 \end{figure}
-
-\newpage
 
   Notre installation\emph{(voir fig 3)} est donc compos\'e de 3 rails, de 6 aiguillages
 control\'es par 8 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
@@ -235,9 +246,9 @@ Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.03]{loco.jpg}
+\includegraphics[scale=0.05]{loco.jpg}
 \caption{photo de la locomotive}
-\label{fig4}
+\label{fig5}
 \end{figure}
 
   Chaque locomotive poss\`ede une adresse sous forme de \emph{code
@@ -254,9 +265,9 @@ Le code \barre est decompos\'e de la façon suivante :
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.03]{add.jpg}
+\includegraphics[scale=0.05]{add.jpg}
 \caption{photo de l'adresse sous la locomotive}
-\label{fig5}
+\label{fig6}
 \end{figure}
 
 \newpage
@@ -373,7 +384,7 @@ respecter pour reussir à mener à bien mon projet.
 \centering
 \includegraphics[scale=0.5]{gantt.png}
 \caption{Diagramme de Gantt}
-\label{fig5}
+\label{fig6}
 \end{figure}
 
 \subsection{\underline{ Avancement}}
@@ -396,14 +407,14 @@ veut envoyer,
         \centering
         \includegraphics[scale=0.25]{exe_add.jpg}
         \caption{exemple d'utilisation de la carte}
-        \label{fig6}
+        \label{fig7}
     \end{minipage}
     \hfill%
     \begin{minipage}[c]{.46\linewidth}
         \centering
         \includegraphics[scale=0.25]{exe_aigui.jpg}
         \caption{exemple d'utilisation de la carte}
-        \label{fig7}
+        \label{fig8}
     \end{minipage}
 \end{figure}
 
