@@ -177,23 +177,14 @@ entre ma cartec\emph{FPGA} et les diff\'erents trains et
 composants. Il utilise une suite de commandes envoy\'ees sur les rails
 jusqu'aux diff\'erents trains et composants qui agisent en fonction de
 ce qu'ils recoivent.
-Notre locomotive peut recevoir enormement de commandes différentes,
-klason, annonces d'entr\`ee de gare, phares...(voir datasheet
+Notre locomotive peut recevoir \'enormement de commandes différentes,
+klason, annonces d'entr\'ee de gare, phares...(voir datasheet
 locomotive) mais elles ne seront pas toutes implement\'ee ici, mais
-pourront \^etre rajout\'e plus tard par la suite. 
+pourront \^etre rajout\'e ult\'erieurement. 
 
 \subsection{\underline{ La logique d'enclenchement}}
 \label{sec:log_ixl}
 
-
-\begin{figure}[ht]
-\centering
-\includegraphics[scale=0.30]{moteur.png}
-\caption{sch\'ema du moteur de gestion du circuit}
-\label{fig2}
-\end{figure}
-
-\newpage
 
 Un système ferroviaire est compos\'e de plusieurs systèmes :
 \begin{itemize}
@@ -208,71 +199,74 @@ Un système ferroviaire est compos\'e de plusieurs systèmes :
     conditions incompatibles avec la s\'ecurit\'e. 
 \end{itemize}
 
-
-
-
 La figure suivante pr\'esente les relations entre les diff\'erents
-systèmes.\emph{(voir fig3)}
+systèmes.\emph{(voir fig~\ref{fig3})}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.30]{sys_ferro.png}
-\caption{relation entre les differents systemes}
+\caption{Relation entre les différents systèmes}
 \label{fig3}
 \end{figure}
 
 
-EXPLICATIONS....
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.30]{moteur.png}
+\caption{Sch\'ema du moteur de gestion du circuit}
+\label{fig2}
+\end{figure}
+
+
 
 \newpage
-
 \subsection{\underline{ Architecture g\'en\'erale}}
 \label{sec:archi}
 
-  Voici un sch\'ema repr\'esentant l'installation que je vais
-utiliser tout au long de mon projet.
-
+Voici le sch\'ema repr\'esentant l'installation ferroviaire utilis\'e
+tout au long du projet. 
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.30]{schema.png}
-\caption{sch\'ema de l'installation}
+\includegraphics[scale=0.80]{circuit.png}
+\caption{Sch\'ema de l'installation}
 \label{fig4}
 \end{figure}
 
-  Notre installation\emph{(voir fig 4)} est donc compos\'e de 3 rails, de 6 aiguillages
-control\'es par 8 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
+L'installation \emph{(voir fig~\ref{fig4})} est compos\'ee de 3
+circuits imbriqués, de 6??? aiguillages control\'es par 8
+contr\^oleurs gérés par trame DCC, et de 20 capteurs.
 Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.05]{loco.jpg}
-\caption{photo de la locomotive}
+\caption{Photo d'une locomotive}
 \label{fig5}
 \end{figure}
 
-  Chaque locomotive poss\`ede une adresse sous forme de \emph{code
-  barre} sous elle.\emph{(voir fig 6)}.
-Le code \barre est decompos\'e de la façon suivante :
+Chaque locomotive poss\`ede une adresse sous forme de \emph{code
+barre} sous elle \emph{(voir fig~\ref{fig6})}.
+
+Le code barre est decompos\'e de la façon suivante :
 \begin{itemize}
-    \item \textbf{un pr\`eambule} compos\'e de 2 bandes noires
-      s\'epa\'ees par 1 bande blanche.
+    \item \textbf{un pr\'eambule} compos\'e de 2 bandes noires
+      s\'epar\'ees par 1 bande blanche.
     \item \textbf{de l'adresse} le nombre de bandes noires correspond
       à l'adresse du train. 
-    \item \textbf{un  \'epilogue} compo\'e de 3 bandes noires
+    \item \textbf{un \'epilogue} compo\'e de 3 bandes noires
       s\'epar\'ees par 2 bandes blanche.
 \end{itemize}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.05]{add.jpg}
-\caption{photo de l'adresse sous la locomotive}
+\caption{Photo de l'adresse sous la locomotive}
 \label{fig6}
 \end{figure}
 
+
 \newpage
-
-
 \subsection{\underline{ Outils}}
 \label{sec:outils}
 
@@ -348,10 +342,10 @@ plusieurs \'etapes diff\'erentes.
 
   \item Avec aiguillages
   \begin{itemize}
-    \item Une fois l'aiguillage cr\'ee, il va falloir ajo\^uter la
-      gestion des routes avec les différents switchs
-    \item Puis pouvoir premettre de changer un aiguillage de place
-      pour faire changer de voie un train uniquement avec les switchs
+    \item Une fois l'aiguillage cr\'e\'e, il va falloir ajouter la
+      gestion des routes avec les différents aiguillages
+    \item Puis pouvoir commander une route
+      pour faire changer de voie un train uniquement
       sans aucun controle de s\'ecurit\'e.
     \item Et enfin de r\'ealiser les diff\'erents sc\'enarios decrit
       plus haut \emph{(voir 2.5)}
@@ -376,52 +370,55 @@ plusieurs \'etapes diff\'erentes.
 \subsection{\underline{ Planning pr\'evisionnel}}
 \label{sec:planning}
 
-  Voici les différentes taches ainsi que le planning que je compte
-respecter pour reussir à mener à bien mon projet.
+Voici les différentes t\^aches ainsi que le planning que je compte
+respecter pour r\'eussir \`a mener \`a bien mon projet. La
+figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.5]{gantt.png}
 \caption{Diagramme de Gantt}
-\label{fig6}
+\label{gantt}
 \end{figure}
+
 
 \subsection{\underline{ Avancement}}
 \label{sec:avanc}
 
 J'ai d\'ej\`a commenc\'e \`a travailler sur le projet en essayant de
-creer une ihm pour la s\'election des differentes valeurs que l'on
-veut envoyer, 
+cr\'eer une IHM pour la s\'election des diff\'erentes commandes que l'on
+veut r\'ealiser~:
   \begin{itemize}
-    \item le choix de \textbf{l'adresse} du \emph{train} qui va recevoir la commande.
-    \item le choix de \textbf{la vitesse} que \emph{le train} s\'electionn\'e
-      va recevoir.
-    \item le choix de \textbf{du numéro} de \emph{l'aiguillage} qui bougera.
-    \item le choix de \textbf{la feature} qui pourra \^etre rajout\'ee
-      au projet.
+    \item le choix de \textbf{l'adresse} du \emph{train} qui va
+      recevoir la commande. 
+    \item le choix de la \textbf{vitesse} que \emph{le train} s\'electionn\'e
+      va recevoir. 
+    \item le choix de \textbf{du numéro} de la \emph{route} \`a \'etablir.
+    \item les\textbf{features} qui pourront \^etre rajout\'ees au
+      projet. 
   \end{itemize}
 
 \begin{figure}[ht]
     \begin{minipage}[c]{.46\linewidth}
         \centering
         \includegraphics[scale=0.04]{exe_add.jpg}
-        \caption{exemple d'utilisation de la carte}
+        \caption{Exemple d'utilisation de la carte}
         \label{fig7}
     \end{minipage}
     \hfill%
     \begin{minipage}[c]{.46\linewidth}
         \centering
         \includegraphics[scale=0.04]{exe_aigui.jpg}
-        \caption{exemple d'utilisation de la carte}
+        \caption{Exemple d'utilisation de la carte}
         \label{fig8}
     \end{minipage}
 \end{figure}
 
-La \emph{figure 7} et la \emph{figure 8} sont un exemple du rendu de
-mon ihm.
+La \emph{figure~\ref{fig7}} et la \emph{figure~\ref{fig8}} sont un
+exemple du rendu de l'IHM d\'evelopp'ee.
 
-Je suis actuellement entrain de finir de porter le code de l'ancienne
+Je suis actuellement en train de finir de porter le code de l'ancienne
 centrale DCC et de l'aquisition des capteurs sur la nouvelle carte.
 
 \newpage
