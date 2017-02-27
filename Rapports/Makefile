@@ -5,8 +5,9 @@ PS2PDF=ps2pdf
 DVIPS=dvips
 READ=evince
 
-filename=pre_rapport
+filename=pre_rapport.pdf interface.pdf
 
+all: $(filename)
 
 text: html
 	html2text -width 100 -style pretty ${filename}/${filename}.html | sed -n '/./,$$p' | head -n-2 >${filename}.txt
@@ -18,15 +19,25 @@ html:
 ps:	dvi
 	$(DVIPS) -t letter ${filename}.dvi
 
-pdf:
-	$(LATEX) ${filename}
-	$(BIBTEX) ${filename}||true
-	$(LATEX) ${filename}
-	$(LATEX) ${filename}
-
-read:
-	$(EVINCE) ${filename}.pdf &
-
+.pdf.tex: 
+	$(LATEX) $<
+	$(BIBTEX) $<||true
+	$(LATEX) $<
+	$(LATEX) $<
+	
 
 clean:
 	rm -f ${filename}.{ps,pdf,log,aux,out,dvi,bbl,blg}
+
+	
+interface.pdf : interface.tex
+	$(LATEX) $<
+	$(BIBTEX) $<||true
+	$(LATEX) $<
+	$(LATEX) $<
+	
+pre_rapport.pdf : pre_rapport.tex
+	$(LATEX) $<
+	$(BIBTEX) $<||true
+	$(LATEX) $<
+	$(LATEX) $<

@@ -1,0 +1,203 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University Assignment Title Page 
+% LaTeX Template
+% Version 1.0 (27/12/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% WikiBooks (http://en.wikibooks.org/wiki/LaTeX/Title_Creation)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+% Instructions for using this template:
+% This title page is capable of being compiled as is. This is not useful for 
+% including it in another document. To do this, you have two options: 
+%
+% 1) Copy/paste everything between \begin{document} and \end{document} 
+% starting at \begin{titlepage} and paste this into another LaTeX file where you 
+% want your title page.
+% OR
+% 2) Remove everything outside the \begin{titlepage} and \end{titlepage} and 
+% move this file to the same directory as the LaTeX file you wish to add it to. 
+% Then add \input{./title_page_1.tex} to your LaTeX file where you want your
+% title page.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\title{Title page with logo}
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article}
+
+\usepackage[francais]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{color}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{url}
+
+% Define new command
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\newcommand{\crt}{\emph{Nexys 4 DDR\ }}
+%\def\thesubsection{\alph{section}}
+
+\begin{document}
+
+\begin{titlepage}
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Universit\'e Pierre et Marie Curie}\\[1.5cm] % Name of your university/college
+\textsc{\Large PSESI}\\[0.5cm] % Major heading such as course name
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Projet Centrale DCC}\\[0.4cm] % Title of your document
+{ \huge \bfseries Document Définition Interface et Logique Enclenchement}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{\'Etudiant:}\\
+Maxime \textsc{AYRAULT} 3203694 % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Encadrant:} \\
+Julien \textsc{DENOULET} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[2cm]
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+%%\begin{figure}
+%%  \subfigure[]{\includegraphics[scale=0.2\textwidth]{logo.png}} 
+%%\end{figure} 
+\includegraphics[width=0.2\textwidth]{logo.png}
+
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+
+
+%\begin{abstract}
+%Your abstract here.
+%\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+Présentation des 3 interfaces~:
+\begin{itemize}
+\item Interface Homme Machine
+\item Interface Centrale DCC et le circcuit ferroviaire
+\item Interface interne Centrale DCC - Moteur IXL
+\end{itemize}
+
+et présentation des règles de la logique d'enclenchement.
+
+
+\section{Interface Homme Machine}
+\label{sec:int-dcc}
+
+\subsection{\underline{Interface commande train}}
+\label{sec:ihm-train}
+
+bla bla bla...
+
+\subsection{\underline{Interface itinéraire}}
+\label{sec:ihm_iti}
+
+bla bla bla...
+
+
+
+\section{Interface Centrale DCC - Train, aiguillage et capteurs}
+\label{sec:int_dcc}
+
+\subsection{\underline{Interface Train}}
+\label{sec:int_train}
+
+bla bla bla...-+
+
+\subsection{\underline{Interface Aiguillage}}
+\label{sec:int_aig}
+
+bla bla bla...
+
+\subsection{\underline{Interface Capteurs}}
+\label{sec:int_cap}
+
+bla bla bla...
+
+
+\newpage
+\section{\underline{Interface Moteur DCC - Moteur IXL}}
+\label{sec:int_ixl}
+Bla bla bla...
+
+
+\newpage
+\section{\underline{Logique Enclenchement}}
+\label{sec:log_enc}
+
+\subsection{\underline{Circuit de Voie}}
+\label{sec:CdV}
+
+Bla bla bla...
+
+\subsection{\underline{Zone d'aiguille}}
+\label{sec:aig}
+
+Bla bla bla...
+
+
+\subsection{\underline{Ininéraire}}
+\label{sec:iti}
+
+Bla bla bla...
+
+\subsection{\underline{zone d'aiguille}}
+\label{sec:aig}
+
+Bla bla bla...
+
+
+
+\newpage
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+\end{document}
