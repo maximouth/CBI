@@ -41,6 +41,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{enumerate}
+\usepackage{url}
 
 % Define new command
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -215,7 +216,13 @@ Un système d'enclenchement est initialement un système réalisé à base
 de relais mécanique. Lorsque les systèmes d'enclenchement se sont
 informatisés, les relais ont été remplacés par des équations
 booléennes (\cite{nyct2016}). Les équations booléennes sont basées sur
-  les mêmes principes que les relais. 
+  les mêmes principes que les relais. La coeur de la gestion
+  ferroviaire est la notion d'\emph{itinéraire} \cite{siteferro}. Un itinéraire
+  représente la route entre 2 signaux. Il contient les mouvements
+  d'aiguilles nécessaire pour que le train parcourt le chemin entre le
+  signal de départ et la signal d'arrivée. Le circuit ferroviaire ne
+  contient pas de signaux, ils seront remplacés par des commandes de
+  train. 
   
 La figure~\ref{archi} présente l'architecture retenue pour le
 projet. Elle est composée de 3 parties~:
@@ -265,7 +272,7 @@ Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.05]{loco.jpg}
+\includegraphics[scale=0.3]{loco.jpg}
 \caption{Photo d'une locomotive}
 \label{fig5}
 \end{figure}
@@ -285,7 +292,7 @@ Le code barre est compos\'e de la façon suivante :
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.05]{add.jpg}
+\includegraphics[scale=0.3]{add.jpg}
 \caption{Photo de l'adresse sous la locomotive}
 \label{fig6}
 \end{figure}
@@ -317,24 +324,23 @@ ainsi que plusieurs langages:
 \subsection{\underline{Validation}}
 \label{sec:valid}
 
-Afin de tester et valider les diff\'erentes \'etapes de mon projet je vais
-devoir faire des \emph{bancs de tests}, des simulations ainsi que des
-exp\'erimentations qui pourront me permettre de valider mes essais.
+Afin de tester et valider les diff\'erentes \'etapes de mon projet, je vais
+faire des \emph{bancs de tests}, des simulations ainsi que des
+exp\'erimentations qui pourront permettre de valider les essais.
 
-Il y a d'ailleurs plusieurs sc\'enarios que je vais devoir r\'ealiser qui
-me permettrons de tester de façon r\'eelle le fonctionnement de mes travaux.
+Il y a d'ailleurs plusieurs sc\'enarios que je vais r\'ealiser qui
+me permettront de tester de façon r\'eelle les différents fonctionnements~:
 
-En voici quelques un:
 
 \begin{enumerate}[A]
-  \item Sans Capteurs
+  \item Sans Capteurs et sans logique d'enclanchement
   \begin{itemize}
     \item 1 train doit passer de la voie ``A`` à la voie ``B``
     \item 2 trains sur la voie ``A``, un seul doit passer sur la voie
        ``B``
   \end{itemize}
 
-  \item Avec Capteurs
+  \item Avec Capteurs et logique enclenchement
   \begin{itemize}
     \item 1 train doit passer de la voie ``A`` à la voie ``B``
     \item 2 trains sur la voie ``A``, un seul doit passer sur la voie ``B``
@@ -346,6 +352,17 @@ En voici quelques un:
   \end{itemize}
 \end{enumerate}
 
+La première série de tests permet de valider le fonctionnement de la
+centrale DCC. C'est à dire, réception de commandes sur l'IHM, envoi de
+commandes aux trains et aux aiguillages. La synchronisation entre les
+trains sera faite uniquement sur des temporisations. La logique
+d'enclenchement ne sera pas utilisée.
+
+La seconde série de tests permet de valider la gestion de la sécurité
+de la logique d'enclenchement. Elle est basée sur la détection des
+capteurs de présence des trains sur la voie. 
+
+
 \section{Organisation du projet}
 \label{sec:org_proj}
 
@@ -356,37 +373,36 @@ Comme dit plus haut \emph{(voir 2.5)} le projet va \^etre decoup\'e en
 plusieurs \'etapes diff\'erentes.
 
 \begin{enumerate}[1]
-  \item Avant aiguillage
+  \item Portage de la centrale DCC
   \begin{itemize}
-    \item Dans un premier temps il faut cr\'eer une nouvelle interface
-      homme machine
-    \item Puis porter le code de l'ancienne centrale DCC et de la
-      gestion des capteurs dans mon projet
-    \item Et rajouter la gestion de l'aiguillage
+    \item Dans un premier temps il faut cr\'eer une nouvelle Interface
+      Homme Machine
+    \item Puis porter le code de l'ancienne centrale DCC et la
+      gestion des capteurs
   \end{itemize}
 
-  \item Avec aiguillages
+  \item Ajout des aiguillages
   \begin{itemize}
+    \item Ajouter la gestion de l'aiguillage
     \item Une fois l'aiguillage cr\'e\'e, il va falloir ajouter la
-      gestion des routes avec les différents aiguillages
-    \item Puis pouvoir commander une route
+      gestion des itinéraires avec les différents aiguillages
+    \item Puis pouvoir commander un itinéraire
       pour faire changer de voie un train uniquement
       sans aucun controle de s\'ecurit\'e.
-    \item Et enfin de r\'ealiser les diff\'erents sc\'enarios decrit
-      plus haut \emph{(voir 2.5)}
+    \item Et enfin de r\'ealiser les diff\'erents sc\'enarios A.
   \end{itemize}
 
   \item Avec aiguillages et capteurs
     \begin{itemize}
       \item Maintenant que j'ai la gestion de l'aiguillage et
-        l'aquisition des différents capteurs je vais pouvoir rajouter
-        de la s\'ecurit\'ee dans le systeme pour le rendre plus s\^ur.
+        l'aquisition des différents capteurs, je vais pouvoir rajouter
+        de la s\'ecurit\'e dans le systeme pour le rendre plus s\^ur.
       \item Je vais devoir rajouter un moteur XIL qui v\'erifira
         l'\'etat des voies avant de valider l'envoie d'une commande \`a
         un train.
-      \item Et \`a la fin de mon projet je vais devoir r\'ealiser les
-        diff\'erents sc\'enarios decrit plus haut \emph{(voir 2.5)}
-        qui permeterons de valider les demandes de mon projet.      
+      \item Et \`a la fin de mon projet, je vais devoir r\'ealiser les
+        diff\'erents sc\'enarios B qui permettront de valider les
+        demandes de mon projet.      
     \end{itemize}
 \end{enumerate}
 
@@ -398,7 +414,6 @@ plusieurs \'etapes diff\'erentes.
 Voici les différentes t\^aches ainsi que le planning que je compte
 respecter pour r\'eussir \`a mener \`a bien mon projet. La
 figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
-
 
 \begin{figure}[h]
 \centering
@@ -414,7 +429,8 @@ figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 J'ai d\'ej\`a commenc\'e \`a travailler sur le projet en essayant de
 cr\'eer une IHM pour la s\'election des diff\'erentes commandes que l'on
 veut r\'ealiser~:
-  \begin{itemize}
+
+\begin{itemize}
     \item le choix de \textbf{l'adresse} du \emph{train} qui va
       recevoir la commande. 
     \item le choix de la \textbf{vitesse} que \emph{le train} s\'electionn\'e
@@ -427,20 +443,20 @@ veut r\'ealiser~:
 \begin{figure}[h]
     \begin{minipage}[c]{.46\linewidth}
         \centering
-        \includegraphics[scale=0.04]{exe_add.jpg}
+        \includegraphics[scale=0.3]{exe_add.jpg}
         \caption{Exemple d'utilisation de la carte}
-        \label{fig7}
+        \label{carte1}
     \end{minipage}
     \hfill%
     \begin{minipage}[c]{.46\linewidth}
         \centering
-        \includegraphics[scale=0.04]{exe_aigui.jpg}
+        \includegraphics[scale=0.3]{exe_aigui.jpg}
         \caption{Exemple d'utilisation de la carte}
-        \label{fig8}
+        \label{carte2}
     \end{minipage}
 \end{figure}
 
-La \emph{figure~\ref{fig7}} et la \emph{figure~\ref{fig8}} sont un
+La \emph{figure~\ref{carte1}} et la \emph{figure~\ref{carte2}} sont un
 exemple du rendu de l'IHM d\'evelopp'ee.
 
 Je suis actuellement en train de finir de porter le code de l'ancienne
