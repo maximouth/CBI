@@ -68,7 +68,7 @@
 \HRule \\[0.4cm]
 { \huge \bfseries Rapport de pr\'e-soutenance}\\[0.4cm] % Title of your document
 { \huge \bfseries D\'eveloppement sur FPGA \\d'un système d'aiguillage
-  \\pour centale DCC sur train miniature}\\[0.4cm] % Title of your document
+  \\pour centrale DCC sur train miniature}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
  
 %----------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ Julien \textsc{DENOULET} % Supervisor's Name
 \section{Introduction}
 \label{sec:introduction}
 
-\subsection{\underline{ Contexte et encadrement}}
+\subsection{\underline{Contexte et encadrement}}
 
 Depuis plusieurs ann\'ees, le laboratoire lip6 d\'eveloppe un projet de
 gestion de maquettes de trains. Ce projet se base sur une
@@ -128,30 +128,31 @@ trains et des aiguilles et d'envoyer des commandes en utilisant le
 \emph{protocole DCC}.
 
 Ce projet est r\'ealis\'e seul et est encadr\'e par le Responsable de la
-valuer FPGA. Ce projet se d\'eroule sur une dur\'ee de 6 semaines.
-Il est r\'ealis\'e dans le cardre d'un projet SESI.
+valeur FPGA. Ce projet se d\'eroule sur une dur\'ee de 6 semaines.
+Il est r\'ealis\'e dans le cadre d'un projet SESI.
 
 \subsection{\underline{Objectifs}}
 
-L'objectif de mon projet consiste, dans un premier temps, à porter la
+L'objectif du projet consiste, dans un premier temps, à porter la
 \emph{centrale DCC} implement\'ee par d'autres \'etudiants sur une nouvelle
 carte mat\'eriel \emph{FPGA}. La version courante de la centrale tourne sur
 une carte \emph{Spartan 6}, elle est remplac\'ee par notre \crt qui est
 une carte plus r\'ecente et possède une interface plus complète
 \emph{(switchs, boutons, afficheurs 7 segments...)}
-Dans un second temps, mon projet consiste à ajouter la commande de
-des aiguillages.
+Dans un second temps, le projet consiste à ajouter la commande en
+sécurité des aiguillages.
 
-Je propose par commencer par une gestion manuelle des aiguillages avec
-les diff\'erents switchs de la carte sans v\'erification de s\'ecurit\'e. Puis
-une fois cela fait, je vais impl\'ementer par une gestion des
-enclenchements ferroviaire grâce aux differents capteurs pr\'esents sur
-les rails. Ceci permet de garantir qu'un train ne devra pas pouvoir
-changer de voie que si aucun autre train ne se trouve sur le chemin
+Je propose de commencer par une gestion manuelle des aiguillages avec
+les diff\'erents switchs de la carte sans v\'erification de
+s\'ecurit\'e.
+Puis une fois cela fait, je impl\'ementerais une gestion des
+enclenchements ferroviaire grâce aux différents capteurs pr\'esents sur
+les rails. Ceci permettra de garantir qu'un train ne pourra pas
+changer de voie si un autre train ne se trouve sur le chemin
 qu'il veut parcourir. 
 
 Les domaines de comp\'etences requis sont multiples; la connaissance
-du langage VDHL et de la plateforme \emph{FPGA} pour l'impl\'ementation
+du langage VHDL et de la plateforme \emph{FPGA} pour l'impl\'ementation
 de la centrale DCC et la connaissance de la gestion des enclenchements
 ferroviaires.
 
@@ -160,7 +161,7 @@ ferroviaires.
 \section{Aspects techniques}
 \label{sec:asp_tech}
 
-\subsection{\underline{ Le protocole DCC}}
+\subsection{\underline{Le protocole DCC}}
 \label{sec:dcc}
 
 
@@ -172,14 +173,15 @@ ferroviaires.
 \end{figure}
 
 Ce protocole est un protocole standardis\'e qui permet communiquer
-entre ma cartec\emph{FPGA} et les diff\'erents trains et
-composants. Il utilise une suite de commandes envoy\'ees sur les rails
-jusqu'aux diff\'erents trains et composants qui agisent en fonction de
-ce qu'ils recoivent.
-Notre locomotive peut recevoir \'enormement de commandes différentes,
-klason, annonces d'entr\'ee de gare, phares...(voir datasheet
-locomotive) mais elles ne seront pas toutes implement\'ee ici, mais
-pourront \^etre rajout\'e ult\'erieurement. 
+entre la carte~\emph{FPGA} et les diff\'erents trains et
+équipements de voie.
+Il utilise une suite de commandes envoy\'ees sur les rails
+jusqu'aux diff\'erents trains et composants qui agissent en fonction de
+la commande qu'ils reçoivent.
+La locomotive peut recevoir \'enormement de commandes différentes,
+klaxon, annonces d'entr\'ee de gare, phares...(voir datasheet
+locomotive). Elles ne seront pas toutes implement\'ees ici, mais
+pourront \^etre rajout\'ees ult\'erieurement. 
 
 
 \subsection{\underline{Le système d'enclenchement}}
@@ -188,11 +190,11 @@ pourront \^etre rajout\'e ult\'erieurement.
 Le chapitre 2 du document \cite{sun2015} présente un système
 ferroviaire. Un système ferroviaire est compos\'e de plusieurs systèmes~:
 \begin{itemize}
-  \item Les \'equipements de voie (rails, aiguillages...) et le mat\'eriel
-    roulant. C'est la partie visible des passagers.
+  \item Les \'equipements de voie (rails, aiguillages...) et les
+    trains. C'est la partie visible des passagers. 
   \item Le Poste de Commande ferroviaire qui permet à un \emph{op\'erateur} de
     visualiser, en temps r\'eel, l'\'etat du système (position des trains,
-    position des aiguilles...
+    position des aiguilles...)
   \item Le système d'enclenchement qui assure la s\'ecurit\'e du système
     ferroviaire. Il est plac\'e entre le Poste de Commande ferroviaire
     et les \'equipements de voie. Il interdit les commandes lorsque les
@@ -215,37 +217,38 @@ informatisés, les relais ont été remplacés par des équations
 booléennes (\cite{nyct2016}). Les équations booléennes sont basées sur
   les mêmes principes que les relais. 
   
-La figure~\ref{moteur} présente l'architecture retenue pour le
+La figure~\ref{archi} présente l'architecture retenue pour le
 projet. Elle est composée de 3 parties~:
   \begin{itemize}
     \item La centrale DCC. Elle gère les Entrées/Sorties avec les
-      équipements de voie et avec l'IHM. Elle fournit à la logique
-      d'enclenchement l'état des commandes IHM et des équipements de
-      voie. Ceci permet de séparer complètement la logique
-      d'enclenchement, de la gestion informatique des Entrées/Sorties. 
+      équipements de voie et avec l'IHM. Elle fournit, à la logique
+      d'enclenchement, l'état des commandes IHM et des équipements de
+      voie et commande les trains. Ceci permet de séparer complètement
+      la logique d'enclenchement, de la gestion informatique des
+      Entrées/Sorties.
     \item La logique d'enclenchement. Elle contient les équations
       booléennes au format VHDL. 
-    \item Le moteur d'instanciation. Il permet de générer la logique
-      d'enclenchement au format VHDL à partir des équations
+    \item Le moteur d'instanciation. Il permet de générer, hors temps réel,
+      la logique d'enclenchement au format VHDL à partir des équations
       booléennes.
   \end{itemize}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.30]{moteur.png}
-\caption{Sch\'ema du moteur de gestion du circuit}
-\label{moteur}
+\caption{Architecture du projet}
+\label{archi}
 \end{figure}
 
-Le moteur DCC sera développé en VHDL. Le moteur d'instanciation est
-exécuté hors-ligne. Il sera développé en OCaml \cite{OCAML}.
+Le moteur DCC sera développé en VHDL. Le moteur d'instanciation sera
+développé en OCaml \cite{OCAML}.
 
 
 \newpage
-\subsection{\underline{Architecture g\'en\'erale du circuit}}
+\subsection{\underline{Architecture g\'en\'erale du circuit de train}}
 \label{sec:archi}
 
-Voici le sch\'ema repr\'esentant l'installation ferroviaire utilis\'e
+Voici le sch\'ema repr\'esentant l'installation ferroviaire utilis\'ee
 tout au long du projet. 
 
 \begin{figure}[h]
@@ -258,7 +261,7 @@ tout au long du projet.
 L'installation \emph{(voir fig~\ref{fig4})} est compos\'ee de 3
 circuits imbriqués, de 6??? aiguillages control\'es par 8
 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
-Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
+Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 
 \begin{figure}[h]
 \centering
@@ -270,14 +273,14 @@ Le dispositif peut acceuillir jusqu'\`a 6 trains en m\^eme temps.
 Chaque locomotive poss\`ede une adresse sous forme de \emph{code
 barre} sous elle \emph{(voir fig~\ref{fig6})}.
 
-Le code barre est decompos\'e de la façon suivante :
+Le code barre est compos\'e de la façon suivante :
 \begin{itemize}
     \item \textbf{un pr\'eambule} compos\'e de 2 bandes noires
       s\'epar\'ees par 1 bande blanche.
     \item \textbf{de l'adresse} le nombre de bandes noires correspond
       à l'adresse du train. 
-    \item \textbf{un \'epilogue} compo\'e de 3 bandes noires
-      s\'epar\'ees par 2 bandes blanche.
+    \item \textbf{un \'epilogue} compos\'e de 3 bandes noires
+      s\'epar\'ees par 2 bandes blanches.
 \end{itemize}
 
 \begin{figure}[h]
@@ -289,13 +292,13 @@ Le code barre est decompos\'e de la façon suivante :
 
 
 \newpage
-\subsection{\underline{ Outils}}
+\subsection{\underline{Outils}}
 \label{sec:outils}
 
-Lors de ce projet, je vais devoir utiliser diff\'erents outils :
+Lors de ce projet, je vais utiliser diff\'erents outils :
 \begin{itemize}
   \item La carte \crt comme plateforme de d\'eveloppement
-  \item La locomotive \emph{Jouef ``Fret SNCF``}\cite{Jouef}  et les capteurs de
+  \item La locomotive \emph{Jouef ``Fret SNCF``}\cite{Jouef}, les capteurs de
     position et des aiguillages
   \item Le protocole DCC \cite{DCC}
   \item Le logiciel Vivado comme \emph{IDE}
@@ -311,10 +314,10 @@ ainsi que plusieurs langages:
 \end{itemize}
 
 
-\subsection{\underline{ Validation}}
+\subsection{\underline{Validation}}
 \label{sec:valid}
 
-Afin de tester et valider les differentes \'etapes de mon projet je vais
+Afin de tester et valider les diff\'erentes \'etapes de mon projet je vais
 devoir faire des \emph{bancs de tests}, des simulations ainsi que des
 exp\'erimentations qui pourront me permettre de valider mes essais.
 
@@ -346,7 +349,7 @@ En voici quelques un:
 \section{Organisation du projet}
 \label{sec:org_proj}
 
-\subsection{\underline{ Activit\'es du projet}}
+\subsection{\underline{Activit\'es du projet}}
 \label{sec:activ}
 
 Comme dit plus haut \emph{(voir 2.5)} le projet va \^etre decoup\'e en
@@ -389,7 +392,7 @@ plusieurs \'etapes diff\'erentes.
 
 \newpage
 
-\subsection{\underline{ Planning pr\'evisionnel}}
+\subsection{\underline{Planning pr\'evisionnel}}
 \label{sec:planning}
 
 Voici les différentes t\^aches ainsi que le planning que je compte
@@ -405,7 +408,7 @@ figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 \end{figure}
 
 
-\subsection{\underline{ Avancement}}
+\subsection{\underline{Avancement}}
 \label{sec:avanc}
 
 J'ai d\'ej\`a commenc\'e \`a travailler sur le projet en essayant de
