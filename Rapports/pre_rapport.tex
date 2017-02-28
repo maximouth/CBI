@@ -245,14 +245,14 @@ La coeur de la gestion
   contient pas de signaux, ils seront remplacés par des commandes de
   train. Un itinéraire peut être dans les états suivants:
   \begin{itemize}
-    \item \emph{commandé}. L'opérateur veut que le train parcourt
-      l'itinéraire, il a par conséquent demandé la formation de
+    \item \emph{commandé}. L'opérateur demande au train de parcourir
+      l'itinéraire choisi. Il a par conséquent demandé la formation de
       l'itinéraire au système d'enclenchement. Si les conditions sur
       les aiguilles à manoeuvrer pour former l'itinéraire sont
-      correctes, le système d'enclenchement passe à l'état formation de
-      l'itinéraire sinon l'itinéraire est rejeté.
+      correctes, le système d'enclenchement passe à l'état de formation de
+      l'itinéraire sinon il est rejeté.
     \item \emph{formé}. Les aiguilles sont positionnées dans la bonne
-      direction, il n'est plus possible de bouger les aiguilles tant
+      direction. Il n'est plus possible de bouger les aiguilles tant
       que le train se situe dans une certaine zone.
     \item \emph{détruit}. Le train a parcouru l'itinéraire, celui-ci peut
       être détruit de façon à autoriser le parcours d'un autre train sur les
@@ -364,9 +364,6 @@ Le code barre est compos\'e de la façon suivante :
 \end{figure}
 
 
-\newpage
-
-
 L'aiguillage lui est géré par trame DCC, c'est à dire que chaque
 contrôleur d'aiguillage possède une adresse qui lui permet de recevoir
 une trame contenant une instruction qui lui demande de bouger ou non
@@ -386,6 +383,7 @@ dernière position connue de chaque train ce qui va nous permettre de
 choisir si un train doit changer de voie ou rester sur la sienne selon
 si il y a un train qui bloque ou non la zone d'aiguillage qui nous concerne.
 
+\newpage
 
 \subsection{\underline{Outils}}
 \label{sec:outils}
@@ -408,7 +406,6 @@ ainsi que plusieurs langages:
   \item Le langage \emph{Ocaml}\cite{OCAML} pour la g\'en\'eration de la logique d'enclenchement
 \end{itemize}
 
-\newpage
 
 \section{Organisation du projet}
 \label{sec:org_proj}
@@ -455,7 +452,6 @@ plusieurs \'etapes diff\'erentes.
 \end{enumerate}
 
 
-\newpage
 
 \subsection{\underline{Planning pr\'evisionnel}}
 \label{sec:planning}
@@ -492,6 +488,8 @@ me permettront de tester de façon r\'eelle les différents fonctionnements~:
        ``B``
   \end{itemize}
 
+\newpage
+  
   \item Avec Capteurs et logique enclenchement
   \begin{itemize}
     \item 1 train doit passer de la voie ``A`` à la voie ``B``
