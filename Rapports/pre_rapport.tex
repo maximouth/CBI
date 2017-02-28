@@ -239,9 +239,9 @@ les mêmes principes que les relais.
 
 La coeur de la gestion
   ferroviaire est la notion d'\emph{itinéraire} \cite{siteferro}. Un itinéraire
-  représente la route entre 2 signaux. Il contient les mouvements
+  représente la route entre 2 signaux\emph{(feu)}. Il contient les mouvements
   d'aiguilles nécessaires pour que le train parcourt le chemin entre le
-  signal de départ et la signal d'arrivée. Le circuit ferroviaire ne
+  signal de départ et le signal d'arrivée. Le circuit ferroviaire ne
   contient pas de signaux, ils seront remplacés par des commandes de
   train. Un itinéraire peut être dans les états suivants:
   \begin{itemize}
@@ -343,6 +343,8 @@ Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 \label{fig5}
 \end{figure}
 
+\newpage
+
 Chaque locomotive poss\`ede une adresse sous forme de \emph{code
 barre} sous elle \emph{(voir fig~\ref{fig6})}.
 
@@ -375,7 +377,7 @@ Cette instruction est donnée sur 2 bits. Et l'aiguille possède deux
 Il y aura plusieurs \emph{itinéraires} prédefinis pour les trains. Un
 itinéraire correspond au trajet que l'on veut qu'il effectue, aller
 d'une voie ``A`` à une voie ``B`` en passant par exemple par la voie
-``C`` en utilisant des aiguillages choisient à l'avance.
+``C`` en utilisant des aiguillages choisi à l'avance.
 \newline
 \newline
 Les capteurs vont permettre de mettre à jour une table contenant la
