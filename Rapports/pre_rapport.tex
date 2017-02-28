@@ -122,14 +122,13 @@ Julien \textsc{DENOULET} % Supervisor's Name
 
 \subsection{\underline{Contexte et encadrement}}
 
-Depuis plusieurs ann\'ees, le laboratoire lip6 d\'eveloppe un projet de
+Depuis plusieurs ann\'ees, la plateforme d'ingénierie de l'UPMC d\'eveloppe un projet de
 gestion de maquettes de trains. Ce projet se base sur une
 \emph{centrale DCC}. Cette centrale permet de recevoir la position des
 trains et des aiguilles et d'envoyer des commandes en utilisant le
 \emph{protocole DCC}.
 
-Ce projet est r\'ealis\'e seul et est encadr\'e par le Responsable de la
-valeur FPGA. Ce projet se d\'eroule sur une dur\'ee de 6 semaines.
+Ce projet est r\'ealis\'e seul et est encadr\'e par M. Denoulet. Ce projet se d\'eroule sur une dur\'ee de 6 semaines.
 Il est r\'ealis\'e dans le cadre d'un projet SESI.
 
 \subsection{\underline{Objectifs}}
@@ -146,10 +145,10 @@ sécurité des aiguillages.
 Je propose de commencer par une gestion manuelle des aiguillages avec
 les diff\'erents switchs de la carte sans v\'erification de
 s\'ecurit\'e.
-Puis une fois cela fait, je impl\'ementerais une gestion des
+Puis une fois cela fait, je impl\'ementerai une gestion des
 enclenchements ferroviaire grâce aux différents capteurs pr\'esents sur
 les rails. Ceci permettra de garantir qu'un train ne pourra pas
-changer de voie si un autre train ne se trouve sur le chemin
+changer de voie si un autre train se trouve sur le chemin
 qu'il veut parcourir. 
 
 Les domaines de comp\'etences requis sont multiples; la connaissance
@@ -173,13 +172,13 @@ ferroviaires.
 \label{fig1}
 \end{figure}
 
-Ce protocole est un protocole standardis\'e qui permet communiquer
+Ce protocole est un protocole standardis\'e qui permet de communiquer
 entre la carte~\emph{FPGA} et les diff\'erents trains et
-équipements de voie.
+équipements de voies.
 Il utilise une suite de commandes envoy\'ees sur les rails
 jusqu'aux diff\'erents trains et composants qui agissent en fonction de
 la commande qu'ils reçoivent.
-La locomotive peut recevoir \'enormement de commandes différentes,
+La locomotive peut recevoir \'enormément de commandes différentes,
 klaxon, annonces d'entr\'ee de gare, phares...(voir datasheet
 locomotive). Elles ne seront pas toutes implement\'ees ici, mais
 pourront \^etre rajout\'ees ult\'erieurement. 
@@ -266,7 +265,7 @@ tout au long du projet.
 \end{figure}
 
 L'installation \emph{(voir fig~\ref{fig4})} est compos\'ee de 3
-circuits imbriqués, de 6??? aiguillages control\'es par 8
+circuits imbriqués, de 4 aiguillages control\'es par 8
 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
 Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 
@@ -279,6 +278,8 @@ Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 
 Chaque locomotive poss\`ede une adresse sous forme de \emph{code
 barre} sous elle \emph{(voir fig~\ref{fig6})}.
+
+\newpage
 
 Le code barre est compos\'e de la façon suivante :
 \begin{itemize}
@@ -299,6 +300,28 @@ Le code barre est compos\'e de la façon suivante :
 
 
 \newpage
+
+
+L'aiguillage lui est géré par trame DCC, c'est à dire que chaque
+contrôleur d'aiguillage possède une adresse qui lui permet de recevoir
+une trame contenant une instruction qui lui demande de bouger ou non
+l'aiguille.
+Cette instruction est donnée sur 2 bits. Et l'aiguille possède deux
+états, gauche ou droit, mais ne possède pas d'état intermédiaire.
+\newline
+\newline
+Il y aura plusieurs \emph{itinéraires} prédefinis pour les trains. Un
+itinéraire correspond au trajet que l'on veut qu'il effectue, aller
+d'une voie ``A`` à une voie ``B`` en passant par exemple par la voie
+``C`` en utilisant des aiguillages choisient à l'avance.
+\newline
+\newline
+Les capteurs vont permettre de mettre à jour une table contenant la
+dernière position connue de chaque train ce qui va nous permettre de
+choisir si un train doit changer de voie ou rester sur la sienne selon
+si il y a un train qui bloque ou non la zone d'aiguillage qui nous concerne.
+
+
 \subsection{\underline{Outils}}
 \label{sec:outils}
 
@@ -320,48 +343,7 @@ ainsi que plusieurs langages:
   \item Le langage \emph{Ocaml}\cite{OCAML} pour la g\'en\'eration de la logique d'enclenchement
 \end{itemize}
 
-
-\subsection{\underline{Validation}}
-\label{sec:valid}
-
-Afin de tester et valider les diff\'erentes \'etapes de mon projet, je vais
-faire des \emph{bancs de tests}, des simulations ainsi que des
-exp\'erimentations qui pourront permettre de valider les essais.
-
-Il y a d'ailleurs plusieurs sc\'enarios que je vais r\'ealiser qui
-me permettront de tester de façon r\'eelle les différents fonctionnements~:
-
-
-\begin{enumerate}[A]
-  \item Sans Capteurs et sans logique d'enclanchement
-  \begin{itemize}
-    \item 1 train doit passer de la voie ``A`` à la voie ``B``
-    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie
-       ``B``
-  \end{itemize}
-
-  \item Avec Capteurs et logique enclenchement
-  \begin{itemize}
-    \item 1 train doit passer de la voie ``A`` à la voie ``B``
-    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie ``B``
-    \item 2 trains sur la voie 1 avec 1 seul qui doit passer de voie 1 à voie 2
-    \item 1 train A sur voie 2 qui s'arrête dans la zone aiguillage.
-    \item 1 train B sur voie 1 qui veut passer en voie 2 --> Pas
-       possible. Red\'emarrage train A, v\'erification du changement de
-       voie du train B.
-  \end{itemize}
-\end{enumerate}
-
-La première série de tests permet de valider le fonctionnement de la
-centrale DCC. C'est à dire, réception de commandes sur l'IHM, envoi de
-commandes aux trains et aux aiguillages. La synchronisation entre les
-trains sera faite uniquement sur des temporisations. La logique
-d'enclenchement ne sera pas utilisée.
-
-La seconde série de tests permet de valider la gestion de la sécurité
-de la logique d'enclenchement. Elle est basée sur la détection des
-capteurs de présence des trains sur la voie. 
-
+\newpage
 
 \section{Organisation du projet}
 \label{sec:org_proj}
@@ -389,22 +371,24 @@ plusieurs \'etapes diff\'erentes.
     \item Puis pouvoir commander un itinéraire
       pour faire changer de voie un train uniquement
       sans aucun controle de s\'ecurit\'e.
-    \item Et enfin de r\'ealiser les diff\'erents sc\'enarios A.
+    \item Et enfin r\'ealiser les diff\'erents sc\'enarios A.
   \end{itemize}
 
+  
   \item Avec aiguillages et capteurs
     \begin{itemize}
-      \item Maintenant que j'ai la gestion de l'aiguillage et
-        l'aquisition des différents capteurs, je vais pouvoir rajouter
-        de la s\'ecurit\'e dans le systeme pour le rendre plus s\^ur.
-      \item Je vais devoir rajouter un moteur XIL qui v\'erifira
+      \item Maintenant que la gestion de l'aiguillage et
+        l'aquisition des différents capteurs sont effectués, je vais pouvoir rajouter
+        la s\'ecurit\'e dans le systeme pour le rendre plus s\^ur.
+      \item Il faut ajouter un moteur IXL\cite{IXL} qui v\'erifira
         l'\'etat des voies avant de valider l'envoie d'une commande \`a
         un train.
-      \item Et \`a la fin de mon projet, je vais devoir r\'ealiser les
+      \item Une fois toutes ces étapes réalisées, je pourrai r\'ealiser les
         diff\'erents sc\'enarios B qui permettront de valider les
-        demandes de mon projet.      
+        demandes du projet.      
     \end{itemize}
 \end{enumerate}
+
 
 \newpage
 
@@ -423,6 +407,48 @@ figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 \end{figure}
 
 
+
+\subsection{\underline{Validation}}
+\label{sec:valid}
+
+Afin de tester et valider les diff\'erentes \'etapes de mon projet, je vais
+faire des \emph{bancs de tests}, des simulations ainsi que des
+exp\'erimentations qui pourront permettre de valider les essais.
+
+Il y a d'ailleurs plusieurs sc\'enarios que je vais r\'ealiser qui
+me permettront de tester de façon r\'eelle les différents fonctionnements~:
+
+
+\begin{enumerate}[A]
+  \item Sans Capteurs et sans logique d'enclanchement
+  \begin{itemize}
+    \item 1 train doit passer de la voie ``A`` à la voie ``B``
+    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie
+       ``B``
+  \end{itemize}
+
+  \item Avec Capteurs et logique enclenchement
+  \begin{itemize}
+    \item 1 train doit passer de la voie ``A`` à la voie ``B``
+    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie ``B``
+    \item 1 train 1 sur voie ``A`` qui s'arrête dans la zone aiguillage.
+    \item 1 train 2 sur voie ``B``qui veut passer en voie ``A`` --> Pas
+       possible. Red\'emarrage train 1, v\'erification du changement de
+       voie du train 2.
+  \end{itemize}
+\end{enumerate}
+
+La première série de tests permettra de valider le fonctionnement de la
+centrale DCC. C'est à dire, réception de commandes sur l'IHM, envoi de
+commandes aux trains et aux aiguillages. La synchronisation entre les
+trains sera faite uniquement sur des temporisations. La logique
+d'enclenchement ne sera pas utilisée.
+
+La seconde série de tests permettra de valider la gestion de la sécurité
+de la logique d'enclenchement. Elle est basée sur la détection des
+capteurs de présence des trains sur la voie. 
+
+
 \subsection{\underline{Avancement}}
 \label{sec:avanc}
 
@@ -432,13 +458,15 @@ veut r\'ealiser~:
 
 \begin{itemize}
     \item le choix de \textbf{l'adresse} du \emph{train} qui va
-      recevoir la commande. 
+      recevoir la commande
     \item le choix de la \textbf{vitesse} que \emph{le train} s\'electionn\'e
       va recevoir. 
-    \item le choix de \textbf{du numéro} de la \emph{route} \`a \'etablir.
+    \item le choix  \textbf{du numéro} de la \emph{route} \`a \'etablir.
     \item les \textbf{features} qui pourront \^etre rajout\'ees au
       projet. 
   \end{itemize}
+
+\newpage
 
 \begin{figure}[h]
     \begin{minipage}[c]{.46\linewidth}
@@ -458,6 +486,13 @@ veut r\'ealiser~:
 
 La \emph{figure~\ref{carte1}} et la \emph{figure~\ref{carte2}} sont un
 exemple du rendu de l'IHM d\'evelopp'ee.
+La \emph{figure~\ref{carte1}} représente la valeur de l'adresse du
+train à qui on envoie la commande.
+Tandis que la \emph{figure~\ref{carte2}} montre le numero de
+l'aiguillage que l'on veut bouger.
+En appuyant sur le bouton gauche on change le réglage, et en appuyant sur le
+bouton droit on incrémente la valeur du réglage choisit
+
 
 Je suis actuellement en train de finir de porter le code de l'ancienne
 centrale DCC et de l'aquisition des capteurs sur la nouvelle carte.

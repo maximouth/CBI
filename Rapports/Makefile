@@ -24,18 +24,16 @@ ps:	dvi
 	$(BIBTEX) $<||true
 	$(LATEX) $<
 	$(LATEX) $<
-	
 
 clean:
 	rm -f ${filename}.{ps,pdf,log,aux,out,dvi,bbl,blg}
 
-	
 interface.pdf : interface.tex
 	$(LATEX) $<
 	$(BIBTEX) $<||true
 	$(LATEX) $<
 	$(LATEX) $<
-	
+
 pre_rapport.pdf : pre_rapport.tex
 	$(LATEX) $<
 	$(BIBTEX) $<||true
