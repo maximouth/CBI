@@ -26,16 +26,16 @@ ps:	dvi
 	$(LATEX) $<
 
 clean:
-	rm -f ${filename}.{ps,pdf,log,aux,out,dvi,bbl,blg}
+	rm -f *.{ps,pdf,log,aux,out,dvi,bbl,blg}
 
 interface.pdf : interface.tex
-	$(LATEX) $<
-	$(BIBTEX) $<||true
-	$(LATEX) $<
-	$(LATEX) $<
+	$(LATEX) interface.tex
+	$(BIBTEX) interface ||true
+	$(LATEX) interface.tex
+	$(LATEX) interface.tex
 
 pre_rapport.pdf : pre_rapport.tex
-	$(LATEX) $<
-	$(BIBTEX) $<||true
-	$(LATEX) $<
-	$(LATEX) $<
+	$(LATEX) pre_rapport.tex
+	$(BIBTEX) pre_rapport ||true
+	$(LATEX) pre_rapport.tex
+	$(LATEX) pre_rapport.tex
