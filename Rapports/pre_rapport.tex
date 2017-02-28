@@ -42,6 +42,7 @@
 \usepackage{graphicx}
 \usepackage{enumerate}
 \usepackage{url}
+\usepackage{caption}
 
 % Define new command
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -212,16 +213,82 @@ systèmes.\emph{(voir fig~\ref{fig3})}
 \end{figure}
 
 Un système d'enclenchement est initialement un système réalisé à base
-de relais mécanique. Lorsque les systèmes d'enclenchement se sont
+d'un système de clenches (voir figure \ref{clenche}), puis de relais
+mécanique (voir figure \ref{relais}). Lorsque les systèmes
+d'enclenchement se sont 
 informatisés, les relais ont été remplacés par des équations
 booléennes (\cite{nyct2016}). Les équations booléennes sont basées sur
-  les mêmes principes que les relais. La coeur de la gestion
+les mêmes principes que les relais.
+
+\begin{figure}[ht]
+    \begin{minipage}[c]{.46\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{enclenchement_mecanique.jpg}
+        \caption{Enclenchement mécanique}
+        \label{clenche}
+    \end{minipage}
+    \hfill%
+    \begin{minipage}[c]{.46\linewidth}
+        \centering
+        \includegraphics[scale=0.15]{enclenchement_relais.jpg}
+        \caption{Enclenchement à relais}
+        \label{relais}
+    \end{minipage}
+\end{figure}
+
+
+La coeur de la gestion
   ferroviaire est la notion d'\emph{itinéraire} \cite{siteferro}. Un itinéraire
   représente la route entre 2 signaux. Il contient les mouvements
-  d'aiguilles nécessaire pour que le train parcourt le chemin entre le
+  d'aiguilles nécessaires pour que le train parcourt le chemin entre le
   signal de départ et la signal d'arrivée. Le circuit ferroviaire ne
   contient pas de signaux, ils seront remplacés par des commandes de
-  train. 
+  train. Un itinéraire peut être dans les états suivants:
+  \begin{itemize}
+    \item \emph{commandé}. L'opérateur veut que le train parcourt
+      l'itinéraire, il a par conséquent demandé la formation de
+      l'itinéraire au système d'enclenchement. Si les conditions sur
+      les aiguilles à manoeuvrer pour former l'itinéraire sont
+      correctes, le système d'enclenchement passe à l'état formation de
+      l'itinéraire sinon l'itinéraire est rejeté.
+    \item \emph{formé}. Les aiguilles sont positionnées dans la bonne
+      direction, il n'est plus possible de bouger les aiguilles tant
+      que le train se situe dans une certaine zone.
+    \item \emph{détruit}. Le train a parcouru l'itinéraire, celui-ci peut
+      être détruit de façon à autoriser le parcours d'un autre train sur les
+      aiguilles.  
+  \end{itemize}
+
+
+
+Un système d'enclenchement est composé d'enclenchements correspondant
+chacun à une condition à vérifier. Par exemple, l'{enclenchement
+d'approche d'une aiguille}; Il interdit la formation d'un 
+nouvel itinéraire si un train se situe dans la "zone d'approche".
+En effet, dans cette zone, un train
+n'aurait pas la distance suffisante pour s'arrêter normalement devant
+l'aiguille.  Sans cet enclenchement, l'opérateur pourrait détruire
+l'itinéraire et commander un autre itinéraire. Le train, ne pouvant
+s'arrêter correctement, arriverait sur une aiguille encore en
+mouvement et déraillerait.
+Sur la figure \ref{encl_approche}, lorsque le train se situe dans la
+zone verte, il est possible de bouger l'aiguille A4. Si le train se
+trouve dans le zone rouge, alors l'aiguille A4 est \emph{enclenchée}
+et toute demande de mouvement de l'aiguille sera rejeté.
+
+%\begin{figure}[h!]
+%\centering
+%\includegraphics[scale=0.7]{zone_approche.jpg}
+%\caption{Enclenchement d'approche d'aiguille}
+%\label{encl_approche}
+%\end{figure}
+
+\begin{center}
+\includegraphics[scale=0.7]{zone_approche.jpg}
+\captionof{figure}{Enclenchement d'approche d'aiguille}
+\label{encl_approche}%
+\end{center}
+
   
 La figure~\ref{archi} présente l'architecture retenue pour le
 projet. Elle est composée de 3 parties~:
@@ -239,7 +306,7 @@ projet. Elle est composée de 3 parties~:
       booléennes.
   \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=0.30]{moteur.png}
 \caption{Architecture du projet}
@@ -265,7 +332,7 @@ tout au long du projet.
 \end{figure}
 
 L'installation \emph{(voir fig~\ref{fig4})} est compos\'ee de 3
-circuits imbriqués, de 4 aiguillages control\'es par 8
+circuits imbriqués, de 4 paires d'aiguillages control\'ees par 8
 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
 Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 
@@ -278,8 +345,6 @@ Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 
 Chaque locomotive poss\`ede une adresse sous forme de \emph{code
 barre} sous elle \emph{(voir fig~\ref{fig6})}.
-
-\newpage
 
 Le code barre est compos\'e de la façon suivante :
 \begin{itemize}
