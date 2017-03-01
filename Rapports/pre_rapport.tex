@@ -136,7 +136,7 @@ Il est r\'ealis\'e dans le cadre d'un projet SESI.
 
 L'objectif du projet consiste, dans un premier temps, à porter la
 \emph{centrale DCC} implement\'ee par d'autres \'etudiants sur une nouvelle
-carte mat\'eriel \emph{FPGA}. La version courante de la centrale tourne sur
+carte mat\'erielle \emph{FPGA}. La version courante de la centrale tourne sur
 une carte \emph{Spartan 6}, elle est remplac\'ee par notre \crt qui est
 une carte plus r\'ecente et possède une interface plus complète
 \emph{(switchs, boutons, afficheurs 7 segments...)}
@@ -146,8 +146,8 @@ sécurité des aiguillages.
 Je propose de commencer par une gestion manuelle des aiguillages avec
 les diff\'erents switchs de la carte sans v\'erification de
 s\'ecurit\'e.
-Puis une fois cela fait, je impl\'ementerai une gestion des
-enclenchements ferroviaire grâce aux différents capteurs pr\'esents sur
+Puis une fois cela fait, j' impl\'ementerai une gestion des
+enclenchements ferroviaires grâce aux différents capteurs pr\'esents sur
 les rails. Ceci permettra de garantir qu'un train ne pourra pas
 changer de voie si un autre train se trouve sur le chemin
 qu'il veut parcourir. 
@@ -223,14 +223,14 @@ les mêmes principes que les relais.
 \begin{figure}[ht]
     \begin{minipage}[c]{.46\linewidth}
         \centering
-        \includegraphics[scale=0.5]{enclenchement_mecanique.jpg}
+        \includegraphics[scale=0.3]{enclenchement_mecanique.jpg}
         \caption{Enclenchement mécanique}
         \label{clenche}
     \end{minipage}
     \hfill%
     \begin{minipage}[c]{.46\linewidth}
         \centering
-        \includegraphics[scale=0.15]{enclenchement_relais.jpg}
+        \includegraphics[scale=0.075]{enclenchement_relais.jpg}
         \caption{Enclenchement à relais}
         \label{relais}
     \end{minipage}
@@ -246,7 +246,7 @@ La coeur de la gestion
   train. Un itinéraire peut être dans les états suivants:
   \begin{itemize}
     \item \emph{commandé}. L'opérateur demande au train de parcourir
-      l'itinéraire choisi. Il a par conséquent demandé la formation de
+      l'itinéraire choisit. Il a par conséquent demandé la formation de
       l'itinéraire au système d'enclenchement. Si les conditions sur
       les aiguilles à manoeuvrer pour former l'itinéraire sont
       correctes, le système d'enclenchement passe à l'état de formation de
@@ -260,7 +260,10 @@ La coeur de la gestion
   \end{itemize}
 
 
-
+\item []
+\item []
+\item []
+  
 Un système d'enclenchement est composé d'enclenchements correspondant
 chacun à une condition à vérifier. Par exemple, l'{enclenchement
 d'approche d'une aiguille}; Il interdit la formation d'un 
@@ -284,11 +287,12 @@ et toute demande de mouvement de l'aiguille sera rejeté.
 %\end{figure}
 
 \begin{center}
-\includegraphics[scale=0.7]{zone_approche.jpg}
+\includegraphics[scale=0.6]{zone_approche.jpg}
 \captionof{figure}{Enclenchement d'approche d'aiguille}
 \label{encl_approche}%
 \end{center}
 
+\newpage
   
 La figure~\ref{archi} présente l'architecture retenue pour le
 projet. Elle est composée de 3 parties~:
@@ -308,7 +312,7 @@ projet. Elle est composée de 3 parties~:
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=1]{moteur.png}
+\includegraphics[scale=0.45]{moteur.png}
 \caption{Architecture du projet}
 \label{archi}
 \end{figure}
@@ -386,7 +390,6 @@ choisir si un train doit changer de voie ou rester sur la sienne selon
 si il y a un train qui bloque ou non la zone d'aiguillage qui nous concerne.
 
 \newpage
-
 \subsection{\underline{Outils}}
 \label{sec:outils}
 
@@ -442,7 +445,7 @@ plusieurs \'etapes diff\'erentes.
   \item Avec aiguillages et capteurs
     \begin{itemize} 
       \item Maintenant que la gestion de l'aiguillage et
-        l'aquisition des différents capteurs sont effectués, je vais pouvoir rajouter
+        l'acquisition des différents capteurs sont effectués, je vais pouvoir rajouter
         la s\'ecurit\'e dans le systeme pour le rendre plus s\^ur.
       \item Il faut ajouter un moteur IXL\cite{IXL} qui v\'erifira
         l'\'etat des voies avant de valider l'envoie d'une commande \`a
@@ -550,7 +553,7 @@ veut r\'ealiser~:
 \end{figure}
 
 La \emph{figure~\ref{carte1}} et la \emph{figure~\ref{carte2}} sont un
-exemple du rendu de l'IHM d\'evelopp'ee.
+exemple du rendu de l'IHM d\'evelopp\'ee.
 La \emph{figure~\ref{carte1}} représente la valeur de l'adresse du
 train à qui on envoie la commande.
 Tandis que la \emph{figure~\ref{carte2}} montre le numero de
@@ -560,7 +563,7 @@ bouton droit on incrémente la valeur du réglage choisit
 
 
 Je suis actuellement en train de finir de porter le code de l'ancienne
-centrale DCC et de l'aquisition des capteurs sur la nouvelle carte.
+centrale DCC et de l'acquisition des capteurs sur la nouvelle carte.
 
 \newpage
 
