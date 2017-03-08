@@ -7,21 +7,23 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 
 entity control_seg is
-  Port ( CLK : in STD_LOGIC;
+  Port ( CLK   : in STD_LOGIC;
          reset : in STD_LOGIC;
-         CA : out STD_LOGIC;
-         CB : out STD_LOGIC;
-         CC : out STD_LOGIC;
-         CD : out STD_LOGIC;
-         CE : out STD_LOGIC;
-         CF : out STD_LOGIC;
-         CG : out STD_LOGIC;
-         DP : out STD_LOGIC;
-         AN : out STD_LOGIC_VECTOR (7 downto 0);
+         CA    : out STD_LOGIC;
+         CB    : out STD_LOGIC;
+         CC    : out STD_LOGIC;
+         CD    : out STD_LOGIC;
+         CE    : out STD_LOGIC;
+         CF    : out STD_LOGIC;
+         CG    : out STD_LOGIC;
+         DP    : out STD_LOGIC;
+         AN    : out STD_LOGIC_VECTOR (7 downto 0);
+         ADD   : out STD_LOGIC_VECTOR (7 downto 0);
+         DATA  : out STD_LOGIC_VECTOR (7 downto 0);
          -- chose setting
-         BTNL : in STD_LOGIC;
+         BTNL  : in STD_LOGIC;
          -- increment setting value
-         BTNR : in STD_LOGIC
+         BTNR  : in STD_LOGIC
          );
 end control_seg;
 
@@ -124,6 +126,46 @@ begin
     variable seg_display : STD_LOGIC_VECTOR (6 downto 0);
   
   begin
+
+  -- put the addresse in output
+  case addr is
+    when 0 =>
+      ADD <= "00000000";
+    when 1 =>
+      ADD <= "00000001";
+    when 2 =>
+      ADD <= "00000010";
+    when 3 =>
+      ADD <= "00000011";
+    when 4 =>
+      ADD <= "00000100";
+    when 5 =>
+      ADD <= "00000101";
+    when 6 =>
+      ADD <= "00000110";
+    when 7 =>
+      ADD <= "00000111";
+  end case;
+  
+  -- put the speed in output
+  case speed is
+    when 0 =>
+      DATA <= "00000000";
+    when 1 =>
+      DATA <= "00000001";
+    when 2 =>
+      DATA <= "00000010";
+    when 3 =>
+      DATA <= "00000011";
+    when 4 =>
+      DATA <= "00000100";
+    when 5 =>
+      DATA <= "00000101";
+    when 6 =>
+      DATA <= "00000110";
+    when 7 =>
+      DATA <= "00000111";
+  end case;
 
     if rising_edge (CLK) then 
 

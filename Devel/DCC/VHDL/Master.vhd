@@ -53,6 +53,8 @@ component control_seg is
          CG : out STD_LOGIC;
          DP : out STD_LOGIC;
          AN : out STD_LOGIC_VECTOR (7 downto 0);
+         ADD  : out STD_LOGIC_VECTOR (7 downto 0);
+         DATA  : out STD_LOGIC_VECTOR (7 downto 0);
          -- chose setting
          BTNL : in STD_LOGIC;
          -- increment setting value
@@ -73,8 +75,8 @@ end component;
 signal clk1M : STD_LOGIC := '0';
 
 signal go : STD_LOGIC := '0';
-signal addr : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
-signal data : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
+signal address : STD_LOGIC_VECTOR (7 downto 0);
+signal data_send : STD_LOGIC_VECTOR (7 downto 0);
 
 --------------------------------------------------------------------------------
 
@@ -85,8 +87,8 @@ begin
     port map (
       clk     => clk1M,
       go      => go,
-      addr    => addr,
-      data    => data,
+      addr    => address,
+      data    => data_send,
       pulse   => PULSE
       );
 
@@ -103,8 +105,11 @@ begin
       CG      => CG,
       DP      => DP,
       AN      => AN,
+      ADD     => address,
+      DATA    => data_send,
       BTNL    => BTNL,
       BTNR    => BTNR
+      
       );
 
  div_clock_1: div_clock
