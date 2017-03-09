@@ -235,7 +235,121 @@ bla bla bla...
 \newpage
 \section{\underline{Interface Centrale DCC - Moteur IXL}}
 \label{sec:int_ixl}   
-Bla bla bla...
+
+La logique d'enclenchement est basée sur les notions de signaux, de circuit de voie et d'itinéraire ferroviaire.
+
+Un \emph{signal} est le moyen de communication entre le conducteur du train et la logique d'enclenchement. 
+Il permet d'indiquer au conducteur l'état de la voie se trouvant devant le train (par définition un 
+train ne recule jamais, il est nécessaire de changer de cabine de conduite pour changer
+la direction du train). Il existe beaucoup de signaux ferroviaire. Les trois plus importants sont~:
+\begin{itemize}
+\item signal \emph{rouge} qui signifie que le train doit s'arrêter devant le signal car la
+voie devant lui n'est pas sûre (présence d'un autre train, aiguillage en train d'être commandé, panne 
+matériel...)
+\item signal \emph{jaune} qui signifie qu'il y a un danger à proximité. Le train peut passer le signal
+mais à vitesse réduite seulement et doit être capable de s'arrêter sur une courte distance. Ceci permet 
+de fluidifier le traffic.
+\item signal \emph{vert} qui signifie que la voie devant le train est libre de tout danger et que le train 
+peut poursuivre sa route en respectant les vitesses limites.
+\end{itemize}
+
+L'objectif des opérateurs consiste à toujours présenter un signal vert devant un train de façon 
+à ce que le train n'est jamais à s'arrêter à cause d'un danger.
+
+
+\medskip
+Le projet implémente le signal rouge et le signal vert. Le signal jaune ne peut pas être implémenté sans conducteur 
+dans le train. Il n'y a pas de signaux sur le circuit ferroviaire, mais la notion de signaux sera quand même
+implémentée. Un signal \emph{virtuel} sera créé pour chaque circuit de voie. Il autorisera ou pas l'entrée d'un train dans 
+le circuit de voie auquel il est associé.
+Ceci permettra de commander les trains. 
+
+\medskip
+Un \emph{Ciruit de Voie} (CdV) représente la plus petite partie de voie sur lequel il
+est possible de détecter la présence d'un train. Pour un train réel, la détection de la 
+présence d'un train s'effectue par les essieux du train. En effet, les essieux du train sont conducteur
+(métal), ils peuvent servir comme un \emph{interupteur} entre les 2 rails de la voie. Si une partie du 
+train est présent alors les 2 rails sont au même potentiel (le circuit est dit fermé), sinon les rails sont 
+a des potentiels différents (le circuit est dit ouvert). 
+
+\medskip
+Pour le projet, un Circuit de voie sera délimité par 2 capteurs (sauf en zone d'aiguille où le circuit de voie sera 
+délimité par les capteurs de chaque branche). L'état d'occupation du CdV sera fourni pas le sens de parcours 
+identifié par le capteur pour chaque train.
+
+\medskip
+Un \emph{itinéraire ferroviaire} représente une portion de voie entre 2 signaux. Il contient les mouvements
+d’aiguilles nécessaires pour que le train parcourt le chemin entre le signal de
+départ et le signal de sortie de l'itinéraire. Dans le système d'enclenchement, un itinéraire
+est représenté par une machine à états. Les états possibles sont:
+\begin{itemize}
+\item \emph{commandé}. L’opérateur demande au train de parcourir l’itinéraire
+choisi. Il a par conséquent demandé la formation de l’itinéraire au
+système d’enclenchement. Si les conditions sur les aiguilles à manoeuvrer
+pour former l’itinéraire sont sûres, le système d’enclenchement
+passe à l’état de formation de l’itinéraire sinon il est rejeté.
+\item \emph{formé}. Les aiguilles sont positionnées dans la bonne direction. Il n’est
+plus possible de bouger les aiguilles tant que le train se situe dans une
+certaine zone.
+\item \emph{détruit}. Le train a parcouru l’itinéraire (il a passé le signal de sortie), l'itinéraire peut
+ être détruit. Ou l'opérateur a demandé la destruction de l'itinéraire (en cas d'erreur par exemple)
+Dans ce cas, si le train ne se trouve pas trop proche du signal d'entrée alors l'itinéraire peut 
+être détruit sinon la demande de destruction est rejetée. 
+Ceci permet d'autoriser le parcours sur les aiguilles et la zone d’un autre train. 
+\end{itemize}
+
+
+L'interface entre la Centrale DCC et le Moteur IXL est bi-directionnelle. 
+Dans le sens Centrale vers IXL, les informations envoyées sont~:
+\begin{itemize}
+\item les commandes d'itinéraire
+\item l'état d'occupation des circuits de voie (libre/occupé)
+\item l'état des aiguilles (gauche/droite)
+\end{itemize}
+
+Dans le sens IXL vers Centrale, les informations envoyées sont~:
+\begin{itemize}
+\item les commandes des aiguilles
+\item l'état des itinéraires (commandé/formé/détruit)
+\item l'état des signaux (rouge/vert)
+\end{itemize}
+
+\subsection{\underline{Commande itinéraire}}
+\label{sec:ixl_iti}
+
+bla bla bla...
+
+\subsection{\underline{\'Etat des Circuits de voie}}
+\label{sec:ixl_cdv}
+
+bla bla bla...
+
+\subsection{\underline{\'Etat des aiguillages}}
+\label{sec:ixl_aig}
+
+bla bla bla...
+
+\subsection{\underline{\'Etat des itinéraires}}
+\label{sec:st_iti}
+
+bla bla bla...
+
+
+\subsection{\underline{Commande des aiguillages}}
+\label{sec:cmd_aig}
+
+bla bla bla...
+
+\subsection{\underline{\'Etat des signaux}}
+\label{sec:st_sig}
+
+bla bla bla...
+  
+
+
+
+
+
 
 
 \newpage
