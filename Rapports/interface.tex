@@ -178,12 +178,13 @@ Dans le design
 
 6 adresses de train
 \begin {enumerate}
-\item adresse 0 -> \emph{``00000001''}
-\item adresse 1 -> \emph{``00000010''}
-\item adresse 2 -> \emph{``00000011''}
-\item adresse 3 -> \emph{``00000100''}
-\item adresse 4 -> \emph{``00000101''}
-\item adresse 5 -> \emph{``00000110''}
+\item adresse 0 -> \emph{``00000000''}  
+\item adresse 1 -> \emph{``00000001''}
+\item adresse 2 -> \emph{``00000010''}
+\item adresse 3 -> \emph{``00000011''}
+\item adresse 4 -> \emph{``00000100''}
+\item adresse 5 -> \emph{``00000101''}
+\item adresse 6 -> \emph{``00000110''}
 \end {enumerate}  
 
 \bigskip
@@ -219,7 +220,27 @@ bla bla bla...
 \subsection{\underline{Interface Train}}
 \label{sec:int_train}
 
-bla bla bla...-+
+\bigskip
+Trames envoyéees 4 par 4 séparées chacunes par 400 us avec valeur 0\linebreak
+1er  trame IDLE\linebreak
+2eme trame Vitesse\linebreak
+3eme trame Action\linebreak
+4eme trame IDLE\linebreak
+\medskip
+
+Une fois une trame envoyé, la repeter toutes les 55 ms\linebreak
+si aucune trame de chargée envoyer des trames idle\linebreak
+adresse => ``11111111''\linebreak
+donée   => ``00000000''\linebreak
+CRC     => ``11111111''\linebreak
+\medskip
+
+Parametre à envoyer stocké dans \emph{Master}\hfill\linebreak
+-> à chaques pression sur le bouton central changement de la valeur\linebreak
+des paramètres à envoyer, Les paramètre viennent de l'IHM et\linebreak
+remplacent la valeur IDLE et sont envoyés en continue tant que pas de\linebreak
+nouvelle prssion sur bouton C.\linebreak
+\bigskip
 
 \subsection{\underline{Interface Aiguillage}}
 \label{sec:int_aig}
