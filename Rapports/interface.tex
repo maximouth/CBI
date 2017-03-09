@@ -130,18 +130,88 @@ et présentation des règles de la logique d'enclenchement.
 
 \section{Interface Homme Machine}
 \label{sec:int-dcc}
+Sur la carte
+\begin{itemize}
+\item Bouton gauche -> changement du paramètre
+\item Bouton droit  -> changement de la valeur du paramètre
+\end{itemize}
+
+\hrulefill
+
+Dans le design
+\begin{enumerate}
+\item en sortie :
+  \begin{itemize}  
+  \item les 7 selecteurs de segment Ca -> Cg
+  \item les 8 selecteurs de digit   An (7 downto 0)
+  \item octet adresse \textbf{\emph{(addr or aigui)}}  dans ADD
+  \item octet speed \textbf{\emph{(speed)}}  dans SPEED
+  \item octet fonction \textbf{\emph{(feat)}}  dans FCTN    
+  \end{itemize}  
+\item en entrée :
+  \begin{itemize}  
+  \item une horloge à 100 MHz
+  \item un reset synchrone actif haut 
+  \item la valeur du bouton gauche BTNL
+  \item la valeur du bouton droit BTNR    
+  \end{itemize}  
+\end{enumerate}
 
 \subsection{\underline{Interface commande train}}
 \label{sec:ihm-train}
 
-bla bla bla...
+\bigskip
+
+8 vitesses
+\begin {enumerate}
+\item vitesse 0 -> \emph{``01100000''}
+\item vitesse 1 -> \emph{``01100010''}
+\item vitesse 2 -> \emph{``01100100''}
+\item vitesse 3 -> \emph{``01101000''}
+\item vitesse 4 -> \emph{``01101010''}
+\item vitesse 5 -> \emph{``01110000''}
+\item vitesse 6 -> \emph{``01110100''}
+\item vitesse 7 -> \emph{``01111111''}
+\end {enumerate}  
+
+\bigskip
+
+6 adresses de train
+\begin {enumerate}
+\item adresse 0 -> \emph{``00000001''}
+\item adresse 1 -> \emph{``00000010''}
+\item adresse 2 -> \emph{``00000011''}
+\item adresse 3 -> \emph{``00000100''}
+\item adresse 4 -> \emph{``00000101''}
+\item adresse 5 -> \emph{``00000110''}
+\end {enumerate}  
+
+\bigskip
+
+8 adresses de d'aiguillage
+\begin {enumerate}
+\item elles ne sont pas encore définies. mais de 10 à 18 pour faire simple.
+\end {enumerate}  
+
+\bigskip
+
+X fonctions
+\begin {enumerate}
+\item phares on     -> \emph{``10010000''}
+\item bruit moteur  -> \emph{``10000001''}
+\item klaxon 1 long -> \emph{``10000100''}
+\item klaxon 1 bref -> \emph{``10100100''}
+\item bruit du vent -> \emph{``10100001''}
+\end {enumerate}  
+
+\bigskip
 
 \subsection{\underline{Interface itinéraire}}
 \label{sec:ihm_iti}
 
 bla bla bla...
 
-
+\newpage
 
 \section{Interface Centrale DCC - Train, aiguillage et capteurs}
 \label{sec:int_dcc}
