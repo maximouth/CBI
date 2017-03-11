@@ -43,9 +43,16 @@
 \usepackage{enumerate}
 \usepackage{url}
 \usepackage{listings}
-\lstset{
-language=VHDL,
-basicstyle=\ttfamily}
+
+\usepackage{xcolor}
+\colorlet{keyword}{blue!100!black!80}
+\colorlet{comment}{green!90!black!90}
+\lstdefinestyle{vhdl}{
+   language     = VHDL,
+   basicstyle   = \ttfamily,
+   keywordstyle = \color{keyword}\bfseries,
+   commentstyle = \color{comment}
+}
 
 % Define new command
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -360,7 +367,7 @@ Il y a 20 circuits de voie sur la maquette de train.
 
 \medskip
 La déclaration VHDL
-\begin{lstlisting}
+\begin{lstlisting}[style=vhdl]
   type train_addr is 7 downto 0 ;
 
   type TC_state is array (31 downto 0) of train_addr;
