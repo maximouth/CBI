@@ -42,6 +42,10 @@
 \usepackage{graphicx}
 \usepackage{enumerate}
 \usepackage{url}
+\usepackage{listings}
+\lstset{
+language=VHDL,
+basicstyle=\ttfamily}
 
 % Define new command
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -343,7 +347,25 @@ bla bla bla...
 \subsection{\underline{\'Etat des Circuits de voie}}
 \label{sec:ixl_cdv}
 
-bla bla bla...
+Chaque circuit de voie possède 2 états; \emph{Libre} ou
+\emph{Occupé}. De façon à pouvoir effectuer la gestion des trains, il
+est nécessaire d'identifier quel train occupe le circuit de voie.
+Il y a 6 trains au maximum. Les états sont codés come suit~:
+\begin{itemize}
+  \item libre : 0x07
+  \item occupé : numéro du train 0x01 à 0x06
+\end{itemize}  
+
+Il y a 20 circuits de voie sur la maquette de train.
+
+\medskip
+La déclaration VHDL
+\begin{lstlisting}
+  type train_addr is 7 downto 0 ;
+
+  type TC_state is array (31 downto 0) of train_addr;
+\end{lstlisting}
+
 
 \subsection{\underline{\'Etat des aiguillages}}
 \label{sec:ixl_aig}
