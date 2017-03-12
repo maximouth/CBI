@@ -7,23 +7,25 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 
 entity control_seg is
-  Port ( CLK   : in STD_LOGIC;
-         reset : in STD_LOGIC;
-         CA    : out STD_LOGIC;
-         CB    : out STD_LOGIC;
-         CC    : out STD_LOGIC;
-         CD    : out STD_LOGIC;
-         CE    : out STD_LOGIC;
-         CF    : out STD_LOGIC;
-         CG    : out STD_LOGIC;
-         DP    : out STD_LOGIC;
-         AN    : out STD_LOGIC_VECTOR (7 downto 0);
-         ADD   : out STD_LOGIC_VECTOR (7 downto 0);
-         DATA  : out STD_LOGIC_VECTOR (7 downto 0);
+  Port ( CLK    : in STD_LOGIC;
+         reset  : in STD_LOGIC;
+         CA     : out STD_LOGIC;
+         CB     : out STD_LOGIC;
+         CC     : out STD_LOGIC;
+         CD     : out STD_LOGIC;
+         CE     : out STD_LOGIC;
+         CF     : out STD_LOGIC;
+         CG     : out STD_LOGIC;
+         DP     : out STD_LOGIC;
+         AN     : out STD_LOGIC_VECTOR (7 downto 0);
+         ADD    : out STD_LOGIC_VECTOR (7 downto 0);
+         AIG    : out STD_LOGIC_VECTOR (7 downto 0);
+         SPD  : out STD_LOGIC_VECTOR (7 downto 0);
+         FEAT   : out STD_LOGIC_VECTOR (7 downto 0);
          -- chose setting
-         BTNL  : in STD_LOGIC;
+         BTNL   : in STD_LOGIC;
          -- increment setting value
-         BTNR  : in STD_LOGIC
+         BTNR   : in STD_LOGIC
          );
 end control_seg;
 
@@ -104,13 +106,13 @@ architecture Behavioral of control_seg is
   signal setting : integer range 0 to 3;
 
   -- train address
-  signal addr : integer range 0 to 7 := 0;
+  signal addr : integer range 0 to 6 := 0;
 
   -- train speed
   signal speed : integer range 0 to 7 := 0;
 
   -- aiguillage number
-  signal aigui : integer range 0 to 7 := 0;
+  signal aigui : integer range 0 to 8 := 0;
 
   -- features
   -- 1 > klakson
@@ -143,30 +145,72 @@ begin
       ADD <= "00000101";
     when 6 =>
       ADD <= "00000110";
-    when 7 =>
-      ADD <= "00000111";
   end case;
+
+  -- put the aiguillage addresse in output
+  case aigui is
+    when 0 =>
+      AIG <= "00000000";
+    when 1 =>
+      AIG <= "00001001";
+    when 2 =>
+      AIG <= "00001010";
+    when 3 =>
+      AIG <= "00001011";
+    when 4 =>
+      AIG <= "00001100";
+    when 5 =>
+      AIG <= "00001101";
+    when 6 =>
+      AIG <= "00001110";
+    when 7 =>
+      AIG <= "00001111";
+    when 8 =>
+      AIG <= "00011111";
+  end case;
+
   
   -- put the speed in output
   case speed is
     when 0 =>
-      DATA <= "00000000";
+      SPD <= "00000000";
     when 1 =>
-      DATA <= "00000001";
+      SPD <= "00000001";
     when 2 =>
-      DATA <= "00000010";
+      SPD <= "00000010";
     when 3 =>
-      DATA <= "00000011";
+      SPD <= "00000011";
     when 4 =>
-      DATA <= "00000100";
+      SPD <= "00000100";
     when 5 =>
-      DATA <= "00000101";
+      SPD <= "00000101";
     when 6 =>
-      DATA <= "00000110";
+      SPD <= "00000110";
     when 7 =>
-      DATA <= "00000111";
+      SPD <= "00000111";
   end case;
 
+  -- put the feature in output
+  case features is
+    when 0 =>
+      FEAT <= "00000000";
+    when 1 =>
+      FEAT <= "00000001";
+    when 2 =>
+      FEAT <= "00000010";
+    when 3 =>
+      FEAT <= "00000011";
+    when 4 =>
+      FEAT <= "00000100";
+    when 5 =>
+      FEAT <= "00000101";
+    when 6 =>
+      FEAT <= "00000110";
+    when 7 =>
+      FEAT <= "00000111";
+  end case;
+  
+  
     if rising_edge (CLK) then 
 
       -- increment the stamps values

@@ -10,16 +10,17 @@ entity Master is
          BTNC  : in STD_LOGIC;
          BTNL  : in STD_LOGIC;
          BTNR  : in STD_LOGIC;
-         reset  : in STD_LOGIC;
-         CA  : out STD_LOGIC;
-         CB  : out STD_LOGIC;
-         CC  : out STD_LOGIC;
-         CD  : out STD_LOGIC;
-         CE  : out STD_LOGIC;
-         CF  : out STD_LOGIC;
-         CG  : out STD_LOGIC;
-         DP  : out STD_LOGIC;
-         AN  : out Std_Logic_Vector (7 downto 0);
+         reset : in STD_LOGIC;
+         LED   : out STD_LOGIC;
+         CA    : out STD_LOGIC;
+         CB    : out STD_LOGIC;
+         CC    : out STD_LOGIC;
+         CD    : out STD_LOGIC;
+         CE    : out STD_LOGIC;
+         CF    : out STD_LOGIC;
+         CG    : out STD_LOGIC;
+         DP    : out STD_LOGIC;
+         AN    : out Std_Logic_Vector (7 downto 0);
          PULSE : out STD_LOGIC);
 
 end Master;
@@ -42,23 +43,25 @@ end component;
 
 -- IHM component
 component control_seg is
-  Port ( CLK : in STD_LOGIC;
+  Port ( CLK   : in STD_LOGIC;
          reset : in STD_LOGIC;
-         CA : out STD_LOGIC;
-         CB : out STD_LOGIC;
-         CC : out STD_LOGIC;
-         CD : out STD_LOGIC;
-         CE : out STD_LOGIC;
-         CF : out STD_LOGIC;
-         CG : out STD_LOGIC;
-         DP : out STD_LOGIC;
-         AN : out STD_LOGIC_VECTOR (7 downto 0);
-         ADD  : out STD_LOGIC_VECTOR (7 downto 0);
-         DATA  : out STD_LOGIC_VECTOR (7 downto 0);
+         CA    : out STD_LOGIC;
+         CB    : out STD_LOGIC;
+         CC    : out STD_LOGIC;
+         CD    : out STD_LOGIC;
+         CE    : out STD_LOGIC;
+         CF    : out STD_LOGIC;
+         CG    : out STD_LOGIC;
+         DP    : out STD_LOGIC;
+         AN    : out STD_LOGIC_VECTOR (7 downto 0);
+         ADD   : out STD_LOGIC_VECTOR (7 downto 0);
+         AIG   : out STD_LOGIC_VECTOR (7 downto 0);
+         FEAT  : out STD_LOGIC_VECTOR (7 downto 0);
+         SPD   : out STD_LOGIC_VECTOR (7 downto 0);
          -- chose setting
-         BTNL : in STD_LOGIC;
+         BTNL  : in STD_LOGIC;
          -- increment setting value
-         BTNR : in STD_LOGIC
+         BTNR  : in STD_LOGIC
          );
 end component;
 
@@ -72,11 +75,20 @@ component div_clock is
 end component;
 
 
+signal address_send : STD_LOGIC_VECTOR (7 downto 0) := "11111111";
+signal data_send    : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
+
 signal clk1M : STD_LOGIC := '0';
 
 signal go : STD_LOGIC := '0';
-signal address : STD_LOGIC_VECTOR (7 downto 0);
-signal data_send : STD_LOGIC_VECTOR (7 downto 0);
+
+signal address   : STD_LOGIC_VECTOR (7 downto 0);
+signal feat      : STD_LOGIC_VECTOR (7 downto 0);
+signal speed     : STD_LOGIC_VECTOR (7 downto 0);
+signal aiguilage : STD_LOGIC_VECTOR (7 downto 0);
+
+-- for the go signal with a period of ~55 ms 
+signal cpt : integer range 0 to 275 := 0;
 
 --------------------------------------------------------------------------------
 
@@ -87,7 +99,7 @@ begin
     port map (
       clk     => clk1M,
       go      => go,
-      addr    => address,
+      addr    => address_send,
       data    => data_send,
       pulse   => PULSE
       );
@@ -106,7 +118,9 @@ begin
       DP      => DP,
       AN      => AN,
       ADD     => address,
-      DATA    => data_send,
+      AIG     => aiguilage,
+      FEAT    => feat,
+      SPD     => speed,
       BTNL    => BTNL,
       BTNR    => BTNR
       
@@ -118,6 +132,54 @@ begin
       div_clock   => clk1M
       );
 
+--
+--  TODO LIST :
+--
+--
+-- envoyer 4 trames en continues séparée par 400 us (done)
+-- rajouter gestion de reset qui remet address et data_send au valeur initiales
+-- pareil pour cpt (done)
+--
+-- a achaque appui sur btc mettre ces valeur :
+-- dans address_send <= ADD or AIG
+-- dans data_send <= FEAT or SPD
+--
+-- et je crois que c'est tout ?
+
+   LED <= go;
+ 
+ process (CLK)
+ begin
 
 
+   
+   -- RESET gestion
+   if RESET = '1' then
+     cpt          <= 0;
+     address_send <= "11111111";
+     data_send    <= "00000000";
+   -- end if reset
+   end if;
+      
+   if BTNC = '1' then
+     address_send <= address or aiguilage;
+     data_send    <= feat or speed;
+   -- end ifbtnc
+   end if;   
+   
+ end process;
+
+ process (clk1M)
+ begin
+  cpt <= cpt + 1;
+ 
+   -- send a periodic go signal to generate à pulse
+   if cpt = 27 then
+     go <= not go;
+     cpt <= 0;
+   -- end if cpt
+   end if;   
+ end process;
+ 
+ 
 end Behavioral;
