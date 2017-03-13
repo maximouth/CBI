@@ -256,7 +256,7 @@ nouvelle prssion sur bouton C.\linebreak
 \subsection{\underline{Interface Aiguillage}}
 \label{sec:int_aig}
 
-bla bla bla...
+bla bla bla
 
 \subsection{\underline{Interface Capteurs}}
 \label{sec:int_cap}
@@ -363,7 +363,7 @@ Il y a 6 trains au maximum. Les états sont codés come suit~:
   \item occupé : numéro du train 0x01 à 0x06
 \end{itemize}  
 
-Il y a 20 circuits de voie sur la maquette de train.
+Il y a 20 circuits de voie sur la maquette de train. L'indice du tableau correspnd au numéro du Circuit de Voie.
 
 \medskip
 La déclaration VHDL
@@ -377,12 +377,54 @@ La déclaration VHDL
 \subsection{\underline{\'Etat des aiguillages}}
 \label{sec:ixl_aig}
 
-bla bla bla...
+L'état d'une agiuille est déterminé par la combinaison entre les 2 capteurs d'aiguilles.
+Une aiguille peut avoir 3 états:
+\begin{itemize}
+\item \emph{gauche} lorsque le contact gauche est à l'état 1
+\item \emph{droite} lorsque le contact droit est à l'état 1
+\item \emph{en mouvement} lorsqu'aucun des 2 contacts ne sont à 1
+\end{itemize}
+
+Il n'y a pas de capteur fournissant l'état d'une aiguille sur la maquette. 
+Par conséquent, l'état d'une aiguille correspondra à l'état de la dernière commande envoyée
+ à l'aiguille. L'état \emph{en mouvement} ne sera pas considéré.
+ 
+L'état d'une aiguille sera représenté par 1 bit avec la convention 
+\begin{itemize}
+\item 0 = droite
+\item 1 = gauche
+\end{itemize}
+ 
+Il y a 4 aiguilles sur le circuit. L'indice du tableau correspond au numéro de l'aiguille.
+
+\medskip
+La déclaration VHDL
+\begin{lstlisting}[style=vhdl]
+  type Sw_state is array (7 downto 0) of bit;  
+\end{lstlisting}
+
 
 \subsection{\underline{\'Etat des itinéraires}}
 \label{sec:st_iti}
 
-bla bla bla...
+Les états possibles pour un itinéraire sont; commandé, formé, détruit et rejeté. Il sera représenté
+par 2 bits avec la conversion
+\begin{itemize} 
+\item 00 = commandé
+\item 01 = formé
+\item 10 = détruit
+\item 11 = rejeté
+\end{itemize}
+
+Il y a 32 itinéraires possibles. L'indice dans le tableau correspond au numéro d'itinéraire.
+
+\medskip
+La déclaration VHDL
+\begin{lstlisting}[style=vhdl]
+  type Ro_state_t is 3 downto 0 ;
+
+  type Ro_state is array (31 downto 0) of Ro_state_t;  
+\end{lstlisting}
 
 
 \subsection{\underline{Commande des aiguillages}}
