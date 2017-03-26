@@ -500,11 +500,11 @@ capteur; Up et Down.
 
 Les convention de nommage des éléments~:
 \begin{itemize}
-\item SE\_Up\_nn, 1 lorsqu'un train vient de passer le capteur numéro
+\item $SE\_Up_{nn}$, 1 lorsqu'un train vient de passer le capteur numéro
   nn dans le sens Up
-\item SE\_Do\_nn, 1 lorsqu'un train vient de passer le capteur numéro
+\item $SE\_Do_{nn}$, 1 lorsqu'un train vient de passer le capteur numéro
   nn dans le sens Down
-\item TC\_nn, 1 lorsque le Circuit de Voie est libre (aucun train
+\item $TC_{nn}$, 1 lorsque le Circuit de Voie est libre (aucun train
   présent sur le CdV), 0 lorsque le circuit de voie est occupée. Cette
   logique va dans le sens de la sécurité, en cas de perte de courant
   ou de dysfonctionnement, il n'est pas possible de savoir si le
@@ -515,12 +515,12 @@ Les convention de nommage des éléments~:
 \'A l'initialisation, tous les Circuits de Voie sont libres.
 
 \medskip
-Le Circuit de voie TC\_nn est occupé si une des condition suivantes
+Le Circuit de voie $TC_{nn}$ est occupé si une des condition suivantes
 est vérifiée~:
 \begin{itemize}
-\item le capteur SE\_Up\_nn passe à 1, un train vient de rentrer dana
+\item le capteur $SE\_Up_{nn}$ passe à 1, un train vient de rentrer dans
   le sens Up
-\item le capteur SE\_Do\_mm passe à 1, un train vient de rentrer dans
+\item le capteur $SE\_Do_{mm}$ passe à 1, un train vient de rentrer dans
   le sens Down
 \item le Circuit de Voie est occupé et le train n'est pas sorti dans
   le sens Up ou Down
@@ -531,10 +531,10 @@ occupé, on cherche à avoir une valeur 0.
 
 \medskip
 L'équation générale d'occupation d'un Circuit de Voie est~:
-\begin{lstlisting}
-  TC_nn <- NOT SE_Up_nn AND NOT SE_Do_mm AND (TC_nn OR SE_Do_nn OR
-  SE_Up_mm);
-\end{lstlisting}
+$$\boxed{
+  TC_{nn} \Leftarrow \neg SE\_Up_{nn} \land \neg SE\_Do_{mm} \land
+  (TC_{nn} \lor SE\_Do_{nn} \lor SE\_Up_{mm});
+}$$
 
 
 \subsection{\underline{Signaux}}
@@ -547,7 +547,7 @@ aiguille qui n'est pas contrôlée.
 
 Les convention de nommage des éléments~:
 \begin{itemize}
-\item SI\_nn, 1 lorsque le signal est Vert, 0 pour afficher un signal
+\item $SI_{nn}$, 1 lorsque le signal est Vert, 0 pour afficher un signal
   Rouge
 \end{itemize}
 
@@ -564,9 +564,9 @@ Un Signal d'espacement passe~:
 
 \medskip
 L'équation générale d'un signal est~:
-\begin{lstlisting}
-  SI_nn <- SI_SP_nn AND SI_IX_nn;
-\end{lstlisting}
+$$\boxed{
+  SI_{nn} \Leftarrow SI\_SP_{nn} \land SI\_IX_{nn};
+}$$
 
 
 \subsection{\underline{Signal d'espacement des trains}}
@@ -590,7 +590,7 @@ L'entrée dans un Circuit de Voie est protégée par un signal dit
 
 Les convention de nommage des éléments~:
 \begin{itemize}
-\item SI\_SP\_nn, 1 lorsque le signal est Vert, 0 pour afficher un
+\item $SI\_SP_{nn}$, 1 lorsque le signal est Vert, 0 pour afficher un
   signal Rouge
 \end{itemize}
 
@@ -598,15 +598,15 @@ Les convention de nommage des éléments~:
 
 Un Signal d'espacement passe~:
 \begin{itemize}
-\item au Rouge, lorsque le TC\_nn est occupé ou le TC\_mm est occupé
-\item au Vert, lorsque les TC\_nn et TC\_mm sont libres.
+\item au Rouge, lorsque le $TC_{nn}$ est occupé ou le $TC_{mm}$ est occupé
+\item au Vert, lorsque les $TC_{nn}$ et $TC_{mm}$ sont libres.
 \end{itemize}
 
 \medskip
 L'équation générale d'un signal d'espacement est~:
-\begin{lstlisting}
-  SI_SP_nn <- TC_nn AND TC_mm;
-\end{lstlisting}
+$$\boxed{
+  SI\_SP_{nn} \Leftarrow TC_{nn} \land TC_{mm};
+}$$
 
 
 \subsection{\underline{Signal de manoeuvre}}
