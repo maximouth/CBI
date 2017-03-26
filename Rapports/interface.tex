@@ -238,27 +238,44 @@ bla bla bla...
 \label{sec:int_train}
 
 \bigskip
-Trames envoyéees 4 par 4 séparées chacunes par 400 us avec valeur 0\linebreak
-1er  trame IDLE\linebreak
-2eme trame Vitesse\linebreak
-3eme trame Action\linebreak
-4eme trame IDLE\linebreak
-\medskip
+Trames envoyéees 4 par 4 séparées chacunes par 400 us avec valeur 0.
+\begin{center}
+\begin{tabular}{|l|l|l|}
+  \hline
+  1er trame & IDLE \\
+  \hline
+  2eme trame & Vitesse \\
+  \hline
+  3eme trame & Action \\
+  \hline
+  4eme trame & IDLE \\
+  \hline
+\end{tabular}
+\end{center}
 
-Une fois une trame envoyé, la repeter toutes les 55 ms\linebreak
-si aucune trame de chargée envoyer des trames idle\linebreak
-adresse => ``11111111''\linebreak
-donée   => ``00000000''\linebreak
-CRC     => ``11111111''\linebreak
 \medskip
+Une fois une trame envoyée, la répéter toutes les 55 ms. Si aucune
+trame de chargée alors envoyer des trames idle.
 
-Parametre à envoyer stocké dans \emph{Master}\hfill\linebreak
--> à chaques pression sur le bouton central changement de la valeur\linebreak
-des paramètres à envoyer, Les paramètre viennent de l'IHM et\linebreak
-remplacent la valeur IDLE et sont envoyés en continue tant que pas de\linebreak
-nouvelle prssion sur bouton C.\linebreak
+\medskip
+\begin{center}
+\begin{tabular}{lll}
+adresse & => & ``11111111'' \\
+donnée  & => & ``00000000'' \\
+CRC     & => & ``11111111'' \\
+\end{tabular}
+\end{center}
+
+\medskip
+Paramètres à envoyer stockés dans \emph{Master}.
+
+
+-> à chaques pression sur le bouton central changement de la valeur
+des paramètres à envoyer, Les paramètre viennent de l'IHM et
+remplacent la valeur IDLE et sont envoyés en continue tant que pas de
+nouvelle prssion sur bouton C.
+
 \bigskip
-
 \subsection{\underline{Interface Aiguillage}}
 \label{sec:int_aig}
 
@@ -377,7 +394,6 @@ bla bla bla...
 
 \subsection{\underline{\'Information capteur de passage}}
 \label{sec:ixl_cdv}
-
 
 
 \medskip
