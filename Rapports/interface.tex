@@ -274,66 +274,84 @@ bla bla bla...
 \section{\underline{Interface Centrale DCC - Moteur IXL}}
 \label{sec:int_ixl}   
 
-La logique d'enclenchement est basée sur les notions de signaux, de circuit de voie et d'itinéraire ferroviaire.
+La logique d'enclenchement est basée sur les notions de signaux, de
+circuit de voie et d'itinéraire ferroviaire.
 
-Un \emph{signal} est le moyen de communication entre le conducteur du train et la logique d'enclenchement. 
-Il permet d'indiquer au conducteur l'état de la voie se trouvant devant le train (par définition un 
-train ne recule jamais, il est nécessaire de changer de cabine de conduite pour changer
-la direction du train). Il existe beaucoup de signaux ferroviaire. Les trois plus importants sont~:
+Un \emph{signal} est le moyen de communication entre le conducteur du
+train et la logique d'enclenchement.  Il permet d'indiquer au
+conducteur l'état de la voie se trouvant devant le train (par
+définition un train ne recule jamais, il est nécessaire de changer de
+cabine de conduite pour changer la direction du train). Il existe
+beaucoup de signaux ferroviaire. Les trois plus importants sont~:
 \begin{itemize}
-\item signal \emph{rouge} qui signifie que le train doit s'arrêter devant le signal car la
-voie devant lui n'est pas sûre (présence d'un autre train, aiguillage en train d'être commandé, panne 
-matériel...)
-\item signal \emph{jaune} qui signifie qu'il y a un danger à proximité. Le train peut passer le signal
-mais à vitesse réduite seulement et doit être capable de s'arrêter sur une courte distance. Ceci permet 
-de fluidifier le traffic.
-\item signal \emph{vert} qui signifie que la voie devant le train est libre de tout danger et que le train 
-peut poursuivre sa route en respectant les vitesses limites.
+\item signal \emph{rouge} qui signifie que le train doit s'arrêter
+  devant le signal car la voie devant lui n'est pas sûre (présence
+  d'un autre train, aiguillage en train d'être commandé, panne
+  matériel...)
+\item signal \emph{jaune} qui signifie qu'il y a un danger à
+  proximité. Le train peut passer le signal mais à vitesse réduite
+  seulement et doit être capable de s'arrêter sur une courte
+  distance. Ceci permet de fluidifier le traffic.
+\item signal \emph{vert} qui signifie que la voie devant le train est
+  libre de tout danger et que le train peut poursuivre sa route en
+  respectant les vitesses limites.
 \end{itemize}
 
-L'objectif des opérateurs consiste à toujours présenter un signal vert devant un train de façon 
-à ce que le train n'est jamais à s'arrêter à cause d'un danger.
+L'objectif des opérateurs consiste à toujours présenter un signal vert
+devant un train de façon à ce que le train n'est jamais à s'arrêter à
+cause d'un danger.
 
 
 \medskip
-Le projet implémente le signal rouge et le signal vert. Le signal jaune ne peut pas être implémenté sans conducteur 
-dans le train. Il n'y a pas de signaux sur le circuit ferroviaire, mais la notion de signaux sera quand même
-implémentée. Un signal \emph{virtuel} sera créé pour chaque circuit de voie. Il autorisera ou pas l'entrée d'un train dans 
-le circuit de voie auquel il est associé.
-Ceci permettra de commander les trains. 
+Le projet implémente le signal rouge et le signal vert. Le signal
+jaune ne peut pas être implémenté sans conducteur dans le train. Il
+n'y a pas de signaux sur le circuit ferroviaire, mais la notion de
+signaux sera quand même implémentée. Un signal \emph{virtuel} sera
+créé pour chaque circuit de voie. Il autorisera ou pas l'entrée d'un
+train dans le circuit de voie auquel il est associé.  Ceci permettra
+de commander les trains. 
 
 \medskip
-Un \emph{Ciruit de Voie} (CdV) représente la plus petite partie de voie sur lequel il
-est possible de détecter la présence d'un train. Pour un train réel, la détection de la 
-présence d'un train s'effectue par les essieux du train. En effet, les essieux du train sont conducteur
-(métal), ils peuvent servir comme un \emph{interupteur} entre les 2 rails de la voie. Si une partie du 
-train est présent alors les 2 rails sont au même potentiel (le circuit est dit fermé), sinon les rails sont 
-a des potentiels différents (le circuit est dit ouvert). 
+Un \emph{Ciruit de Voie} (CdV) représente la plus petite partie de
+voie sur lequel il est possible de détecter la présence d'un
+train. Pour un train réel, la détection de la présence d'un train
+s'effectue par les essieux du train. En effet, les essieux du train
+sont conducteur (métal), ils peuvent servir comme un
+\emph{interupteur} entre les 2 rails de la voie. Si une partie du
+train est présent alors les 2 rails sont au même potentiel (le circuit
+est dit fermé), sinon les rails sont a des potentiels différents (le
+circuit est dit ouvert).
 
 \medskip
-Pour le projet, un Circuit de voie sera délimité par 2 capteurs de passage(sauf en zone d'aiguille
-où le circuit de voie sera délimité par les capteurs de chaque branche). L'état d'occupation du 
-CdV sera fourni pas le sens de parcours identifié par le capteur pour chaque train.
+Pour le projet, un Circuit de voie sera délimité par 2 capteurs de
+passage(sauf en zone d'aiguille où le circuit de voie sera délimité
+par les capteurs de chaque branche). L'état d'occupation du CdV sera
+fourni pas le sens de parcours identifié par le capteur pour chaque
+train.
 
 \medskip
-Un \emph{itinéraire ferroviaire} représente une portion de voie entre 2 signaux. Il contient les mouvements
-d’aiguilles nécessaires pour que le train parcourt le chemin entre le signal de
-départ et le signal de sortie de l'itinéraire. Dans le système d'enclenchement, un itinéraire
+Un \emph{itinéraire ferroviaire} représente une portion de voie entre
+2 signaux. Il contient les mouvements d’aiguilles nécessaires pour que
+le train parcourt le chemin entre le signal de départ et le signal de
+sortie de l'itinéraire. Dans le système d'enclenchement, un itinéraire
 est représenté par une machine à états. Les états possibles sont:
 \begin{itemize}
-\item \emph{commandé}. L’opérateur demande au train de parcourir l’itinéraire
-choisi. Il a par conséquent demandé la formation de l’itinéraire au
-système d’enclenchement. Si les conditions sur les aiguilles à manoeuvrer
-pour former l’itinéraire sont sûres, le système d’enclenchement
-passe à l’état de formation de l’itinéraire sinon il est rejeté.
-\item \emph{formé}. Les aiguilles sont positionnées dans la bonne direction. Il n’est
-plus possible de bouger les aiguilles tant que le train se situe dans une
-certaine zone.
-\item \emph{détruit}. Le train a parcouru l’itinéraire (il a passé le signal de sortie), l'itinéraire peut
- être détruit. Ou l'opérateur a demandé la destruction de l'itinéraire (en cas d'erreur par exemple)
-Dans ce cas, si le train ne se trouve pas trop proche du signal d'entrée alors l'itinéraire peut 
-être détruit sinon la demande de destruction est rejetée. 
-Ceci permet d'autoriser le parcours sur les aiguilles et la zone d’un autre train. 
+\item \emph{commandé}. L’opérateur demande au train de parcourir
+  l’itinéraire choisi. Il a par conséquent demandé la formation de
+  l’itinéraire au système d’enclenchement. Si les conditions sur les
+  aiguilles à manoeuvrer pour former l’itinéraire sont sûres, le
+  système d’enclenchement passe à l’état de formation de l’itinéraire
+  sinon il est rejeté.
+\item \emph{formé}. Les aiguilles sont positionnées dans la bonne
+  direction. Il n’est plus possible de bouger les aiguilles tant que
+  le train se situe dans une certaine zone.
+\item \emph{détruit}. Le train a parcouru l’itinéraire (il a passé le
+  signal de sortie), l'itinéraire peut être détruit. Ou l'opérateur a
+  demandé la destruction de l'itinéraire (en cas d'erreur par exemple)
+  Dans ce cas, si le train ne se trouve pas trop proche du signal
+  d'entrée alors l'itinéraire peut être détruit sinon la demande de
+  destruction est rejetée.  Ceci permet d'autoriser le parcours sur
+  les aiguilles et la zone d’un autre train.
 \end{itemize}
 
 
@@ -381,38 +399,40 @@ La déclaration VHDL
 \subsection{\underline{\'Etat des aiguillages}}
 \label{sec:ixl_aig}
 
-L'état d'une agiuille est déterminé par la combinaison entre les 2 capteurs d'aiguilles.
-Une aiguille peut avoir 3 états:
+L'état d'une agiuille est déterminé par la combinaison entre les 2
+capteurs d'aiguilles.  Une aiguille peut avoir 3 états:
 \begin{itemize}
 \item \emph{gauche} lorsque le contact gauche est à l'état 1
 \item \emph{droite} lorsque le contact droit est à l'état 1
 \item \emph{en mouvement} lorsqu'aucun des 2 contacts ne sont à 1
 \end{itemize}
 
-Il n'y a pas de capteur fournissant l'état d'une aiguille sur la maquette. 
-Par conséquent, l'état d'une aiguille correspondra à l'état de la dernière commande envoyée
- à l'aiguille. L'état \emph{en mouvement} ne sera pas considéré.
+Il n'y a pas de capteur fournissant l'état d'une aiguille sur la
+maquette.  Par conséquent, l'état d'une aiguille correspondra à l'état
+de la dernière commande envoyée à l'aiguille. L'état \emph{en
+  mouvement} ne sera pas considéré.
  
-L'état d'une aiguille sera représenté par 1 bit avec la convention 
+L'état d'une aiguille sera représenté par 1 bit avec la convention
 \begin{itemize}
 \item 0 = droite
 \item 1 = gauche
 \end{itemize}
  
-Il y a 4 aiguilles sur le circuit. L'indice du tableau correspond au numéro de l'aiguille.
+Il y a 4 aiguilles sur le circuit. L'indice du tableau correspond au
+numéro de l'aiguille.
 
 \medskip
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
-  type Sw_state is array (7 downto 0) of bit;  
+  type Sw_state is array (7 downto 0) of bit;
 \end{lstlisting}
 
 
 \subsection{\underline{\'Etat des itinéraires}}
 \label{sec:st_iti}
 
-Les états possibles pour un itinéraire sont; commandé, formé, détruit et rejeté. Il sera représenté
-par 2 bits avec la conversion
+Les états possibles pour un itinéraire sont; commandé, formé, détruit
+et rejeté. Il sera représenté par 2 bits avec la conversion
 \begin{itemize} 
 \item 00 = commandé
 \item 01 = formé
@@ -420,14 +440,15 @@ par 2 bits avec la conversion
 \item 11 = rejeté
 \end{itemize}
 
-Il y a 32 itinéraires possibles. L'indice dans le tableau correspond au numéro d'itinéraire.
+Il y a 32 itinéraires possibles. L'indice dans le tableau correspond
+au numéro d'itinéraire.
 
 \medskip
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
   type Ro_state_t is 3 downto 0 ;
 
-  type Ro_state is array (31 downto 0) of Ro_state_t;  
+  type Ro_state is array (31 downto 0) of Ro_state_t;
 \end{lstlisting}
 
 
@@ -447,15 +468,15 @@ bla bla bla...
 
 Chaque circuit de voie possède 2 états; \emph{Libre} ou
 \emph{Occupé}. De façon à pouvoir effectuer la gestion des trains, il
-est nécessaire d'identifier quel train occupe le circuit de voie.
-Il y a 6 trains au maximum. Les états sont codés come suit~:
+est nécessaire d'identifier quel train occupe le circuit de voie.  Il
+y a 6 trains au maximum. Les états sont codés come suit~:
 \begin{itemize}
   \item libre : 0x07
   \item occupé : numéro du train 0x01 à 0x06
 \end{itemize}  
 
-Il y a 20 circuits de voie sur la maquette de train. L'indice du tableau 
-correspond au numéro du Circuit de Voie.
+Il y a 20 circuits de voie sur la maquette de train. L'indice du
+tableau correspond au numéro du Circuit de Voie.
 
 
 
@@ -464,68 +485,80 @@ correspond au numéro du Circuit de Voie.
 \section{\underline{Logique Enclenchement}}
 \label{sec:log_enc}
 
-Cette secion présente la logique d'enclenchement, sa justification et les 
-conversions de nommage utilisées dans les équations.
+Cette secion présente la logique d'enclenchement, sa justification et
+les conversions de nommage utilisées dans les équations.
 
 \subsection{\underline{Circuit de Voie}}
 \label{sec:CdV}
 
-Un Circuit de Voie est la section de voie se trouvant entre 2 capteurs de présence
-consécutifs. Un capteur de présence permettent de connaître, le numéro du train et
-son sens de déplacement. Le sens de déplacement va permettre de savoir quel 
-Circuit de voie occupé par le train. Deux directions sont arbitrairement déclarées
-pour chaque capteur; Up et Down.
+Un Circuit de Voie est la section de voie se trouvant entre 2 capteurs
+de présence consécutifs. Un capteur de présence permettent de
+connaître, le numéro du train et son sens de déplacement. Le sens de
+déplacement va permettre de savoir quel Circuit de voie occupé par le
+train. Deux directions sont arbitrairement déclarées pour chaque
+capteur; Up et Down.
 
 Les convention de nommage des éléments~:
 \begin{itemize}
-\item SE\_Up\_nn, 1 lorsqu'un train vient de passer le capteur numéro nn dans le sens Up
-\item SE\_Do\_nn, 1 lorsqu'un train vient de passer le capteur numéro nn dans le sens Down
-\item TC\_nn, 1 lorsque le Circuit de Voie est libre (aucun train présent sur le CdV), 0 lorsque 
-le circuit de voie est occupée. Cette logique va dans le sens de la sécurité, en cas
-de perte de courant ou de dysfonctionnement, il n'est pas possible de savoir si
-le Circuit de VOie est occupé ou libre, donc on choisit la valeur la plus sécuritaire;
-Occupé même si aucun train n'est présent.
+\item SE\_Up\_nn, 1 lorsqu'un train vient de passer le capteur numéro
+  nn dans le sens Up
+\item SE\_Do\_nn, 1 lorsqu'un train vient de passer le capteur numéro
+  nn dans le sens Down
+\item TC\_nn, 1 lorsque le Circuit de Voie est libre (aucun train
+  présent sur le CdV), 0 lorsque le circuit de voie est occupée. Cette
+  logique va dans le sens de la sécurité, en cas de perte de courant
+  ou de dysfonctionnement, il n'est pas possible de savoir si le
+  Circuit de VOie est occupé ou libre, donc on choisit la valeur la
+  plus sécuritaire; Occupé même si aucun train n'est présent.
 \end{itemize}
 
-\'A l'initialisation, tous les Circuits de Voie sont libres. 
+\'A l'initialisation, tous les Circuits de Voie sont libres.
 
 \medskip
-Le Circuit de voie TC\_nn est occupé si une des condition suivantes est vérifiée~:
+Le Circuit de voie TC\_nn est occupé si une des condition suivantes
+est vérifiée~:
 \begin{itemize}
-\item le capteur SE\_Up\_nn passe à 1, un train vient de rentrer dana le sens Up
-\item le capteur SE\_Do\_mm passe à 1, un train vient de rentrer dans le sens Down
-\item le Circuit de Voie est occupé et le train n'est pas sorti dans le sens Up ou Down
+\item le capteur SE\_Up\_nn passe à 1, un train vient de rentrer dana
+  le sens Up
+\item le capteur SE\_Do\_mm passe à 1, un train vient de rentrer dans
+  le sens Down
+\item le Circuit de Voie est occupé et le train n'est pas sorti dans
+  le sens Up ou Down
 \end{itemize}
 
-Il faut inverser cette logique car lorsque le Circuit de voie est occupé, on cherche à
-avoir une valeur 0.
+Il faut inverser cette logique car lorsque le Circuit de voie est
+occupé, on cherche à avoir une valeur 0.
 
 \medskip
 L'équation générale d'occupation d'un Circuit de Voie est~:
 \begin{lstlisting}
-  TC_nn <- NOT SE_Up_nn AND NOT SE_Do_mm 
-           AND (TC_nn OR SE_Do_nn OR SE_Up_mm);
+  TC_nn <- NOT SE_Up_nn AND NOT SE_Do_mm AND (TC_nn OR SE_Do_nn OR
+  SE_Up_mm);
 \end{lstlisting}
 
 
 \subsection{\underline{Signaux}}
 \label{sec:esp}
 
-Il existe deux types de signaux; les signaux d'espacement qui garantissent
-que 2 trains ne vont pas se percuter et les sinaux de manoeuvre qui garantissent
-qu'un train ne va pas parcourir une aiguille qui n'est pas contrôlée.
+Il existe deux types de signaux; les signaux d'espacement qui
+garantissent que 2 trains ne vont pas se percuter et les sinaux de
+manoeuvre qui garantissent qu'un train ne va pas parcourir une
+aiguille qui n'est pas contrôlée.
 
 Les convention de nommage des éléments~:
 \begin{itemize}
-\item SI\_nn, 1 lorsque le signal est Vert, 0 pour afficher un signal Rouge
+\item SI\_nn, 1 lorsque le signal est Vert, 0 pour afficher un signal
+  Rouge
 \end{itemize}
 
-\'A l'initialisation, tous les signaux sont au Vert. 
+\'A l'initialisation, tous les signaux sont au Vert.
 
 Un Signal d'espacement passe~:
 \begin{itemize}
-\item au Rouge, lorsque le signal d'espacement ou le signal de manoeuvre est au Rouge
-\item au Vert, lorsque le signal d'espacement et le signal de manoeuvre sont au Vert
+\item au Rouge, lorsque le signal d'espacement ou le signal de
+  manoeuvre est au Rouge
+\item au Vert, lorsque le signal d'espacement et le signal de
+  manoeuvre sont au Vert
 \end{itemize}
 
 
@@ -539,26 +572,29 @@ L'équation générale d'un signal est~:
 \subsection{\underline{Signal d'espacement des trains}}
 \label{sec:esp}
 
-Il est dangereux d'avoir 2 trains dans le même Circuit de Voie car rien  ne 
-permet de garantir que les 2 trains ne vont pas se percuter. Il n'est pas certain
-qu'un conducteur puisse arrêter le train devant un signal car la distance de
-freinage entre le signal et le Circuit de Voie à protéger n'est pas toujours 
-suffisante. C'est pourquoi, il est nécessaire de toujours avoir un Circuit de Voie 
-libre entre 2 trains. Ce Citcuit de Voie est nommé, \emph{CdV tampon}. 
-Dans le cas de 2 trains qui se suivent, il est nécessaire que la longueur du Circuit 
-de Voie soit plus grande que la distance d'arrêt du train suiveur.
-Dans le cas de 2 trains en sens inverse, il est nécessaire de s'assurer que la
-longueur du Circuit de Voie tampon est égale à 2 fois la longueur d'arrêt 
-d'un train. 
+Il est dangereux d'avoir 2 trains dans le même Circuit de Voie car
+rien ne permet de garantir que les 2 trains ne vont pas se
+percuter. Il n'est pas certain qu'un conducteur puisse arrêter le
+train devant un signal car la distance de freinage entre le signal et
+le Circuit de Voie à protéger n'est pas toujours suffisante. C'est
+pourquoi, il est nécessaire de toujours avoir un Circuit de Voie libre
+entre 2 trains. Ce Citcuit de Voie est nommé, \emph{CdV tampon}.  Dans
+le cas de 2 trains qui se suivent, il est nécessaire que la longueur
+du Circuit de Voie soit plus grande que la distance d'arrêt du train
+suiveur.  Dans le cas de 2 trains en sens inverse, il est nécessaire
+de s'assurer que la longueur du Circuit de Voie tampon est égale à 2
+fois la longueur d'arrêt d'un train.
 
-L'entrée dans un Circuit de Voie est protégée par un signal dit \emph{d'espacement}.
+L'entrée dans un Circuit de Voie est protégée par un signal dit
+\emph{d'espacement}.
 
 Les convention de nommage des éléments~:
 \begin{itemize}
-\item SI\_SP\_nn, 1 lorsque le signal est Vert, 0 pour afficher un signal Rouge
+\item SI\_SP\_nn, 1 lorsque le signal est Vert, 0 pour afficher un
+  signal Rouge
 \end{itemize}
 
-\'A l'initialisation, tous les signaux sont au Vert. 
+\'A l'initialisation, tous les signaux sont au Vert.
 
 Un Signal d'espacement passe~:
 \begin{itemize}
@@ -576,8 +612,9 @@ L'équation générale d'un signal d'espacement est~:
 \subsection{\underline{Signal de manoeuvre}}
 \label{sec:esp}
 
-Un signal de manoeuvre garantit qu'un train peut traverser une zone d'aiguillage 
-sans danger. C'est à dire que les aiguilles de la zones sont toutes enclenchées.
+Un signal de manoeuvre garantit qu'un train peut traverser une zone
+d'aiguillage sans danger. C'est à dire que les aiguilles de la zones
+sont toutes enclenchées.
 
 
 
@@ -585,8 +622,8 @@ sans danger. C'est à dire que les aiguilles de la zones sont toutes enclenchée
 \subsection{\underline{Zone d'aiguille}}
 \label{sec:aig}
 
-Une aiguille peut être commandée si elle n'est pas enclenchée et si il n'y a pas de train
-sur la zone 
+Une aiguille peut être commandée si elle n'est pas enclenchée et si il
+n'y a pas de train sur la zone
 
 
 \subsection{\underline{Itinéraire}}
