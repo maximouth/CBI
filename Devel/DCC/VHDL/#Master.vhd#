@@ -35,11 +35,7 @@ component sequencer is
     clk      : in  STD_LOGIC;
     go       : in  STD_LOGIC := '0';
     addr     : in  Std_Logic_Vector (7 downto 0);
-    feat     : in  Std_Logic_Vector (7 downto 0);
-    speed    : in  Std_Logic_Vector (7 downto 0);
-    which    : in  Std_logic ;
-    idle     : in  Std_logic := '0';    
-    done     : out  Std_logic;
+    data     : in  Std_Logic_Vector (7 downto 0);
     pulse    : out STD_LOGIC := '0'
     );      
 end component;
@@ -80,27 +76,19 @@ end component;
 
 
 signal address_send : STD_LOGIC_VECTOR (7 downto 0) := "11111111";
-signal feat_send    : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
-signal speed_send   : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
-
-signal which : STD_LOGIC;
-signal idle  : STD_LOGIC := '0';
+signal data_send    : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
 
 signal clk1M : STD_LOGIC := '0';
 
-signal go   : STD_LOGIC := '0';
-signal done : STD_LOGIC := '0';
+signal go : STD_LOGIC := '0';
 
 signal address   : STD_LOGIC_VECTOR (7 downto 0);
 signal feat      : STD_LOGIC_VECTOR (7 downto 0);
 signal speed     : STD_LOGIC_VECTOR (7 downto 0);
 signal aiguilage : STD_LOGIC_VECTOR (7 downto 0);
 
-
-signal tmp : integer;
-
 -- for the go signal with a period of ~55 ms 
-signal cpt : integer range 0 to 550000 := 0;
+signal cpt : integer range 0 to 275 := 0;
 
 --------------------------------------------------------------------------------
 
@@ -112,11 +100,7 @@ begin
       clk     => clk1M,
       go      => go,
       addr    => address_send,
-      feat    => feat_send,
-      speed   => speed_send,
-      which   => which,
-      idle    => idle,
-      done    => done,
+      data    => data_send,
       pulse   => PULSE
       );
 
@@ -152,7 +136,7 @@ begin
 --  TODO LIST :
 --
 --
--- envoyer 4 trames en continues séparée par 400 us (done)
+-- envoyer 4 trames en continues sÃ©parÃ©e par 400 us (done)
 -- rajouter gestion de reset qui remet address et data_send au valeur initiales
 -- pareil pour cpt (done)
 --
@@ -162,92 +146,39 @@ begin
 --
 -- et je crois que c'est tout ?
 
-   --LED <= PULSE;
+   LED <= go;
  
- process (CLK,reset)
- 
-   variable tmp1 : STD_LOGIC_VECTOR (7 downto 0) := "11111111";
-   variable tmp2 : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
-   variable tmp3 : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
-   
- 
+ process (CLK)
  begin
 
+
+   
    -- RESET gestion
    if RESET = '1' then
      cpt          <= 0;
      address_send <= "11111111";
-     feat_send    <= "00000000";
-     speed_send   <= "10000000";
-     go           <= '1';
-     idle         <= '1';
-     which        <= '0';
-     tmp <= 0;
-     
+     data_send    <= "00000000";
    -- end if reset
    end if;
-   
-   if rising_edge (CLK) then 
-   
-      address_send <= tmp1;
-      feat_send    <= tmp2;
-      speed_send   <= tmp3;
       
-     if BTNC = '1' then
-       tmp1   := address;-- or aiguilage;
-       tmp2   := feat;
-       tmp3   := speed;
-       idle   <= '1';
-       --which  <= '0';
-       tmp    <= 0;
-     -- end ifbtnc
-     end if;   
-   -- rising edge
-   end if;
-    
-   if rising_edge (clk1M) then
-
-     if done = '1' then 
-       cpt <= cpt + 1;
-     end if;
-     
-     go <= '0';
-     
-     -- send a periodic go signal to generate à pulse
-     if cpt = 399 then
-       go <= '1';
-       cpt <= 0;
-
-       if tmp > 2 then
-         tmp <= 0;
-       else
-         tmp <= tmp + 1;
-       end if;
-  
-
-       if tmp = 0 or tmp = 3 then
-         idle <= '1';
-
-       else
-         idle <= '0';
-
-         if which = '0' then
-           which <= '1';
-         else
-           which <= '0';
-         end if;
-
-       end if;
-
-
-       
-  
-       
-     -- end if cpt
-     end if;
-     
-   end if;
+   if BTNC = '1' then
+     address_send <= address or aiguilage;
+     data_send    <= feat or speed;
+   -- end ifbtnc
+   end if;   
    
+ end process;
+
+ process (clk1M)
+ begin
+  cpt <= cpt + 1;
+ 
+   -- send a periodic go signal to generate Ã  pulse
+   if cpt = 27 then
+     go <= not go;
+     cpt <= 0;
+   -- end if cpt
+   end if;   
  end process;
  
  

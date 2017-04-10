@@ -1,9 +1,10 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 
 entity control_seg is
@@ -20,7 +21,7 @@ entity control_seg is
          AN     : out STD_LOGIC_VECTOR (7 downto 0);
          ADD    : out STD_LOGIC_VECTOR (7 downto 0);
          AIG    : out STD_LOGIC_VECTOR (7 downto 0);
-         SPD  : out STD_LOGIC_VECTOR (7 downto 0);
+         SPD    : out STD_LOGIC_VECTOR (7 downto 0);
          FEAT   : out STD_LOGIC_VECTOR (7 downto 0);
          -- chose setting
          BTNL   : in STD_LOGIC;
@@ -34,9 +35,7 @@ end control_seg;
 architecture Behavioral of control_seg is
 
 
-    function affiche (value: integer)
-    return STD_LOGIC_VECTOR (6 downto 0)
-  is
+    function affiche (value: integer) return STD_LOGIC_VECTOR is
       variable RET : std_logic_vector (6 downto 0) := "0000000";
   begin
     case value is
@@ -81,7 +80,7 @@ architecture Behavioral of control_seg is
         ret := "0001111";
         return ret;
         
-      when others => null;
+      when others => return "0000000";
     end case;
 
   end  affiche;
@@ -173,21 +172,21 @@ begin
   -- put the speed in output
   case speed is
     when 0 =>
-      SPD <= "00000000";
+      SPD <= "01100000";
     when 1 =>
-      SPD <= "00000001";
+      SPD <= "01100010";
     when 2 =>
-      SPD <= "00000010";
+      SPD <= "01100100";
     when 3 =>
-      SPD <= "00000011";
+      SPD <= "01100110";
     when 4 =>
-      SPD <= "00000100";
+      SPD <= "01111001";
     when 5 =>
-      SPD <= "00000101";
+      SPD <= "01101011";
     when 6 =>
-      SPD <= "00000110";
+      SPD <= "01111101";
     when 7 =>
-      SPD <= "00000111";
+      SPD <= "01111111";
   end case;
 
   -- put the feature in output
@@ -195,9 +194,11 @@ begin
     when 0 =>
       FEAT <= "00000000";
     when 1 =>
-      FEAT <= "00000001";
+      -- phares
+      FEAT <= "10010000";
     when 2 =>
-      FEAT <= "00000010";
+      -- moteur
+      FEAT <= "10000001";
     when 3 =>
       FEAT <= "00000011";
     when 4 =>
