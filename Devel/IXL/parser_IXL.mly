@@ -25,14 +25,19 @@ let ind_eq = ref 0;;
 %token EOF
 
 %start toplevel_phrase
-%type <Ixl_t.Ixl.equation> toplevel_phrase
+%type <Ixl_t.Ixl.equations> toplevel_phrase
 %%
 
 toplevel_phrase:
-   equation         { $1 }
+   equations        { $1 }
  | EOF              { raise End_of_file }
 ;
 
+equations:
+ |              {[]}
+ | equation equations { $1::$2 }
+;
+ 
 equation:
  | ident ASSIGN bool_expr SEMI 
     { {Ixl_t.Ixl.exprname = $1;

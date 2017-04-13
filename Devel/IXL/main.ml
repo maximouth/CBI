@@ -15,23 +15,20 @@ let ind = ref 1;;
 let parse_IXL in_IXL_channel =
   (* Parse of the IXL file *)
   let current_expr_lexbuf = Lexing.from_channel in_IXL_channel in
-  while !end_loop do
+  begin
     try
-      let equation = Parser_IXL.toplevel_phrase
+      let equations = Parser_IXL.toplevel_phrase
 		       Lexer_IXL.token current_expr_lexbuf
       in 
-	  eq_list := equation::!eq_list;
+	  equations
     with
       | Parsing.Parse_error -> 
 	Format.printf "Syntax error at line '%i' @." !Lexer_IXL.line; exit 0
       | Lexer_IXL.LexError -> 
 	Format.printf "Lexical error at line '%i' @." !Lexer_IXL.line; exit 0
       | Lexer_IXL.Unterminated_comment -> 
-	Format.printf "Unterminated comment@."
-      | End_of_file -> 
-	    end_loop := false
-  done;
-  !eq_list
+	Format.printf "Unterminated comment@." ; exit 0
+  end;
 ;;
 
 let mainloop in_IXL_channel =
