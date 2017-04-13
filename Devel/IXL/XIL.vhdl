@@ -11,6 +11,8 @@ package my_type is
     end record ;
 
   type SE_state is array (31 downto 0) of sensor ;
+
+  type TC_St is array (19 downto 0) of STD_LOGIC_VECTOR (7 downto 0) ;
   
 end package my_type;
 
@@ -31,13 +33,14 @@ entity Xil is
          valid_in   : in  STD_LOGIC; 
          Sw_Cmd_Req : in  STD_LOGIC_VECTOR (7 downto 0);
          Sw_State   : in  STD_LOGIC_VECTOR (7 downto 0);
-                  
+         Sensor     : in  SE_state;
+         
          -- output
          valid_out  : out STD_LOGIC;
          Sw_Cmd_aut : out STD_LOGIC_VECTOR (7 downto 0);
 
          --debug output
-         TC_out     : out SE_state
+         TC_out     : out TC_St
          );
 
 end Xil;
@@ -54,7 +57,7 @@ architecture Behavioral of Xil is
   -- signals declaration
 
   -- Track circuit state
-  signal TC : SE_state;         
+  signal TC : TC_St;          
 
 
 --------------------------------------------------------------------------------
@@ -79,12 +82,9 @@ begin
    if reset = '1' then
 
      -- clear TC
-     -- => all addr to 0x7 and dir to IDLE
-     for i in 0 to 31 loop
-       TC(i).addr <= "00000111";
-       TC(i).dir <= "11";
-     end loop;        
-
+     for i in 0 to 19 loop
+       TC(i) <= "00000111";
+     end loop;
      -- reset the output value
      valid_out <= '0';
      
@@ -105,8 +105,7 @@ begin
      if valid_in = '1' then
        
        
-
-
+       
        
      -- end valid = 1
      end if;
