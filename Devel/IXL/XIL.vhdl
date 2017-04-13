@@ -3,15 +3,17 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 package my_type is
-  
+
   type sensor is
     record
       addr : STD_LOGIC_VECTOR (7 downto 0) ;
       dir  : STD_LOGIC_VECTOR (1 downto 0) ;
     end record ;
 
+  -- sensors state type
   type SE_state is array (31 downto 0) of sensor ;
 
+  --track circuit type
   type TC_St is array (19 downto 0) of STD_LOGIC_VECTOR (7 downto 0) ;
   
 end package my_type;
