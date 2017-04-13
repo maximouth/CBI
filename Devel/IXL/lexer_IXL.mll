@@ -13,8 +13,8 @@ rule token = parse
    [' ' '\t' ]	           { token lexbuf }
  | '\n'	                   { line := !line + 1;
                              token lexbuf }
- | ['{']		           { LPAREN }
- | ['}']		           { RPAREN }
+ | ['(']		           { LPAREN }
+ | [')']		           { RPAREN }
  | "~"                     { NOT }
  | "*"                     { AND }
  | "+"                     { OR }
