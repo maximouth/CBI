@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 use work.my_type.all;
 
-entity Xil is  
+entity Ixl is  
 
   Port (
          -- synchro   
@@ -39,17 +39,17 @@ entity Xil is
          
          -- output
          valid_out  : out STD_LOGIC;
-         Sw_Cmd_aut : out STD_LOGIC_VECTOR (7 downto 0);
+         Sw_Cmd_Aut : out STD_LOGIC_VECTOR (7 downto 0);
 
          --debug output
          TC_out     : out TC_St
          );
 
-end Xil;
+end Ixl;
 
 --------------------------------------------------------------------------------
 
-architecture Behavioral of Xil is
+architecture Behavioral of Ixl is
 
   -- component declaration
 

@@ -27,8 +27,8 @@ let rec print_bool_exp bool_exp =
 match bool_exp with
 | Ixl.P_IDENT(id)   -> print_ident id
 | Ixl.P_NOT(id)     -> "NOT "^(print_ident id)
-| Ixl.P_AND(e1, e2) -> (print_bool_exp e1)^" AND "^(print_bool_exp e2)
-| Ixl.P_OR(e1, e2)  -> (print_bool_exp e1)^" OR "^(print_bool_exp e2)
+| Ixl.P_AND(e1, e2) -> "("^(print_bool_exp e1)^") AND ("^(print_bool_exp e2)^")"
+| Ixl.P_OR(e1, e2)  -> "("^(print_bool_exp e1)^") OR ("^(print_bool_exp e2)^")"
 ;;
 
 let print_eq eq =
