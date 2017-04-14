@@ -29,12 +29,12 @@ let ind_eq = ref 0;;
 %%
 
 toplevel_phrase:
-   equations        { $1 }
+   equations  EOF   { $1 }
  | EOF              { raise End_of_file }
 ;
 
 equations:
- |              {[]}
+ |                    {[]}
  | equation equations { $1::$2 }
 ;
  

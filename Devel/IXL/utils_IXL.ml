@@ -5,6 +5,7 @@ let print_dir dir =
 match dir with
 | Ixl.Up -> "Up"
 | Ixl.Down -> "Down"
+| Ixl.Idle -> "Idle"
 ;;
 
 let print_sw_state st =

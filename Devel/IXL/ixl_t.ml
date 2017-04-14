@@ -7,6 +7,7 @@ exception Not_found;;
 type dir_def =
   | Up
   | Down
+  | Idle
 ;;  
  
 (* Switch state *)

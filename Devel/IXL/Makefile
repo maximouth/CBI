@@ -7,9 +7,9 @@ CAMLYACC=$(BINDIR)ocamlyacc
 
 # User definitions must be here
 EXEC = translate.x
-SOURCES =  ixl_t.ml utils_IXL.ml main.ml 
+SOURCES =  ixl_t.ml utils_IXL.ml logic.ml main.ml 
 GENERATED = parser_IXL.ml lexer_IXL.ml parser_IXL.mli
-OBJS = ixl_t.cmo utils_Ixl.cmo \
+OBJS = ixl_t.cmo utils_IXL.cmo logic.cmo \
 parser_IXL.cmo lexer_IXL.cmo \
 main.cmo
 
