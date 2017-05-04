@@ -20,6 +20,9 @@ package my_type is
 
   --track circuit type
   type TC_St is array (31 downto 0) of STD_LOGIC ;
+
+  --Switch command authorization
+  type Sw_cmd_aut is array (15 downto 0) of STD_LOGIC ;
   
 end package my_type;
 
@@ -44,7 +47,7 @@ entity Ixl is
          
          -- output
          valid_out  : out STD_LOGIC;
-         Sw_Cmd_Aut : out STD_LOGIC_VECTOR (7 downto 0);
+         Sw_Cmd_Aut : out Sw_cmd_aut;
 
          --debug output
          TC_out     : out TC_St
@@ -133,34 +136,23 @@ let print_sw_state st =
   ""
 ;;
 
-let print_ident_out ident =
-match ident with
-| Ixl.P_SE(nb, _, dir) -> 
-  begin
-  match dir with
-  | Ixl.Up -> "Sensor("^string_of_int(nb)^").dir = \"01\""
-  | Ixl.Down -> "Sensor("^string_of_int(nb)^").dir = \"10\""
-  | Ixl.Idle -> "Error Sensor Idle"
-  end
-| Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb)^")"
-| Ixl.P_SW_CMD(nb, st) -> "P_SW_CMD_"^string_of_int(nb)^"_"^print_sw_state(st)
-| Ixl.P_SW_ST(nb, st)  -> "P_SW_ST_"^string_of_int(nb)^"_"^print_sw_state(st)
-| Ixl.P_SW_AUT(nb, st) -> "P_SW_AUT_"^string_of_int(nb)^"_"^print_sw_state(st)
-;;
-
 
 let print_ident_in ident =
 match ident with
 | Ixl.P_SE(nb, _, dir) -> 
   begin
   match dir with
-  | Ixl.Up -> "Sensor("^string_of_int(nb)^").dir = \"01\""
-  | Ixl.Down -> "Sensor("^string_of_int(nb)^").dir = \"10\""
+  | Ixl.Up -> "Sensor("^string_of_int(nb-1)^").dir = \"01\""
+  | Ixl.Down -> "Sensor("^string_of_int(nb-1)^").dir = \"10\""
   | Ixl.Idle -> "!@*&* Error Sensor Idle"
   end
-| Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb)^")"
-| Ixl.P_SW_CMD(nb, st) -> "P_SW_CMD_"^string_of_int(nb)^"_"^print_sw_state(st)
-| Ixl.P_SW_ST(nb, st)  -> "P_SW_ST_"^string_of_int(nb)^"_"^print_sw_state(st)
+| Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb-1)^")"
+| Ixl.P_SW_CMD(nb, st) -> (match st with 
+                           | Ixl.Right -> ""
+                           | Ixl.Left -> "NOT ")^"Sw_Cmd_Req("^string_of_int(nb-1)^")"
+| Ixl.P_SW_ST(nb, st)  -> (match st with 
+                           | Ixl.Right -> ""
+                           | Ixl.Left -> "NOT ")^"Sw_State("^string_of_int(nb-1)^")"
 | Ixl.P_SW_AUT(nb, st) -> "!@*&* Error SW_AUT never in"
 ;;
 
@@ -173,9 +165,20 @@ match bool_exp with
 ;;
 
 let print_equation out_channel equation =
-  let id = print_ident_out equation.Ixl.exprname in
-  let exp = print_bool_exp equation.Ixl.boolexpr
-  in Printf.fprintf out_channel "        %s <= %s ;\n" id exp
+  let exp = print_bool_exp equation.Ixl.boolexpr in
+  match equation.Ixl.exprname with
+  | Ixl.P_SE(_, _, _)    -> 
+      Printf.fprintf out_channel "!@*&* Error writing Sensor.\n"
+  | Ixl.P_TC(nb, _)      -> 
+      Printf.fprintf out_channel "        TC(%i) <= %s ;\n" (nb - 1) exp
+  | Ixl.P_SW_CMD(_, _) -> 
+      Printf.fprintf out_channel "!@*&* Error writing Sw CMD.\n"
+  | Ixl.P_SW_ST(_, _)  -> 
+      Printf.fprintf out_channel "!@*&* Error writing Sw State.\n"
+  | Ixl.P_SW_AUT(nb, st) -> 
+      Printf.fprintf out_channel "        Sw_Cmd_Aut(%i) <= %s;\n" (match st with 
+                           | Ixl.Right -> (nb-1)*2
+                           | Ixl.Left -> (nb-1)*2 + 1) exp 
 ;;
 
 (* Generate each equation one per one *)
