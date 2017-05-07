@@ -21,4 +21,4 @@ IXL_tb :IXL_tb.o
 
 clean :
 	rm -f *.o *#  *vcd *~
-	rm -f work-obj93.cf IXL_tb 
+	rm -f work-obj93.cf IXL_generic.vhdl IXL_tb 

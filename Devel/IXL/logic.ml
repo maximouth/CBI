@@ -7,7 +7,7 @@ Printf.fprintf out_chan
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-package my_type is
+package IXL_type is
 
   type sensor is
     record
@@ -19,18 +19,18 @@ package my_type is
   type SE_state is array (31 downto 0) of sensor ;
 
   --track circuit type
-  type TC_St is array (31 downto 0) of STD_LOGIC ;
+  type TC_St is array (31 downto 0) of BOOLEAN ;
 
   --Switch command authorization
-  type Sw_cmd_aut is array (15 downto 0) of STD_LOGIC ;
+  type Sw_cmd_aut is array (15 downto 0) of BOOLEAN ;
   
-end package my_type;
+end package IXL_type;
 
 -- beggining of program
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-use work.my_type.all;
+use work.IXL_type.all;
 
 entity Ixl is  
 
@@ -93,7 +93,7 @@ begin
 
      -- clear TC
      for i in 0 to 31 loop
-       TC(i) <= '1';
+       TC(i) <= true;
      end loop;
      -- reset the output value
      valid_out <= '0';
@@ -149,10 +149,10 @@ match ident with
 | Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb-1)^")"
 | Ixl.P_SW_CMD(nb, st) -> (match st with 
                            | Ixl.Right -> ""
-                           | Ixl.Left -> "NOT ")^"Sw_Cmd_Req("^string_of_int(nb-1)^")"
+                           | Ixl.Left -> "NOT ")^"Sw_Cmd_Req("^string_of_int(nb-1)^")='1'"
 | Ixl.P_SW_ST(nb, st)  -> (match st with 
                            | Ixl.Right -> ""
-                           | Ixl.Left -> "NOT ")^"Sw_State("^string_of_int(nb-1)^")"
+                           | Ixl.Left -> "NOT ")^"Sw_State("^string_of_int(nb-1)^")='1'"
 | Ixl.P_SW_AUT(nb, st) -> "!@*&* Error SW_AUT never in"
 ;;
 
