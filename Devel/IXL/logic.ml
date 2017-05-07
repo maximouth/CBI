@@ -19,10 +19,10 @@ package IXL_type is
   type SE_state is array (31 downto 0) of sensor ;
 
   --track circuit type
-  type TC_St is array (31 downto 0) of BOOLEAN ;
+  type TC_St is array (31 downto 0) of STD_LOGIC ;
 
   --Switch command authorization
-  type Sw_cmd_aut_t is array (15 downto 0) of BOOLEAN ;
+  type Sw_cmd_aut_t is array (15 downto 0) of STD_LOGIC ;
   
 end package IXL_type;
 
@@ -93,7 +93,7 @@ begin
 
      -- clear TC
      for i in 0 to 31 loop
-       TC(i) <= true;
+       TC(i) <= '1';
      end loop;
      -- reset the output value
      valid_out <= '0';
@@ -146,7 +146,7 @@ match ident with
   | Ixl.Down -> "Sensor("^string_of_int(nb-1)^").dir = \"10\""
   | Ixl.Idle -> "!@*&* Error Sensor Idle"
   end
-| Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb-1)^")"
+| Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb-1)^")='1'"
 | Ixl.P_SW_CMD(nb, st) -> (match st with 
                            | Ixl.Right -> ""
                            | Ixl.Left -> "NOT ")^"Sw_Cmd_Req("^string_of_int(nb-1)^")='1'"
@@ -170,15 +170,18 @@ let print_equation out_channel equation =
   | Ixl.P_SE(_, _, _)    -> 
       Printf.fprintf out_channel "!@*&* Error writing Sensor.\n"
   | Ixl.P_TC(nb, _)      -> 
-      Printf.fprintf out_channel "        TC(%i) <= %s ;\n" (nb - 1) exp
+      Printf.fprintf out_channel "        if (%s) then TC(%i) <= '1'; else  TC(%i) <= '0'; end if;\n" exp (nb - 1) (nb - 1)
   | Ixl.P_SW_CMD(_, _) -> 
       Printf.fprintf out_channel "!@*&* Error writing Sw CMD.\n"
   | Ixl.P_SW_ST(_, _)  -> 
       Printf.fprintf out_channel "!@*&* Error writing Sw State.\n"
   | Ixl.P_SW_AUT(nb, st) -> 
-      Printf.fprintf out_channel "        Sw_Cmd_Aut(%i) <= %s;\n" (match st with 
-                           | Ixl.Right -> (nb-1)*2
-                           | Ixl.Left -> (nb-1)*2 + 1) exp 
+      let out_range = 
+      match st with 
+        | Ixl.Right -> (nb-1)*2
+        | Ixl.Left -> (nb-1)*2 + 1
+      in
+      Printf.fprintf out_channel "        if (%s) then Sw_Cmd_Aut(%i) <= '1'; else Sw_Cmd_Aut(%i) <= '0'; end if;\n"  exp out_range out_range 
 ;;
 
 (* Generate each equation one per one *)
