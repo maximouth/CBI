@@ -2,24 +2,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-package IXL_tb_type is
-
-  type sensor is
-    record
-      addr : STD_LOGIC_VECTOR (7 downto 0) ;
-      dir  : STD_LOGIC_VECTOR (1 downto 0) ;
-    end record ;
-
-  -- sensors state type
-  type SE_state is array (31 downto 0) of sensor ;
-
-  --track circuit type
-  type TC_St is array (31 downto 0) of BOOLEAN ;
-
-  --Switch command authorization
-  type Sw_cmd_aut_t is array (15 downto 0) of BOOLEAN ;
-  
-end package IXL_tb_type;
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -28,7 +10,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 -- arithmetic functions with Signed or Unsigned values
 use IEEE.NUMERIC_STD.ALL;
 
-use work.IXL_tb_type.all;
+use work.IXL_type.all;
 
 entity IXL_tb is
 end IXL_tb;
@@ -63,6 +45,8 @@ begin
 
     -- initialiser signaux
     reset <= '1';
+    CLK <= '0';
+    wait for 1 us;      
 
     -- bouger de 1 cycle d'horloge 
     for i in 0 to 2 loop
@@ -70,7 +54,10 @@ begin
       wait for 1 us;      
     end loop;
 
-    Sw_Cmd_Req <= "11110000";
+    reset <= '0';
+
+    Sensor(4).addr <= "11110000";
+    Sensor(4).dir <= "10";
 
     -- assert ( condition ) report "string d'afficher" severity note/failure/error/warning ;
 
