@@ -1,0 +1,17 @@
+GHDL=ghdl
+all : IXL_tb.o  #IXL_tb
+
+# compil IXL
+IXL_generic.o : 
+	${GHDL} -a -v IXL.vhdl
+
+IXL_tb.o :  IXL_generic.o
+	${GHDL} -a -v Simul/IXL_tb.vhdl 
+
+# IXL_tb : IXL_tb.o
+# 	${GHDL} -e -v IXL_tb
+# 	${GHDL} -r IXL_tb --vcd=IXL.vcd
+
+clean :
+	rm -f *.o *#  *vcd *~
+	rm -f work-obj93.cf IXL_tb 
