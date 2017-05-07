@@ -2,7 +2,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-package IXL_type is
+package IXL_tb_type is
 
   type sensor is
     record
@@ -17,9 +17,9 @@ package IXL_type is
   type TC_St is array (31 downto 0) of BOOLEAN ;
 
   --Switch command authorization
-  type Sw_cmd_aut is array (15 downto 0) of BOOLEAN ;
+  type Sw_cmd_aut_t is array (15 downto 0) of BOOLEAN ;
   
-end package IXL_type;
+end package IXL_tb_type;
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -28,13 +28,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 -- arithmetic functions with Signed or Unsigned values
 use IEEE.NUMERIC_STD.ALL;
 
-use work.my_type.all;
+use work.IXL_tb_type.all;
 
 entity IXL_tb is
 end IXL_tb;
 
 architecture simu of IXL_tb is
-
 
   -- synchro   
   signal CLK        :   STD_LOGIC;
@@ -42,13 +41,13 @@ architecture simu of IXL_tb is
 
   -- input
   signal valid_in   :   STD_LOGIC; 
-  signal Sw_Cmd_Req :   Sw_Cmd_Req;
+  signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (7 downto 0);
   signal Sw_State   :   STD_LOGIC_VECTOR (7 downto 0);
   signal Sensor     :   SE_state;
 
   -- output
   signal valid_out  :   STD_LOGIC;
-  signal Sw_Cmd_Aut :   Sw_Cmd_Aut;
+  signal Sw_Cmd_Aut :   Sw_cmd_aut_t;
 
   --debug output
   signal TC_out     :   TC_St;

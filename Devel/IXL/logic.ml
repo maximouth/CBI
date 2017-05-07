@@ -22,7 +22,7 @@ package IXL_type is
   type TC_St is array (31 downto 0) of BOOLEAN ;
 
   --Switch command authorization
-  type Sw_cmd_aut is array (15 downto 0) of BOOLEAN ;
+  type Sw_cmd_aut_t is array (15 downto 0) of BOOLEAN ;
   
 end package IXL_type;
 
@@ -47,7 +47,7 @@ entity Ixl is
          
          -- output
          valid_out  : out STD_LOGIC;
-         Sw_Cmd_Aut : out Sw_cmd_aut;
+         Sw_Cmd_Aut : out Sw_cmd_aut_t;
 
          --debug output
          TC_out     : out TC_St
