@@ -58,21 +58,34 @@ begin
   process
   begin
 
-    -- change le clock for X time
-    -- for i in 0 to X loop
-    --   clk <= not clk;
-    --   wait for 1 us;      
-    -- end loop;
 
-    for i in 0 to X loop
-      clk <= not clk;
+    -- initialiser signaux
+    reset <= '1';
+
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 2 loop
+      CLK <= not CLK;
       wait for 1 us;      
     end loop;
 
+    Sw_Cmd_Req <= "11110000";
+
+    -- asssert ( condition ) report "string d'afficher" severiry note/failure/error/warning ;
+
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 2 loop
+      CLK <= not CLK;
+      wait for 1 us;      
+    end loop;
     
-    -- change the clock for 1 time
-    -- clk <= not clk;
-    -- wait for 1 us;      
+    
+    -- mettre les valeurs dans les signaux en entrée
+    -- pour que les modifications soient prises en compte faire bouger les
+    -- cycles d'horloge
+
+    -- pour les tests
+    -- asssert ( condition ) report "string d'afficher" severiry note/failure/error/warning ;
+    
 
 
     -- IXL component only react on rising edge on the clock
