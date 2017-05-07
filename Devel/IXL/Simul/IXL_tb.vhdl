@@ -70,7 +70,7 @@ begin
 
     Sw_Cmd_Req <= "11110000";
 
-    -- asssert ( condition ) report "string d'afficher" severiry note/failure/error/warning ;
+    -- assert ( condition ) report "string d'afficher" severity note/failure/error/warning ;
 
     -- bouger de 1 cycle d'horloge 
     for i in 0 to 2 loop
