@@ -425,10 +425,12 @@ sa direction. La direction est une valeur arbitraire associée à
 chaque capteur pour connaitre le sens de parcours du train sur le capteur.
 
 
-Il y a 6 trains au maximum. Les états sont codés come suit~:
+Il y a 6 trains au maximum. Les capteurs sont codés comme suit~:
 \begin{itemize}
-  \item 0x07 : valeur réservée
-  \item 0x01 à 0x06 : numéro du train 1 à 6
+  \item dir = 0b01 : train dans le sens Up
+  \item dir = 0b10 : train dans le sens Down
+  \item dir = 0b11 : aucun train
+  \item addr = 0x01 à 0x06 : numéro du train 1 à 6 passant sur le capteur
 \end{itemize}  
 
 Il y a 32 capteurs de passage sur la maquette de train. L'indice du
@@ -438,7 +440,7 @@ tableau correspond au numéro du capteur de passage.
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
   type train_addr is 7 downto 0 ;
-  type train_dir is bit ;
+  type train_dir is 2 downto 0 ;
 
   type sensor is
    record
@@ -643,8 +645,17 @@ sont toutes enclenchées.
 \subsection{\underline{Zone d'aiguille}}
 \label{sec:aig}
 
-Une aiguille peut être commandée si elle n'est pas enclenchée et si il
-n'y a pas de train sur la zone.
+Une aiguille peut être autorisée à bouger à droite (resp. gauche) 
+si elle a reçu une commande à droite (resp. à gauche) et que le 
+Circuit de Voie de l'aiguille et ses Ciruits de voie adjacents
+sont libres. 
+
+\medskip
+L'équation générale d'autorisation de commande d'une aiguille est~:
+$$\boxed{
+  SW\_AUT\_RI_{nn} \Leftarrow SW\_CMD\_RI_{nn} \land TC_{nn} \land TC_{mm} ;
+  SW\_AUT\_LE_{nn} \Leftarrow SW\_CMD\_LE_{nn} \land TC_{nn} \land TC_{mm} ;
+}$$
 
 
 \subsection{\underline{Itinéraire}}
@@ -652,10 +663,81 @@ n'y a pas de train sur la zone.
 
 Bla bla bla...
 
-\subsection{\underline{zone d'aiguille}}
-\label{sec:aig}
+\section{Logique d'enclenchement}
+\label{sec:logic}
+\subsection{\underline{Occupation de CdV}}
+\label{sec:cdv_occ}
+
+
+\begin{center}
+\begin{tabular}{|l||llll|}
+  \hline
+  TC\_01 & SE\_UP\_01 & SE\_UP\_19 & SE\_DO\_02 & SE\_DO\_08 \\
+  \hline
+  TC\_02 & SE\_UP\_02 & SE\_DO\_03 & & \\
+  \hline
+  TC\_03 & SE\_UP\_03 & SE\_DO\_04 & & \\
+  \hline
+  TC\_04 & SE\_UP\_04 & SE\_UP\_10 & SE\_DO\_05 & SE\_DO\_20 \\
+  \hline
+  TC\_05 & SE\_UP\_05 & SE\_DO\_06 & & \\
+  \hline
+  TC\_06 & SE\_UP\_06 & SE\_DO\_01 & & \\
+  \hline
+  TC\_07 & SE\_UP\_08 & SE\_DO\_09 & & \\
+  \hline
+  TC\_08 & SE\_UP\_09 & SE\_DO\_10 & & \\
+  \hline
+  TC\_09 & SE\_UP\_11 & SE\_DO\_12 & & \\
+  \hline
+  TC\_10 & SE\_UP\_12 & SE\_DO\_07 & & \\
+  \hline
+  TC\_11 & SE\_UP\_07 & SE\_UP\_13 & SE\_DO\_14 & SE\_DO\_19 \\
+  \hline
+  TC\_12 & SE\_UP\_14 & SE\_DO\_15 & & \\
+  \hline
+  TC\_13 & SE\_UP\_15 & SE\_DO\_16 & & \\
+  \hline
+  TC\_14 & SE\_UP\_16 & SE\_UP\_20 & SE\_DO\_11 & SE\_DO\_17 \\
+  \hline
+  TC\_15 & SE\_UP\_17 & SE\_DO\_18 & & \\
+  \hline
+  TC\_16 & SE\_UP\_18 & SE\_DO\_13 & & \\
+  \hline
+\end{tabular}
+\end{center}
+
 
 Bla bla bla...
+
+\subsection{\underline{Mouvement d'aiguille}}
+\label{sec:mvt_aig}
+
+
+
+\begin{center}
+\begin{tabular}{|l||lllll|}
+  \hline
+  SW1 & TC\_01 & TC\_02 & TC\_06 & TC\_07 & TC\_11 \\
+  \hline
+  SW2 & TC\_01 & TC\_02 & TC\_06 & TC\_07 & TC\_11 \\
+  \hline
+  SW3 & TC\_11 & TC\_01 & TC\_16 & TC\_10 & TC\_12 \\
+  \hline
+  SW4 & TC\_11 & TC\_01 & TC\_16 & TC\_10 & TC\_12 \\
+  \hline
+  SW5 & TC\_04 & TC\_03 & TC\_05 & TC\_08 & TC\_09 \\
+  \hline
+  SW6 & TC\_04 & TC\_03 & TC\_05 & TC\_08 & TC\_09 \\
+  \hline
+  SW7 & TC\_14 & TC\_04 & TC\_09 & TC\_15 & TC\_13 \\
+  \hline
+  SW8 & TC\_14 & TC\_04 & TC\_09 & TC\_15 & TC\_13 \\
+  \hline
+\end{tabular}
+\end{center}
+
+
 
 
 
