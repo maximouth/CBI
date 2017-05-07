@@ -2,7 +2,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-package my_type is
+package IXL_type is
 
   type sensor is
     record
@@ -14,9 +14,12 @@ package my_type is
   type SE_state is array (31 downto 0) of sensor ;
 
   --track circuit type
-  type TC_St is array (19 downto 0) of STD_LOGIC_VECTOR (7 downto 0) ;
+  type TC_St is array (31 downto 0) of BOOLEAN ;
+
+  --Switch command authorization
+  type Sw_cmd_aut is array (15 downto 0) of BOOLEAN ;
   
-end package my_type;
+end package IXL_type;
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -39,13 +42,13 @@ architecture simu of IXL_tb is
 
   -- input
   signal valid_in   :   STD_LOGIC; 
-  signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (7 downto 0);
+  signal Sw_Cmd_Req :   Sw_Cmd_Req;
   signal Sw_State   :   STD_LOGIC_VECTOR (7 downto 0);
   signal Sensor     :   SE_state;
 
   -- output
   signal valid_out  :   STD_LOGIC;
-  signal Sw_Cmd_Aut :   STD_LOGIC_VECTOR (7 downto 0);
+  signal Sw_Cmd_Aut :   Sw_Cmd_Aut;
 
   --debug output
   signal TC_out     :   TC_St;
