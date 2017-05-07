@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-% TC equations
-TC_01
-<=
-~SE_DO_03
-*
-SE_UP_02;
-
-
-TC_02 <= ~SE_UP_02 * ~SE_DO_03 * (TC_02 + SE_DO_02 + SE_UP_01);
-
-% Switch equations
-
-	
-=======
 % TC equations for the Track Ciruit
 TC_01 <= ~SE_UP_01 * ~SE_UP_19 * ~SE_DO_02 * ~SE_DO_08 * (TC_01 + SE_DO_01 + SE_DO_19 + SE_UP_02 + SE_UP_08);
 TC_02 <= ~SE_UP_02 * ~SE_DO_03 * (TC_02 + SE_DO_02 + SE_UP_03);
@@ -63,4 +48,3 @@ SW_AUT_LE_07 <= SW_CMD_LE_07 * TC_04 * TC_09 * TC_13 * TC_14 * TC_15;
 % Switch 08
 SW_AUT_RI_08 <= SW_CMD_RI_08 * TC_04 * TC_09 * TC_13 * TC_14 * TC_15;
 SW_AUT_LE_08 <= SW_CMD_LE_08 * TC_04 * TC_09 * TC_13 * TC_14 * TC_15;
->>>>>>> 70dd528a6a5319a15d1b44ee6e7a7c6527ea53c7
