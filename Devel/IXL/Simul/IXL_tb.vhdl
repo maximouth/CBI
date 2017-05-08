@@ -42,38 +42,122 @@ begin
   process
   begin
 
-
     -- initialiser signaux
     reset <= '1';
     CLK <= '0';
-    wait for 1 us;      
+    valid_in <= '0';
+    wait for 1 ns;      
 
     -- bouger de 1 cycle d'horloge 
-    for i in 0 to 2 loop
+    for i in 0 to 1 loop
       CLK <= not CLK;
-      wait for 1 us;      
+      wait for 1 ns;      
     end loop;
 
+    -- Fin initialisation
     reset <= '0';
+    
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 1 loop
+      CLK <= not CLK;
+      wait for 1 ns;      
+    end loop;
 
-    Sensor(4).addr <= "11110000";
-    Sensor(4).dir <= "10";
-
+    valid_in <= '1';
+    Sensor(0).dir <= "00";
+    Sensor(1).dir <= "00";
+    Sensor(2).dir <= "00";
+    Sensor(3).dir <= "00";
+    Sensor(4).dir <= "00";
+    Sensor(5).dir <= "00";
+    Sensor(6).dir <= "00";
+    Sensor(7).dir <= "00";
+    Sensor(8).dir <= "00";
+    Sensor(9).dir <= "00";
+    Sensor(10).dir <= "00";
+    Sensor(11).dir <= "00";
+    Sensor(12).dir <= "00";
+    Sensor(13).dir <= "00";
+    Sensor(14).dir <= "00";
+    Sensor(15).dir <= "00";
+    Sensor(16).dir <= "00";
+    Sensor(17).dir <= "00";
+    Sensor(18).dir <= "00";
+    Sensor(19).dir <= "00";
+    Sensor(20).dir <= "00";
+    Sensor(21).dir <= "00";
+    Sensor(22).dir <= "00";
+    Sensor(23).dir <= "00";
+   
     -- assert ( condition ) report "string d'afficher" severity note/failure/error/warning ;
 
     -- bouger de 1 cycle d'horloge 
-    for i in 0 to 2 loop
+    for i in 0 to 1 loop
       CLK <= not CLK;
-      wait for 1 us;      
+      wait for 1 ns;      
     end loop;
     
+    -- assert ( condition ) report "string d'afficher" severity note/failure/error/warning ;
     
+    -- a train enters TC(6) from sensor(6)
+    -- a train leaves TC(6) from sensor(6)
+    Sensor(5).dir <= "01";
+
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 1 loop
+      CLK <= not CLK;
+      wait for 1 ns;      
+    end loop;
+
+    
+    Sensor(5).dir <= "00";
+
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 1 loop
+      CLK <= not CLK;
+      wait for 1 ns;      
+    end loop;
+     
+   Sensor(0).dir <= "01";
+    
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 1 loop
+      CLK <= not CLK;
+      wait for 1 ns;      
+    end loop;
+
+    
+   Sensor(0).dir <= "00";
+    
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 1 loop
+      CLK <= not CLK;
+      wait for 1 ns;      
+    end loop;
+
+    
+   Sensor(1).dir <= "01";
+    
+    -- bouger de 1 cycle d'horloge 
+    for i in 0 to 1 loop
+      CLK <= not CLK;
+      wait for 1 ns;      
+    end loop;
+
+    
+     -- bouger de 1 cycle d'horloge 
+    for i in 0 to 1 loop
+      CLK <= not CLK;
+      wait for 1 ns;      
+    end loop;
+    
+   
     -- mettre les valeurs dans les signaux en entrée
     -- pour que les modifications soient prises en compte faire bouger les
     -- cycles d'horloge
 
     -- pour les tests
-    -- asssert ( condition ) report "string d'afficher" severiry note/failure/error/warning ;
+    -- assert ( condition ) report "string d'afficher" severiry note/failure/error/warning ;
     
 
 
