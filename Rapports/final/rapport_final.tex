@@ -44,6 +44,9 @@
 \usepackage{url}
 \usepackage{caption}
 
+\usepackage{verbatim}
+\usepackage{listings}
+
 % Define new command
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -337,7 +340,7 @@ tout au long du projet.
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.55]{circuit.png}
+\includegraphics[scale=0.55]{circuit_complet.jpg}
 \caption{Sch\'ema de l'installation}
 \label{fig4}
 \end{figure}
@@ -422,8 +425,10 @@ ainsi que plusieurs langages:
 \subsection{\underline{Activit\'es du projet}}
 \label{sec:activ}
 
-Comme dit plus haut \emph{(voir 2.5)} le projet va \^etre decoup\'e en
-plusieurs \'etapes diff\'erentes.
+Comme dit plus haut \emph{(voir 2.5)} le projet a \'et\'e decoup\'e en
+plusieurs \'etapes diff\'erentes, mais toutes n'ont pas été
+possible à réalisée.
+Voici ce qui aurait dû être réalisé.
 
 \begin{enumerate}[1]
   \item Portage de la centrale DCC
@@ -460,12 +465,12 @@ plusieurs \'etapes diff\'erentes.
     \end{itemize}
 \end{enumerate}
 
-
+\newpage
 
 \subsection{\underline{Planning pr\'evisionnel}}
 \label{sec:planning}
 
-Voici les différentes t\^aches ainsi que le planning que je compte
+Voici les différentes t\^aches ainsi que le planning que je comptai
 respecter pour r\'eussir \`a mener \`a bien mon projet. La
 figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 
@@ -477,54 +482,21 @@ figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 \end{figure}
 
 
+\subsection{\underline{Réalisation}}
+\label{sec:Réal}
 
-\subsection{\underline{Validation}}
-\label{sec:valid}
+\subsubsection{\underline{Centrale DCC}}
+\label{sec:Centrale}
 
-Afin de tester et valider les diff\'erentes \'etapes de mon projet, je vais
-faire des \emph{bancs de tests}, des simulations ainsi que des
-exp\'erimentations qui pourront permettre de valider les essais.
+J'ai réussi à créer une centrale DCC pour pouvoir controler les
+différents trains et equipements de voie dont nous pouvons
+disposer. La centrale se base sur celle du cours de FPGA que nous
+avons du réaliser \emph{(voir \cite{rapport} et \cite{sujet})}
 
-Il y a d'ailleurs plusieurs sc\'enarios que je vais r\'ealiser qui
-me permettront de tester de façon r\'eelle les différents fonctionnements~:
+La centrale est capable de d'envoyer différentes \emph{trâmes DCC}
+pour contrôler plusieurs centales à la fois. Voici les différentes
+commandes que l'on peut gérer avec mon interface.
 
-
-\begin{enumerate}[A]
-  \item Sans Capteurs et sans logique d'enclanchement
-  \begin{itemize}
-    \item 1 train doit passer de la voie ``A`` à la voie ``B``
-    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie
-       ``B``
-  \end{itemize}
-
-  \item Avec Capteurs et logique enclenchement
-  \begin{itemize}
-    \item 1 train doit passer de la voie ``A`` à la voie ``B``
-    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie ``B``
-    \item 1 train 1 sur voie ``A`` qui s'arrête dans la zone aiguillage.
-    \item 1 train 2 sur voie ``B``qui veut passer en voie ``A`` --> Pas
-       possible. Red\'emarrage train 1, v\'erification du changement de
-       voie du train 2.
-  \end{itemize}
-\end{enumerate}
-
-La première série de tests permettra de valider le fonctionnement de la
-centrale DCC. C'est à dire, réception de commandes sur l'IHM, envoi de
-commandes aux trains et aux aiguillages. La synchronisation entre les
-trains sera faite uniquement sur des temporisations. La logique
-d'enclenchement ne sera pas utilisée.
-
-La seconde série de tests permettra de valider la gestion de la sécurité
-de la logique d'enclenchement. Elle est basée sur la détection des
-capteurs de présence des trains sur la voie. 
-
-
-\subsection{\underline{Avancement}}
-\label{sec:avanc}
-
-J'ai d\'ej\`a commenc\'e \`a travailler sur le projet en essayant de
-cr\'eer une IHM pour la s\'election des diff\'erentes commandes que l'on
-veut r\'ealiser~:
 
 \begin{itemize}
     \item le choix de \textbf{l'adresse} du \emph{train} qui va
@@ -562,10 +534,155 @@ Tandis que la \emph{figure~\ref{carte2}} montre le numero de
 l'aiguillage que l'on veut bouger.
 En appuyant sur le bouton gauche on change le réglage, et en appuyant sur le
 bouton droit on incrémente la valeur du réglage choisit
+Le premier switch de la carte sert à réinitialiser les différentes
+valeurs de la centrale \emph{(adresse, commande..)}.
 
 
-Je suis actuellement en train de finir de porter le code de l'ancienne
-centrale DCC et de l'acquisition des capteurs sur la nouvelle carte.
+\subsubsection{\underline{Générateur moteur}}
+\label{sec:Générateur}
+
+
+Afin de pouvoir avoir un moteur d'interlocking modulable et adaptable
+à différents types de circuits, j'ai utilisé un générateur de vhdl en
+Ocaml qui prend en entrée un fichier contenant les différentes
+equations.
+
+\emph{T\_16 <= ~SE\_UP\_18 * ~SE\_DO\_13 * (TC\_16 + SE\_DO\_18 + SE\_UP\_13);}
+
+
+Le format des equations est le suivant :
+
+\begin{itemize}
+  \item la variable
+  \item <=
+    \begin{enumerate}[->]
+    \item \emph{\~} pour le \textbf{not}
+    \item \emph{+} pour le \textbf{ou}
+    \item \emph{*} pour le \textbf{et}
+    \end{enumerate}
+\end{itemize}
+
+
+Ocaml explications :
+
+fonctionnement général
+
+Application :
+
+-> fichier entré
+
+-> explication interface moteur sortie.
+
+
+Pour lancer l'application qui va créer le moteur IXL correspondant à
+la logique écrite.
+\emph{./tanslate -i fichier.eq -o fichier\_out.vhdl}
+
+\subsubsection{\underline{moteur IXL}}
+\label{sec:IXL}
+
+Voici l'interface du moteur IXL que nous allons utiliser :
+
+\begin{lstlisting}[language=vhdl]
+entity Ixl is  
+
+  Port (
+         -- synchro   
+         CLK        : in  STD_LOGIC;
+         reset      : in  STD_LOGIC;
+
+         -- input
+         valid_in   : in  STD_LOGIC; 
+         Sw_Cmd_Req : in  STD_LOGIC_VECTOR (7 downto 0);
+         Sw_State   : in  STD_LOGIC_VECTOR (7 downto 0);
+         Sensor     : in  SE_state;
+         
+         -- output
+         valid_out  : out STD_LOGIC;
+         Sw_Cmd_Aut : out Sw_cmd_aut_t;
+
+         --debug output
+         TC_out     : out TC_St
+         );
+
+end Ixl;
+
+\end{lstlisting}
+
+Pour la sychronisation nous avons deux signaux, la clock et le signal
+de reset \emph{actif haut}.
+
+Il y a 4 signaux d'entrée :
+
+\begin{itemize}
+  \item valid\_in qui indique si on doit prendre en compte ou non les
+    autres signaux.
+  \item Sw\_Cmd\_Req qui contient l'état des aiguillages que l'on veut obtenir
+  \item Sw\_State qui contient l'état actuel des aiguillages.
+  \item Sensor qui contient les informations des différents capteurs à
+    un instant donné.
+\end{itemize}  
+
+Et 2 signaux de sortie :
+
+\begin{itemize}
+  \item valid\_out qui indique si l'on doit tenir compte des autres
+    valeurs de sorties ou non.
+  \item Sw\_Cmd\_Aut qui contient l'état des aiguillages que l'on demande.
+\end{itemize}  
+
+Je ne sais pas comment espacer...
+
+Pour les simulations j'ai rajouté en sortie \emph{TC\_Out} qui permet
+d'afficher l'état des \emph{Track Circuit} pour pouvoir suivre les
+différents trains se deplacer. 
+
+Pour voir la définition des différents types et leurs valeurs \emph{voir \cite{interface}}.
+
+pareil ici..
+
+\textbf{Le fonctionnement}
+
+Nous ne faisons la suite uniquement si le signal \emph{valid\_in} est egal à '1'.
+
+Nous mettons à jour toutes les nouvelles valeurs des \emph{Track
+  Circuit} grâce au équations écrite dans le fichier.
+
+Nous allons ensuite verifier si nous pouvons bouger les aiguillages
+comme demandé en entré.
+
+à faire...
+
+\subsubsection{\underline{Test Bench}}
+\label{sec:Test_Bench}
+
+Differents scénarios
+generateur test ?
+
+
+Afin de tester et valider les diff\'erentes \'etapes de mon projet, j'ai
+fait des \emph{bancs de tests}, des simulations ainsi que des
+exp\'erimentations qui pourront permettre de valider les différents essais.
+
+Il y a d'ailleurs plusieurs sc\'enarios que j'ai r\'ealisé qui
+me permettront de tester de façon r\'eelle les différents fonctionnements~:
+
+
+\begin{itemize}
+    \item 1 train doit passer de la voie ``A`` à la voie ``B``
+    \item 2 trains sur la voie ``A``, un seul doit passer sur la voie ``B``
+    \item 1 train 1 sur voie ``A`` qui s'arrête dans la zone aiguillage.
+          1 train 2 sur voie ``B``qui veut passer en voie ``A`` --> Pas
+          possible. Red\'emarrage train 1, v\'erification du
+          changement  de voie du train 2.
+\end{itemize}
+
+
+Pour chaques scenarios ajouter les chronogrammes et tout...
+
+\subsection{\underline{Conclusion}}
+\label{sec:Conclusion}
+
 
 \newpage
 
