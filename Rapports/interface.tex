@@ -213,7 +213,7 @@ Dans le design
 
 \bigskip
 
-X fonctions
+5 fonctions
 \begin {enumerate}
 \item phares on     -> \emph{``10010000''}
 \item bruit moteur  -> \emph{``10000001''}
@@ -227,7 +227,10 @@ X fonctions
 \subsection{\underline{Interface itinéraire}}
 \label{sec:ihm_iti}
 
-bla bla bla...
+Elle n'a pas été implémenté, mais la base sur laquelle j'étais partie
+\'etait d'affecter un switch de la carte par itinéraire.
+Un itineraire correspondant à une suite de changement de positions
+d'aiguillages et passage sur certains capteurs.
 
 \newpage
 
@@ -254,8 +257,10 @@ Trames envoyéees 4 par 4 séparées chacunes par 400 us avec valeur 0.
 \end{center}
 
 \medskip
-Une fois une trame envoyée, la répéter toutes les 55 ms. Si aucune
-trame de chargée alors envoyer des trames idle.
+Les valeurs des trames à envoyer sont les mêmes jusqu'à un appuis sur
+le bouton central qui change la valeur courante des différentes
+commandes.
+
 
 \medskip
 \begin{center}
@@ -269,20 +274,15 @@ CRC     & => & ``11111111'' \\
 \medskip
 Paramètres à envoyer stockés dans \emph{Master}.
 
+Les différentes commandes viennent de l'IHM \emph{(voir
+  \cite{rapport})}  et remplacent la valeur IDLE \emph{(si il y a eu
+  un reset)}et sont envoyés en continue tant que pas de nouvelle pression sur bouton Central.
 
--> à chaques pression sur le bouton central changement de la valeur
-des paramètres à envoyer, Les paramètre viennent de l'IHM et
-remplacent la valeur IDLE et sont envoyés en continue tant que pas de
-nouvelle prssion sur bouton C.
-
-\bigskip
-\subsection{\underline{Interface Aiguillage}}
-\label{sec:int_aig}
-
-bla bla bla
 
 \subsection{\underline{Interface Capteurs}}
 \label{sec:int_cap}
+
+A garder??
 
 bla bla bla...
 
@@ -382,9 +382,9 @@ numéro de l'aiguille.
 \medskip
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
-  type Sw_Cmd is bit;
   
-  type Sw_Cmd_Req is array (7 downto 0) of Sw_Cmd;
+  signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (7 downto 0);
+  
 \end{lstlisting}
 
 
@@ -409,9 +409,9 @@ numéro de l'aiguille.
 \medskip
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
-  type Sw_pos is bit;
+
+  signal Sw_State   :   STD_LOGIC_VECTOR (7 downto 0);
   
-  type Sw_state is array (7 downto 0) of Sw_pos;
 \end{lstlisting}
 
 
@@ -433,29 +433,29 @@ Il y a 6 trains au maximum. Les capteurs sont codés comme suit~:
   \item addr = 0x01 à 0x06 : numéro du train 1 à 6 passant sur le capteur
 \end{itemize}  
 
-Il y a 32 capteurs de passage sur la maquette de train. L'indice du
+Il y a 20 capteurs de passage sur la maquette de train. L'indice du
 tableau correspond au numéro du capteur de passage.
 
 \medskip
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
-  type train_addr is 7 downto 0 ;
-  type train_dir is 2 downto 0 ;
 
   type sensor is
-   record
-       addr : train_addr;
-       dir  : train_dir;
-   end record;
+    record
+      addr : STD_LOGIC_VECTOR (7 downto 0) ;
+      dir  : STD_LOGIC_VECTOR (1 downto 0) ;
+    end record ;
 
+  -- Sensors state type
   type SE_state is array (31 downto 0) of sensor;
+
 \end{lstlisting}
 
 
 \subsection{\underline{Autorisation de commande des aiguillages}}
 \label{sec:ixl_dem_aig}
 
-Une fois que le sustème d'enclenchement à vérifer que toutes les
+Une fois que le sustème d'enclenchement a vérifé que toutes les
 conditions requises pour bouger une aiguille sont remplies, il 
 retourne à la Centrale DCC son autorisation de commande des aiguillages.
 
@@ -472,9 +472,9 @@ numéro de l'aiguille.
 \medskip
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
-  type Sw_Cmd is bit;
-  
-  type Sw_Cmd_Aut is array (7 downto 0) of Sw_Cmd;
+
+  Sw_Cmd_Aut : out STD_LOGIC_VECTOR (7 downto 0);
+
 \end{lstlisting}
 
 
@@ -491,14 +491,16 @@ y a 6 trains au maximum. Les états sont codés come suit~:
   \item occupé : numéro du train 0x01 à 0x06
 \end{itemize}  
 
-Il y a 20 circuits de voie sur la maquette de train. L'indice du
+Il y a 16 circuits de voie sur la maquette de train. L'indice du
 tableau correspond au numéro du Circuit de Voie.
 
 \medskip
 La déclaration VHDL
 \begin{lstlisting}[style=vhdl]
-  
-  type TC_St is array (31 downto 0) of train_addr;
+
+  --debug output
+  TC_out     : out STD_LOGIC_VECTOR (7 downto 0)
+
 \end{lstlisting}
 
 
@@ -661,13 +663,34 @@ $$\boxed{
 \subsection{\underline{Itinéraire}}
 \label{sec:iti}
 
-Bla bla bla...
+Cette partie n'a pas été implementée mais voici comment elle aurait du
+fonctionner.
+
+Chaque itinairaire aurait été un tableau de n instructions.
+Le tableau aurait contenu une suite de valeur qu'il aurait fallut
+avoir sur le circuit pour passer à la suivante, c'est à dire l'état
+des aiguilles et la valeur des Tracks circuits occupé.
+
+Pour l'aiguillage il y aurait 3 états pour chauques aiguillages,
+\begin{itemize}
+  \item '0' Pour forcer un aiguillage à être fermé.
+  \item '1' Pour forcer un aiguillage à être ouvert.
+  \item 'DC' La valeur ne nous interesse pas.    
+\end{itemize}  
+
+Pareil pour les Tracks Circuits
+
+On tenterait d'obtenir les deux valeurs en même temps pour passer à la
+case suivante du tableau, une fois l'itineraire completé, on
+allumerait la led correspondant au switch pour signaler la fin.
 
 \section{Logique d'enclenchement}
 \label{sec:logic}
 \subsection{\underline{Occupation de CdV}}
 \label{sec:cdv_occ}
 
+Voici le tableau qui permet de connaitre l'état d'un Track Circuit
+selon l'état des capteurs.
 
 \begin{center}
 \begin{tabular}{|l||llll|}
@@ -707,12 +730,16 @@ Bla bla bla...
 \end{tabular}
 \end{center}
 
+Un Track Circuit est considéré comme occupé lorsque l'un des capteurs
+renvoi une information qui permet de faire changer l'état du Track
+Circuit dans le tableau ci dessus.
 
-Bla bla bla...
 
 \subsection{\underline{Mouvement d'aiguille}}
 \label{sec:mvt_aig}
 
+Voici le tableau qui regoupe les différentes équations qui vont
+permettre de definir l'état de chacune des 8 aiguilles.
 
 
 \begin{center}
@@ -737,13 +764,12 @@ Bla bla bla...
 \end{tabular}
 \end{center}
 
-
-
-
+On obtient ainsi en sortie de notre module ce qu'il faut envoyer sur
+chaque aiguillages pour eviter d'avoir deux trains se rentrant dedans.
 
 \newpage
 
 \bibliographystyle{plain}
-\bibliography{biblio}
+\bibliography{biblio_inter}
 
 \end{document}
