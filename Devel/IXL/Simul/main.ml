@@ -2,6 +2,7 @@ open Simul_t ;;
 open Utils_simul ;;
 open Parsing;;
 open Lexer_simul;;
+open Simulation;;
 
 (* Storage of the input and output files *)
 let in_Simul_channel = ref stdin ;;
@@ -32,7 +33,7 @@ let parse_simul in_Simul_channel =
 ;;
 
 let mainloop () =
-	let cycle_l = 
+	let cycles = 
 	  (* check that there is a file as input *)
 	  if (!in_Simul_channel <> stdin) then
 	     (* parse the file *)
@@ -44,10 +45,10 @@ let mainloop () =
           end
 	in
 	(* Print the parsed file, for debug purpose only *)
-        Utils_simul.print_cycles cycle_l;
+    Utils_simul.print_cycles cycles;
 	
-	(* Generate the VHDL from the boolean equations *)
-	(* Simul.generate !out_Simul_channel cycle_l; *)
+	(* Generate the VHDL from the simulation *)
+	Simulation.generate !out_Simul_channel cycles;
 	
 	(* Close the output file *)
 	close_out !out_Simul_channel
@@ -57,7 +58,7 @@ Arg.parse
  [("-i", 
    Arg.String(fun f_in_name -> in_Simul_channel := open_in f_in_name;),
    " : Simulation input file");
-("-o", 
+  ("-o", 
    Arg.String(fun f_out_name -> out_Simul_channel := open_out f_out_name;),
    " : Simulation output file");
  ]

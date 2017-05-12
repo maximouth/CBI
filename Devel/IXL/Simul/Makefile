@@ -7,9 +7,9 @@ CAMLYACC=$(BINDIR)ocamlyacc
 
 # User definitions must be here
 EXEC = simul.x
-SOURCES =  simul_t.ml utils_simul.ml simul.ml main.ml 
+SOURCES =  simul_t.ml utils_simul.ml simulation.ml main.ml 
 GENERATED = parser_simul.ml lexer_simul.ml parser_simul.mli
-OBJS = simul_t.cmo utils_simul.cmo simul.cmo \
+OBJS = simul_t.cmo utils_simul.cmo simulation.cmo \
 parser_simul.cmo lexer_simul.cmo \
 main.cmo
 
