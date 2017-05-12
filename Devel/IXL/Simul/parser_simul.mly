@@ -6,6 +6,7 @@ let ind_eq = ref 0;;
 %}
 
 %token <string> INDEX
+%token <string> COMMENT
 %token <bool>   VALUE
 %token CYCLE
 %token ASSIGN
@@ -41,11 +42,11 @@ cycles:
 ;
  
 cycle:
-  CYCLE INDEX COLON EVENTS events OUTPUTS outputs
+  CYCLE INDEX COLON comment EVENTS events OUTPUTS outputs
    { {Simul_t.Simul.cycle = int_of_string($2);
-      Simul_t.Simul.comment = None;
-      Simul_t.Simul.events = $5;
-      Simul_t.Simul.outputs = $7;}
+      Simul_t.Simul.comment = $4;
+      Simul_t.Simul.events = $6;
+      Simul_t.Simul.outputs = $8;}
    }
 ;
 
@@ -60,17 +61,17 @@ outputs:
 ;
 
 event:
- | ident SEMI
+ | ident SEMI comment
     { {Simul_t.Simul.evname  = $1;
-       Simul_t.Simul.comment = None; }
+       Simul_t.Simul.comment = $3; }
     }
 ;
 
 output:
- | ident EQUALS VALUE SEMI
+ | ident EQUALS VALUE SEMI comment
     { {Simul_t.Simul.outname = $1;
        Simul_t.Simul.outval = $3;
-       Simul_t.Simul.comment = None; }
+       Simul_t.Simul.comment = $5; }
     }
 ;
 
@@ -87,3 +88,6 @@ ident:
  | SW_AUT_LE INDEX   { Simul_t.Simul.P_SW_AUT(int_of_string($2), Simul_t.Simul.Left)}
 ;
 
+comment:
+ |           { None }
+ | COMMENT   {Some $1 }

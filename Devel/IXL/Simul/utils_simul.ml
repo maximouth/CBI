@@ -20,6 +20,12 @@ match b with
 | false -> "False"
 ;;
 
+let print_comment c =
+match c with
+| None -> ""
+| Some c1 -> c1
+;;
+
 let print_ident id =
 match id with
 | Simul.P_SE(nb, ad, di) -> "P_SE_"^string_of_int(nb)^"_"^string_of_int(ad)^"_"^print_dir(di)
@@ -31,7 +37,7 @@ match id with
 
 
 let print_event event =
-  Printf.fprintf stdout "%s\n" (print_ident event.Simul.evname);
+  Printf.fprintf stdout "%s  %s\n" (print_ident event.Simul.evname) (print_comment event.Simul.comment);
 ;;
 
 let rec print_events events =
@@ -44,7 +50,8 @@ match events with
 ;;
 
 let print_output output =
-  Printf.fprintf stdout "%s = %s;\n" (print_ident output.Simul.outname) (print_bool output.Simul.outval);
+  Printf.fprintf stdout "%s = %s; %s\n" (print_ident output.Simul.outname) (print_bool output.Simul.outval)
+                                        (print_comment output.Simul.comment);
   
 ;;
 
@@ -58,7 +65,7 @@ match outputs with
 ;;
 
 let print_cycle cycle =
-  Printf.fprintf stdout "Cycle %i :\n" cycle.Simul.cycle;
+  Printf.fprintf stdout "Cycle %i : %s \n" cycle.Simul.cycle (print_comment cycle.Simul.comment) ;
   print_events cycle.Simul.events;
   print_outputs cycle.Simul.outputs
 ;;

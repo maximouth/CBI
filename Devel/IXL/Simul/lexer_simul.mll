@@ -16,8 +16,8 @@ rule token = parse
  | "Free"                  { VALUE (true) }
  | "Occ"                   { VALUE (false) }
 
- | "--"                    { comment lexbuf;
-                              token lexbuf}
+ | "--" [^'\n']*           { COMMENT (Lexing.lexeme lexbuf)}
+
  | "<="                    { ASSIGN }
  | "="                     { EQUALS }
  | ";"                     { SEMI }
