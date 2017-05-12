@@ -47,7 +47,7 @@ begin
   process
   begin
 
-    -- initialiser signaux
+    -- Initialization
     reset <= '1';
     CLK <= '0';
     valid_in <= '0';
@@ -57,15 +57,16 @@ begin
     CLK <= not CLK;
     wait for 1 ns;      
 
-    -- Fin initialisation
+    -- end initialization
     reset <= '0';
     
-    -- bouger de 1 cycle d'horloge 
+    -- Move 1 full cycle 
     for i in 0 to 1 loop
       CLK <= not CLK;
       wait for 1 ns;      
     end loop;
 	
+	-- start the simulation with a clock at low level
     CLK <= not CLK;
     wait for 1 ns;
 	"
