@@ -1,8 +1,8 @@
 open Simul_t ;;
 
 (* Print the header of the VHDL file *)
-let print_header out_chan =
-Printf.fprintf out_chan 
+let print_header out_channel =
+Printf.fprintf out_channel 
 "-- type declaration in a package
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -58,6 +58,7 @@ begin
     wait for 1 ns;      
 
     -- end initialization
+    
     reset <= '0';
     
     -- Move 1 full cycle 
@@ -69,7 +70,10 @@ begin
 	-- start the simulation with a clock at low level
     CLK <= not CLK;
     wait for 1 ns;
-	"
+
+    valid_in <= '1';
+
+"
 ;;
 
 (* Print the trailer of the VHDL file *)
@@ -82,6 +86,72 @@ end simu;
 "
 ;;
 
+(* Print one event *)
+let print_event ident =
+match ident with
+| Simul.P_SE(nb, _, dir) -> 
+  begin
+  match dir with
+  | Simul.Up   -> "      Sensor("^string_of_int(nb-1)^").dir <= \"01\";\n"
+  | Simul.Down -> "      Sensor("^string_of_int(nb-1)^").dir <= \"10\";\n"
+  | Simul.Idle -> "      Sensor("^string_of_int(nb-1)^").dir <= \"00\";\n"
+  end
+| Simul.P_TC(nb, _)      -> "?*&%$!! Error TC not an input"
+| Simul.P_SW_CMD(nb, st) ->
+  begin
+  match st with 
+  | Simul.Right -> "      Sw_Cmd_Req("^string_of_int(nb-1)^") <='1';\n"
+  | Simul.Left  -> "      Sw_Cmd_Req("^string_of_int(nb-1)^") <='0';\n;"
+  end
+| Simul.P_SW_ST(nb, st)  -> 
+  begin
+  match st with 
+  | Simul.Right -> "      Sw_State("^string_of_int(nb-1)^") <= '1';\n"
+  | Simul.Left  -> "      Sw_State("^string_of_int(nb-1)^") <= '0';\n"
+  end
+| Simul.P_SW_AUT(nb, st) -> "!@*&* Error SW_AUT never in"
+;;
+
+
+(* Print the event list *)
+let rec print_events c =
+match c with
+| [] -> ""
+| e::t ->
+  let s = print_event e.Simul.evname
+  in s^(print_events t)
+;;
+
+(* Print the output list *)
+let rec print_outputs c =
+match c with
+| [] -> "\n"
+| e::t ->
+  let s = ""
+  in s^(print_outputs t)
+;;
+
+
+(* Generate one cycle:
+   - check the outputs of the previous cycle (pc)
+   - falling of the clock
+   - generate the event of the current cycle (cc)
+   - rising edge of the clock (start cycle)
+*)
+let generate_cycle out_channel pc cc =
+  let outputs = print_outputs pc.Simul.outputs in
+  let events = print_events cc.Simul.events in
+  Printf.fprintf out_channel "%s" outputs;
+  Printf.fprintf out_channel "
+      CLK <= not CLK;
+      wait for 1 ns;\n";
+  Printf.fprintf out_channel "%s" events;
+  Printf.fprintf out_channel "
+      CLK <= not CLK;
+      wait for 1 ns;
+"
+;;  
+
 
 (* Generate the cycles *)
 let rec generate_cycles out_channel cycles =
@@ -89,12 +159,28 @@ match cycles with
 | [] -> ()
 | c::[] -> ()
 | c1::c2::t -> 
+   generate_cycle out_channel c1 c2;
    generate_cycles out_channel (c2::t)
 ;;
 
 
 let generate out_channel cycles =
   print_header out_channel;
+  match cycles with
+  | [] ->
+    (* Aucun cycle *)
+    Printf.fprintf out_channel ""
+  | c1::_ ->
+    begin
+    (* Generate the first inputs *)
+    let events = print_events c1.Simul.events 
+    in
+    Printf.fprintf out_channel "%s" events;
+    Printf.fprintf out_channel "
+      CLK <= not CLK;
+      wait for 1 ns;
+";
+    end;
   generate_cycles out_channel cycles; 
   print_trailer out_channel
 ;;
