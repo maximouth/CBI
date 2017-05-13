@@ -15,6 +15,8 @@ rule token = parse
                              token lexbuf }
  | "Free"                  { VALUE (true) }
  | "Occ"                   { VALUE (false) }
+ | "Aut"                   { VALUE (true) }
+ | "NoAut"                 { VALUE (false) }
 
  | "--" [^'\n']*           { COMMENT (Lexing.lexeme lexbuf)}
 
