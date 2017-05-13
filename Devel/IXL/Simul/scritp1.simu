@@ -24,7 +24,6 @@ Events
   SE_ID_20;  
   
 Outputs
-
   TC_01 = Free;  
   TC_02 = Free;  
   TC_03 = Free;  

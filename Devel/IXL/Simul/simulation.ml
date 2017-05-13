@@ -87,7 +87,7 @@ end simu;
 ;;
 
 (* Print one event *)
-let print_event ident =
+let print_ident_in ident =
 match ident with
 | Simul.P_SE(nb, _, dir) -> 
   begin
@@ -118,38 +118,69 @@ let rec print_events c =
 match c with
 | [] -> ""
 | e::t ->
-  let s = print_event e.Simul.evname
+  let s = print_ident_in e.Simul.evname
   in s^(print_events t)
+;;
+
+
+let print_ident_out ident =
+match ident with
+| Simul.P_SE(nb, _, dir) ->  "!@*&* Error TC never in"
+| Simul.P_TC(nb, _)      -> "TC_out("^string_of_int(nb-1)^")"
+| Simul.P_SW_CMD(nb, st) ->  "!@*&* Error SW_CMD never out"
+| Simul.P_SW_ST(nb, st)  ->  "!@*&* Error SW_ST never in" 
+| Simul.P_SW_AUT(nb, st) ->
+  begin
+  match st with 
+    | Simul.Right -> "Sw_Cmd_Aut("^string_of_int((nb-1)*2)^")"
+    | Simul.Left ->  "Sw_Cmd_Aut("^string_of_int((nb-1)*2 + 1)^")"
+  end
 ;;
 
 (* Print the output list *)
 let rec print_outputs c =
 match c with
 | [] -> "\n"
-| e::t ->
-  let s = ""
-  in s^(print_outputs t)
+| o::t ->
+  let value = if o.Simul.outval then "\'1\'" else "\'0\'"
+  in
+  let id = print_ident_out o.Simul.outname
+  in
+  let s = match o.Simul.comment with
+  | None -> ""
+  | Some co -> 
+     "      if ("^id^" = "^value^") then report \""^co^"\" & \" : Pass\"; else report \""^co^"\" & \" : Fail.\"; end if;\n"
+  in 
+  s^(print_outputs t)
 ;;
 
 
 (* Generate one cycle:
-   - check the outputs of the previous cycle (pc)
-   - falling of the clock
    - generate the event of the current cycle (cc)
    - rising edge of the clock (start cycle)
+   - check the outputs of the previous cycle (pc)
+   - falling of the clock
 *)
 let generate_cycle out_channel pc cc =
   let outputs = print_outputs pc.Simul.outputs in
   let events = print_events cc.Simul.events in
-  Printf.fprintf out_channel "%s" outputs;
-  Printf.fprintf out_channel "
-      CLK <= not CLK;
-      wait for 1 ns;\n";
+
+  begin
+  match cc.Simul.comment with
+  | None -> ()
+  | Some co -> Printf.fprintf out_channel "      report \"Cycle %i: %s\";\n" pc.Simul.cycle co;
+  end;
+
   Printf.fprintf out_channel "%s" events;
   Printf.fprintf out_channel "
       CLK <= not CLK;
       wait for 1 ns;
-"
+";
+
+  Printf.fprintf out_channel "%s" outputs;
+  Printf.fprintf out_channel "
+      CLK <= not CLK;
+      wait for 1 ns;\n";
 ;;  
 
 
@@ -157,7 +188,14 @@ let generate_cycle out_channel pc cc =
 let rec generate_cycles out_channel cycles =
 match cycles with
 | [] -> ()
-| c::[] -> ()
+| c::[] ->
+   let c0 = 
+      {Simul_t.Simul.cycle = 0;
+      Simul_t.Simul.comment = None;
+      Simul_t.Simul.events = [];
+      Simul_t.Simul.outputs = [];}
+   in
+   generate_cycle out_channel c c0
 | c1::c2::t -> 
    generate_cycle out_channel c1 c2;
    generate_cycles out_channel (c2::t)
@@ -177,6 +215,8 @@ let generate out_channel cycles =
     in
     Printf.fprintf out_channel "%s" events;
     Printf.fprintf out_channel "
+      CLK <= not CLK;
+      wait for 1 ns;
       CLK <= not CLK;
       wait for 1 ns;
 ";

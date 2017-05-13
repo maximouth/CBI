@@ -71,10 +71,9 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
-
-
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 0: -- Enter TC07 from SE_08";
       Sensor(7).dir <= "01";
 
       CLK <= not CLK;
@@ -83,58 +82,86 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 1: -- Train in TC07";
       Sensor(7).dir <= "00";
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 2: -- Exit TC07 from SE_09";
       Sensor(8).dir <= "01";
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 3: -- train outside TC07 from SE_09";
       Sensor(8).dir <= "00";
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(6) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
+      if (TC_out(7) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 4: -- train enter TC07 from SE_09";
       Sensor(8).dir <= "10";
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(6) = '1') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
+      if (TC_out(7) = '0') then report "-- TC08 is occupied" & " : Pass"; else report "-- TC08 is occupied" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 5: -- train inside TC07";
       Sensor(8).dir <= "00";
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
+      if (TC_out(7) = '1') then report "-- TC08 is free" & " : Pass"; else report "-- TC08 is free" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 6: -- train exits TC07 from SE_08  ";
       Sensor(7).dir <= "10";
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
+      if (TC_out(7) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 7: -- Train outside TC07 ";
       Sensor(7).dir <= "00";
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(6) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
+      if (TC_out(0) = '0') then report "-- TC01 is occupied" & " : Pass"; else report "-- TC01 is occupied" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(6) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
+      if (TC_out(0) = '0') then report "-- TC01 is occupied" & " : Pass"; else report "-- TC01 is occupied" & " : Fail."; end if;
 
 
       CLK <= not CLK;
@@ -146,6 +173,10 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
+
+      CLK <= not CLK;
+      wait for 1 ns;
+
 
       CLK <= not CLK;
       wait for 1 ns;
