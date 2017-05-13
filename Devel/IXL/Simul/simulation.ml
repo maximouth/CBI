@@ -166,8 +166,8 @@ let generate_cycle out_channel pc cc =
   let events = print_events cc.Simul.events in
 
   begin
-  match cc.Simul.comment with
-  | None -> ()
+  match pc.Simul.comment with
+  | None -> Printf.fprintf out_channel "      report \"Cycle %i:\";\n" pc.Simul.cycle
   | Some co -> Printf.fprintf out_channel "      report \"Cycle %i: %s\";\n" pc.Simul.cycle co;
   end;
 

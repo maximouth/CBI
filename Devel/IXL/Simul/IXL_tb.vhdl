@@ -93,6 +93,7 @@ begin
       wait for 1 ns;
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 1: --reset the circuit";
       Sensor(0).dir <= "01";
 
       CLK <= not CLK;
@@ -101,7 +102,7 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
-      report "Cycle 2: -- move train from TC1 to TC 2 forward";
+      report "Cycle 2:";
       Sensor(0).dir <= "00";
       Sensor(1).dir <= "01";
 
@@ -112,7 +113,7 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
-      report "Cycle 3: -- train in TC 2";
+      report "Cycle 3: -- move train from TC1 to TC 2 forward";
       Sensor(1).dir <= "00";
 
       CLK <= not CLK;
@@ -123,7 +124,7 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
-      report "Cycle 4: --move train from TC2 to TC 1 in reverse";
+      report "Cycle 4: -- train in TC 2";
       Sensor(1).dir <= "10";
 
       CLK <= not CLK;
@@ -134,6 +135,7 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 5: --move train from TC2 to TC 1 in reverse";
 
       CLK <= not CLK;
       wait for 1 ns;
@@ -143,6 +145,7 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 5:";
 
       CLK <= not CLK;
       wait for 1 ns;
@@ -150,6 +153,7 @@ begin
 
       CLK <= not CLK;
       wait for 1 ns;
+      report "Cycle 6:";
 
       CLK <= not CLK;
       wait for 1 ns;
