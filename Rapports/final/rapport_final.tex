@@ -132,20 +132,21 @@ gestion de maquettes de trains. Ce projet se base sur une
 trains et des aiguilles et d'envoyer des commandes en utilisant le
 \emph{protocole DCC}.
 
-Ce projet a été r\'ealis\'e seul et est encadr\'e par M. Denoulet. Ce projet c'est d\'eroulé sur une dur\'ee de 6 semaines.
+J'ai r\'ealis\'e ce projet seul, encadr\'e par M. Denoulet. Ce projet c'est d\'eroulé sur une dur\'ee de 6 semaines.
 Il est r\'ealis\'e dans le cadre d'un projet SESI.
 
-En complement de ce document il y en a un autre \cite{interface} qui sert de
-tutoriel au fonctionnement du moteur IXL. 
+En complement de ce document j'ai écrit un tutoriel \cite{interface}
+qui décrit le fonctionnement du moteur IXL
 
 \subsection{\underline{Objectifs}}
 
 L'objectif du projet a consisté, dans un premier temps, à porter la
 \emph{centrale DCC} implement\'ee par d'autres \'etudiants sur une nouvelle
 carte mat\'erielle \emph{FPGA}. La version courante de la centrale tourne sur
-une carte \emph{Spartan 6}, elle est remplac\'ee par notre \crt qui est
+une carte \emph{Spartan 6}, elle est remplac\'ee par une \crt qui est
 une carte plus r\'ecente et possède une interface plus complète
 \emph{(switchs, boutons, afficheurs 7 segments...)}
+
 Dans un second temps, le projet a consisté à ajouter la commande en
 sécurité des aiguillages.
 
@@ -355,7 +356,7 @@ Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 \centering
 \includegraphics[scale=0.55]{circuit_vrai.png}
 \caption{Sch\'ema de l'installation}
-\label{fig4}
+\label{schéma réél}
 \end{figure}
 
 Voici l'installation dont je disposais lors de ce projet. Il n'y a pas
@@ -482,6 +483,8 @@ figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 \end{figure}
 
 
+
+
 \subsection{\underline{Réalisation}}
 \label{sec:Réal}
 
@@ -552,31 +555,76 @@ equations.
 
 Le format des equations est le suivant :
 
-\begin{itemize}
-  \item la variable
-  \item <=
-    \begin{enumerate}[->]
+
+On commence par le nom de la variable, les variables utilisable sont
+indiquée dans le fichier lexer\_simul.mll du répertoire Simul, suivit
+d'un ``<='' 
+
+Ensuite on met l'équation logique qui nous interrese avec comme
+syntaxe :
+\begin{enumerate}[->]
     \item \emph{\~} pour le \textbf{not}
     \item \emph{+} pour le \textbf{ou}
     \item \emph{*} pour le \textbf{et}
     \end{enumerate}
-\end{itemize}
+
+\medskip
+
+Les équations mal écrites nous retourne une erreur et le fichier vhdl
+ne sera pas généré.
+
+\newpage
+
+Le générateur est découpé en 5 fichiers
+\begin{itemize}
+   \item main.ml
+   \item logic.ml
+   \item ixl\_t.ml
+   \item utils\_y.ml
+   \item lexer\_IXL.mll     
+\end{itemize}  
+
+\medskip
+
+Pour générer l'executable de l'application :
+
+\begin{lstlisting}
+
+   make clean depend all
+
+\end{lstlisting}
+  
+\medskip
+
+Le principe général de l'application est de parser le fichier.eq pour
+en extraire les différentes équations qui seront ensuite transformé en
+equation lisible en vhdl.
+
+\medskip
+
+Il y a deja l'entête et l'épilogue du fichier écrit dans ``ff`` qui
+permet à l'utilisateur de ne pas s'occuper de l'interface et de se
+concentrer sur les équations voulus.  
+
+\medskip
+
+Pour lancer l'application : 
+
+\begin{lstlisting}
+
+   ./tanslate -i fichier.eq -o fichier\_out.vhdl
+
+\end{lstlisting}
 
 
-Ocaml explications :
-
-fonctionnement général
-
-Application :
-
--> fichier entré
-
--> explication interface moteur sortie.
 
 
-Pour lancer l'application qui va créer le moteur IXL correspondant à
-la logique écrite.
-\emph{./tanslate -i fichier.eq -o fichier\_out.vhdl}
+Le fichier d'entré est un fichier.eq qui reprend la syntaxe des
+equations logique expliquée plus haut \cite{}.
+Et le fichier de sortie sera le moteur IXL généré contenant les
+différentes équations du fichier d'entrée.
+
+\newpage
 
 \subsubsection{\underline{moteur IXL}}
 \label{sec:IXL}
@@ -623,6 +671,8 @@ Il y a 4 signaux d'entrée :
     un instant donné.
 \end{itemize}  
 
+\medskip
+
 Et 2 signaux de sortie :
 
 \begin{itemize}
@@ -631,7 +681,7 @@ Et 2 signaux de sortie :
   \item Sw\_Cmd\_Aut qui contient l'état des aiguillages que l'on demande.
 \end{itemize}  
 
-Je ne sais pas comment espacer...
+\medskip
 
 Pour les simulations j'ai rajouté en sortie \emph{TC\_Out} qui permet
 d'afficher l'état des \emph{Track Circuit} pour pouvoir suivre les
@@ -639,34 +689,30 @@ différents trains se deplacer.
 
 Pour voir la définition des différents types et leurs valeurs \emph{voir \cite{interface}}.
 
-pareil ici..
+\bigskip
 
 \textbf{Le fonctionnement}
 
 Nous ne faisons la suite uniquement si le signal \emph{valid\_in} est egal à '1'.
 
 Nous mettons à jour toutes les nouvelles valeurs des \emph{Track
-  Circuit} grâce au équations écrite dans le fichier.
+  Circuit} grâce au équations générées.
 
-Nous allons ensuite verifier si nous pouvons bouger les aiguillages
-comme demandé en entré.
+Puis nous mettons à jour les valeurs de sortie des différents
+aiguillages selon les valeurs des Tracks Circuits.
 
-à faire...
+\smallskip
+
+Voir \cite{interface} pour avoir les différentes equations pour chaques Track
+Circuits et aiguillages.
 
 \subsubsection{\underline{Test Bench}}
 \label{sec:Test_Bench}
 
-Differents scénarios
-generateur test ?
+Voici les différents scénarios que j'ai utilisé comme base de test,
+d'autres peuvent être créés plus tard grâce au générateur de test.
 
-
-Afin de tester et valider les diff\'erentes \'etapes de mon projet, j'ai
-fait des \emph{bancs de tests}, des simulations ainsi que des
-exp\'erimentations qui pourront permettre de valider les différents essais.
-
-Il y a d'ailleurs plusieurs sc\'enarios que j'ai r\'ealisé qui
-me permettront de tester de façon r\'eelle les différents fonctionnements~:
-
+\medskip
 
 \begin{itemize}
     \item 1 train doit passer de la voie ``A`` à la voie ``B``
@@ -677,6 +723,75 @@ me permettront de tester de façon r\'eelle les différents fonctionnements~:
           changement  de voie du train 2.
 \end{itemize}
 
+\medskip
+
+Afin de pouvoir créer des tests facilement et de pouvoir essayer une
+grande quantitée de scénarios j'ai mis en place un générateur de test
+qui reprend le principe du générateur du moteur IXL.
+
+\smallskip
+
+Le générateur se crée de la même façon que l'autre :
+
+\begin{lstlisting}
+
+   make clean depend all
+
+\end{lstlisting}
+  
+\medskip
+
+Pour generer le fichier vhdl de simulation :
+
+\begin{lstlisting}
+
+   ./simul.x -i fichier.simu -o IXL_tb.vhdl 
+
+\end{lstlisting}
+
+\medskip
+
+Le fichier de sortie doit absolument se nomer IXL\_tb.vhdl si l'on
+veut pouvoir utiliser le makefile générant le fichier.vcd permetant
+d'obtenir le chronogramme du test et d'avoir les resultats des
+différents test   
+
+\medskip
+
+Voici la syntaxe des fichiers .simu pour un cycle donné.
+
+\begin{lstlisting}
+
+   Cycle 4 :
+   Events
+     SE_ID_2;  
+     SE_UP_3;  -- enter into TC3	
+   Outputs
+     TC_02 = Free;
+     TC_03 = Occ;  
+
+\end{lstlisting}
+
+\medskip
+
+Il faut commencer par indiquer le numéro de cycle que l'on est entrain
+d'écrire, cela servira pour le debug de l'application et l'affichage
+des tests.
+
+\medskip
+
+Dans la partie \textbf{Events} il faut indiquer les signaux en entrée que nous
+voulons voir changer. Toutes les variables que nous pouvons modifier
+sont indiquées dans le fichier lexer\_simul.mll 
+
+\medskip
+
+Ensuite dans la partie \textbf{Outputs}, il faut indiquer les tests
+que nous voulons réaliser.
+Pour le générateur de test, si on veut que les test soient générés il
+faut mettre des commantaire ``--''.
+
+\bigskip
 
 Pour chaques scenarios ajouter les chronogrammes et tout...
 
