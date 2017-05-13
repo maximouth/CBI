@@ -46,21 +46,38 @@ Cycle 2 :
 Events
   SE_UP_1;  -- enter into TC1
 Outputs
-  TC_01 = Occ;
+  TC_01 = Occ;  -- TC01 occupied
 
 Cycle 3 : -- move train from TC1 to TC 2 forward
 Events
   SE_ID_1;  -- leave TC0
   SE_UP_2;  -- enter into TC2 forward 
 Outputs
-  TC_01 = Free;
-  TC_02 = Occ;
+  TC_01 = Free;  -- TC01 free
+  TC_02 = Occ;   -- TC02 occupied
 
-Cycle 4 : --move train from TC2 to TC 1 in reverse
+Cycle 4 : -- train in TC 2
+Events
+  SE_ID_2;  -- leave TC0
+Outputs
+  TC_01 = Free;  -- TC01 free
+  TC_02 = Occ;   -- TC02 occupied
+
+Cycle 5 : --move train from TC2 to TC 1 in reverse
 Events
   SE_DO_2;  -- enter into TC1 in reverse 
 Outputs
-  TC_01 = Occ;
-  TC_02 = Free;
+  TC_01 = Occ;   -- TC01 occupied
+  TC_02 = Free;  -- TC02 free
 
 
+Cycle 5:
+Events
+Outputs
+
+Cycle 6:
+Events
+Outputs
+
+  
+  
