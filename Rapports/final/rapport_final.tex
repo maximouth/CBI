@@ -132,39 +132,39 @@ gestion de maquettes de trains. Ce projet se base sur une
 trains et des aiguilles et d'envoyer des commandes en utilisant le
 \emph{protocole DCC}.
 
-J'ai r\'ealis\'e ce projet seul, encadr\'e par M. Denoulet. Ce projet c'est d\'eroulé sur une dur\'ee de 6 semaines.
+J'ai r\'ealis\'e ce projet seul, encadr\'e par M. Denoulet. Ce projet s'est d\'eroulé sur une dur\'ee de 6 semaines.
 Il est r\'ealis\'e dans le cadre d'un projet SESI.
 
-En complement de ce document j'ai écrit un tutoriel \cite{interface}
+En complément de ce document j'ai rédigé un tutoriel \cite{interface}
 qui décrit le fonctionnement du moteur IXL
 
 \subsection{\underline{Objectifs}}
 
 L'objectif du projet a consisté, dans un premier temps, à porter la
-\emph{centrale DCC} implement\'ee par d'autres \'etudiants sur une nouvelle
+\emph{centrale DCC} implément\'ee par d'autres \'etudiants sur une nouvelle
 carte mat\'erielle \emph{FPGA}. La version courante de la centrale tourne sur
 une carte \emph{Spartan 6}, elle est remplac\'ee par une \crt qui est
 une carte plus r\'ecente et possède une interface plus complète
 \emph{(switchs, boutons, afficheurs 7 segments...)}
 
 Dans un second temps, le projet a consisté à ajouter la commande en
-sécurité des aiguillages.
+sécurité des aiguillages qui a été décomposé en deux phases.
 
-J'ai propose de commencer par une gestion manuelle des aiguillages avec
+La première phase consistait à mettre en place une gestion manuelle des aiguillages avec
 les diff\'erents switchs de la carte sans v\'erification de
 s\'ecurit\'e.
-Puis une fois cela fait, j' impl\'ementerai une gestion des
+La seconde phase consistait à réaliser une gestion des
 enclenchements ferroviaires grâce aux différents capteurs pr\'esents sur
-les rails. Ceci permettra de garantir qu'un train ne pourra pas
+les rails. Ceci permettant de garantir qu'un train ne pourra pas
 changer de voie si un autre train se trouve sur le chemin
 qu'il veut parcourir. 
 
 
-Mais je n'ai pas pus implémenter la version manuelle car les
-aiguillages n'étaient pas présent sur la voie, et on ne connaisait pas
-leurs fonctionnement.
-J'ai donc fait en sorte d'avoir une gestion automatique des
-aiguillages, dont le fonctionnement est visible en simulation.
+Je n'ai pas pu implémenter la version manuelle car les
+aiguillages n'étaient pas présent sur la voie, et on ne connaissait pas
+leur fonctionnement. Afin de ne pas être bloqué dans la réalisation de mon projet,
+j'ai opté pour une gestion automatique des
+aiguillages, dont le fonctionnement n'est visible qu'en simulation.
 
 
 Les domaines de comp\'etences requis sont multiples; la connaissance
@@ -201,7 +201,7 @@ pourront \^etre rajout\'ees ult\'erieurement.
 
 
 \subsection{\underline{Le système d'enclenchement}}
-\label{sec:log_ixl}
+\label{sec:logixl}
 
 Le chapitre 2 du document \cite{sun2015} présente un système
 ferroviaire. Un système ferroviaire est compos\'e de plusieurs systèmes~:
@@ -260,16 +260,16 @@ La coeur de la gestion
   contient pas de signaux, ils seront remplacés par des commandes de
   train. Un itinéraire peut être dans les états suivants:
   \begin{itemize}
-    \item \emph{commandé}. L'opérateur demande au train de parcourir
-      l'itinéraire choisit. Il a par conséquent demandé la formation de
+\item \emph{commandé}: L'opérateur demande au train de parcourir
+      l'itinéraire choisi. Il a par conséquent demandé la formation de
       l'itinéraire au système d'enclenchement. Si les conditions sur
       les aiguilles à manoeuvrer pour former l'itinéraire sont
       correctes, le système d'enclenchement passe à l'état de formation de
       l'itinéraire sinon il est rejeté.
-    \item \emph{formé}. Les aiguilles sont positionnées dans la bonne
+\item \emph{formé}: Les aiguilles sont positionnées dans la bonne
       direction. Il n'est plus possible de bouger les aiguilles tant
       que le train se situe dans une certaine zone.
-    \item \emph{détruit}. Le train a parcouru l'itinéraire, celui-ci peut
+\item \emph{détruit}: Le train a parcouru l'itinéraire, celui-ci peut
       être détruit de façon à autoriser le parcours d'un autre train sur les
       aiguilles.  
   \end{itemize}
@@ -288,7 +288,7 @@ mouvement et déraillerait.
 Sur la figure \ref{encl_approche}, lorsque le train se situe dans la
 zone verte, il est possible de bouger l'aiguille A4. Si le train se
 trouve dans le zone rouge, alors l'aiguille A4 est \emph{enclenchée}
-et toute demande de mouvement de l'aiguille sera rejeté.
+et toute demande de mouvement de l'aiguille sera rejetée.
 
 %\begin{figure}[h!]
 %\centering
@@ -346,8 +346,8 @@ tout au long du projet.
 \label{fig4}
 \end{figure}
 
-L'installation à partir de laquelle nous avons développé le projet est
-celle ci \emph{(voir fig~\ref{fig4})}, compos\'ee de 3
+L'installation à partir de laquelle le projet a été développé est
+ \emph{(voir fig~\ref{fig4})}, compos\'ee de 3
 circuits imbriqués, de 4 paires d'aiguillages control\'ees par 8
 contr\^oleurs gérés par trame DCC, et de 20 capteurs.
 Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
@@ -359,7 +359,7 @@ Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 \label{schéma réél}
 \end{figure}
 
-Voici l'installation dont je disposais lors de ce projet. Il n'y a pas
+Voici l'installation initiale dont je disposais lors de ce projet. Il n'y a pas
 d'aiguillage et seulement 4 capteurs.
 
 
@@ -392,8 +392,8 @@ Le code barre est compos\'e de la façon suivante :
 \label{fig6}
 \end{figure}
 
-Les capteurs vont permettre de mettre à jour une table contenant la
-dernière position connue de chaque train ce qui va nous permettre de
+Grâce aux capteurs une table contenant la
+dernière position connue de chaque train peut être mise à jour ce qui va nous permettre de
 choisir si un train doit changer de voie ou rester sur la sienne selon
 si il y a un train qui bloque ou non la zone d'aiguillage qui nous concerne.
 
@@ -401,7 +401,7 @@ si il y a un train qui bloque ou non la zone d'aiguillage qui nous concerne.
 \subsection{\underline{Outils}}
 \label{sec:outils}
 
-Lors de ce projet, je vais utiliser diff\'erents outils :
+Lors de ce projet, les diff\'erents outils suivants ont été utilisés:
 \begin{itemize}
   \item La carte \crt comme plateforme de d\'eveloppement
   \item La locomotive \emph{Jouef ``Fret SNCF``}\cite{Jouef}, les capteurs de
@@ -426,13 +426,16 @@ ainsi que plusieurs langages:
 \subsection{\underline{Activit\'es du projet}}
 \label{sec:activ}
 
-Comme dit plus haut \emph{(voir 2.5)} le projet a \'et\'e decoup\'e en
-plusieurs \'etapes diff\'erentes, mais toutes n'ont pas été
-possible à réalisée.
-Voici ce qui aurait dû être réalisé.
+Comme dit précédemment \emph{(voir \ref{sec:logixl})} le projet a \'et\'e
+découp\'e en plusieurs \'etapes diff\'erentes, mais toutes n'ont pas été
+possible à réaliser concrêtement car la maquette n'\'etait pas en \'etat de
+fonctionnement complet.
+
+
+Voici ce qui a \'et\'e r\'ealis\'e lors de ce projet.
 
 \begin{enumerate}[1]
-  \item Portage de la centrale DCC
+  \item Portage de la centrale DCC (fait)
   \begin{itemize}
     \item Dans un premier temps il faut cr\'eer une nouvelle Interface
       Homme Machine
@@ -440,40 +443,41 @@ Voici ce qui aurait dû être réalisé.
       gestion des capteurs
   \end{itemize}
 
-  \item Ajout des aiguillages
+  \item Gestion des circuits de voie (réaliser uniquement en simulation)
   \begin{itemize}
-    \item Ajouter la gestion de l'aiguillage
-    \item Une fois l'aiguillage cr\'e\'e, il va falloir ajouter la
-      gestion des itinéraires avec les différents aiguillages
-    \item Puis pouvoir commander un itinéraire
-      pour faire changer de voie un train uniquement
-      sans aucun controle de s\'ecurit\'e.
-    \item Et enfin r\'ealiser les diff\'erents sc\'enarios A.
+    \item D\'efinir une interface entre le moteur DCC et le moteur IXL pour
+      permettre la communication entre les 2 modules
+    \item Cr\'eer un langage de d\'efinition pour la gestion des circuits
+      de voie
+    \item D\'efinir les \'equations g\'en\'eriques de gestion des circuits
+      de voie
+    \item Cr\'eer un langage pour la g\'en\'eration des sc\'enarios de
+      simulation
+    \item \'Ecrire les diff\'erents sc\'enarios de mouvements de trains.
   \end{itemize}
 
   
-  \item Avec aiguillages et capteurs
+  \item Gestion des aiguillages (réaliser uniquement en simulation). Sur la
+  base de la gestion des circuits de voie  
     \begin{itemize} 
-      \item Maintenant que la gestion de l'aiguillage et
-        l'acquisition des différents capteurs sont effectués, je vais pouvoir rajouter
-        la s\'ecurit\'e dans le systeme pour le rendre plus s\^ur.
-      \item Il faut ajouter un moteur IXL\cite{IXL} qui v\'erifira
-        l'\'etat des voies avant de valider l'envoie d'une commande \`a
-        un train.
-      \item Une fois toutes ces étapes réalisées, je pourrai r\'ealiser les
-        diff\'erents sc\'enarios B qui permettront de valider les
-        demandes du projet.      
+      \item D\'efinir les \'equations g\'en\'eriques de gestion des aiguillages.
+    \item \'Ecrire les diff\'erents sc\'enarios de mouvements des aiguillages.
     \end{itemize}
 \end{enumerate}
+
+La documentation associ\'e aux langages d'\'ecriture des \'equations
+d'enclenchement et d'\'ecriture des sc\'enarios de simulation est
+\'egalement fournie pour permettre de poursuivre le projet.
+
 
 \newpage
 
 \subsection{\underline{Planning pr\'evisionnel}}
 \label{sec:planning}
 
-Voici les différentes t\^aches ainsi que le planning que je comptai
+Voici les différentes t\^aches ainsi que le planning à
 respecter pour r\'eussir \`a mener \`a bien mon projet. La
-figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
+figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet. Ce planning m'a permis de vérifier l'avancement de mon projet au fur et à mesure.
 
 \begin{figure}[h]
 \centering
@@ -482,7 +486,19 @@ figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 \label{gantt}
 \end{figure}
 
+\subsection{\underline{Gestion du projet}}
+\label{sec:gestion}
 
+Le projet a \'et\'e enti\`erement r\'ealis\'e en gestion de configuration avec l'outil \emph{GIT} (\cite{GIT}). L'annexe A pr\'esente l'arborescence de d\'eveloppement du projet.
+
+Chaque morceau du projet peut \^etre compil\'e de fa\c con autonome et
+automatique avec la commande \emph{make}.
+
+La documentation a \'et\'e \'ecrite avec l'outil \LaTeX.
+
+Les outils de g\'en\'eration de VHDL ont \'et\'e \'ecrit en \emph{OCaml}. Ce
+langage permet un d\'eveloppement rapide de programme de manipulation de
+structures complexes.
 
 
 \subsection{\underline{Réalisation}}
@@ -491,13 +507,12 @@ figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet.
 \subsubsection{\underline{Centrale DCC}}
 \label{sec:Centrale}
 
-J'ai réussi à créer une centrale DCC pour pouvoir controler les
-différents trains et equipements de voie dont nous pouvons
-disposer. La centrale se base sur celle du cours de FPGA que nous
-avons du réaliser \emph{(voir \cite{rapport} et \cite{sujet})}
+La centrale DCC a été créée afin de pouvoir contrôler les
+différents trains et équipements de voie dont nous pouvions
+disposer (en simulation ou en réél). La centrale se base sur celle qui a été réalisée lors du cours de FPGA  \emph{(voir \cite{rapport} et \cite{sujet})}
 
-La centrale est capable de d'envoyer différentes \emph{trâmes DCC}
-pour contrôler plusieurs centales à la fois. Voici les différentes
+La centrale est capable d'envoyer différentes \emph{trames DCC}
+pour contrôler plusieurs équipements à la fois. Voici les différentes
 commandes que l'on peut gérer avec mon interface.
 
 
@@ -533,10 +548,10 @@ La \emph{figure~\ref{carte1}} et la \emph{figure~\ref{carte2}} sont un
 exemple du rendu de l'IHM d\'evelopp\'ee.
 La \emph{figure~\ref{carte1}} représente la valeur de l'adresse du
 train à qui on envoie la commande.
-Tandis que la \emph{figure~\ref{carte2}} montre le numero de
+Tandis que la \emph{figure~\ref{carte2}} montre le numéro de
 l'aiguillage que l'on veut bouger.
 En appuyant sur le bouton gauche on change le réglage, et en appuyant sur le
-bouton droit on incrémente la valeur du réglage choisit
+bouton droit on incrémente la valeur du réglage choisi.
 Le premier switch de la carte sert à réinitialiser les différentes
 valeurs de la centrale \emph{(adresse, commande..)}.
 
@@ -547,20 +562,20 @@ valeurs de la centrale \emph{(adresse, commande..)}.
 
 Afin de pouvoir avoir un moteur d'interlocking modulable et adaptable
 à différents types de circuits, j'ai utilisé un générateur de vhdl en
-Ocaml qui prend en entrée un fichier contenant les différentes
-equations.
+Ocaml qui prend en entrée un fichier contenant  différentes
+équations selon l'exemple vi-dessous.
 
 \emph{T\_16 <= ~SE\_UP\_18 * ~SE\_DO\_13 * (TC\_16 + SE\_DO\_18 + SE\_UP\_13);}
 
 
-Le format des equations est le suivant :
+Le format des équations est le suivant :
 
 
-On commence par le nom de la variable, les variables utilisable sont
-indiquée dans le fichier lexer\_simul.mll du répertoire Simul, suivit
+On commence par le nom de la variable (T\_16), les variables utilisables sont
+indiquées dans le fichier lexer\_simul.mll du répertoire Simul, suivi
 d'un ``<='' 
 
-Ensuite on met l'équation logique qui nous interrese avec comme
+Ensuite on met l'équation logique qui nous intéresse suivant la syntaxe suivante:
 syntaxe :
 \begin{enumerate}[->]
     \item \emph{\~} pour le \textbf{not}
@@ -581,12 +596,12 @@ Le générateur est découpé en 5 fichiers
    \item logic.ml
    \item ixl\_t.ml
    \item utils\_y.ml
-   \item lexer\_IXL.mll     
+   \item lexer\_simul.mll
 \end{itemize}  
 
 \medskip
 
-Pour générer l'executable de l'application :
+Pour générer l'exécutable de l'application l'instruction suivante doit être lancée:
 
 \begin{lstlisting}
 
@@ -597,18 +612,18 @@ Pour générer l'executable de l'application :
 \medskip
 
 Le principe général de l'application est de parser le fichier.eq pour
-en extraire les différentes équations qui seront ensuite transformé en
-equation lisible en vhdl.
+en extraire les différentes équations qui seront ensuite transformées en
+équations lisibles en vhdl.
 
 \medskip
 
-Il y a deja l'entête et l'épilogue du fichier écrit dans ``ff`` qui
+Il y a déja l'entête et l'épilogue du fichier écrit dans ``ff`` qui
 permet à l'utilisateur de ne pas s'occuper de l'interface et de se
-concentrer sur les équations voulus.  
+concentrer sur les équations voulues.
 
 \medskip
 
-Pour lancer l'application : 
+Pour lancer l'application qui va créer le moteur IXL correspondant à la logique décrite:
 
 \begin{lstlisting}
 
@@ -619,8 +634,8 @@ Pour lancer l'application :
 
 
 
-Le fichier d'entré est un fichier.eq qui reprend la syntaxe des
-equations logique expliquée plus haut \cite{}.
+Le fichier en entrée est un fichier.eq qui reprend la syntaxe des
+équations logiques dont la définition a été indiquée précédemment  \cite{}.
 Et le fichier de sortie sera le moteur IXL généré contenant les
 différentes équations du fichier d'entrée.
 
@@ -685,7 +700,7 @@ Et 2 signaux de sortie :
 
 Pour les simulations j'ai rajouté en sortie \emph{TC\_Out} qui permet
 d'afficher l'état des \emph{Track Circuit} pour pouvoir suivre les
-différents trains se deplacer. 
+différents trains en cours de déplacement.
 
 Pour voir la définition des différents types et leurs valeurs \emph{voir \cite{interface}}.
 
@@ -693,7 +708,7 @@ Pour voir la définition des différents types et leurs valeurs \emph{voir \cite
 
 \textbf{Le fonctionnement}
 
-Nous ne faisons la suite uniquement si le signal \emph{valid\_in} est egal à '1'.
+Nous ne faisons la suite uniquement que si le signal \emph{valid\_in} est égal à '1'.
 
 Nous mettons à jour toutes les nouvelles valeurs des \emph{Track
   Circuit} grâce au équations générées.
@@ -703,14 +718,14 @@ aiguillages selon les valeurs des Tracks Circuits.
 
 \smallskip
 
-Voir \cite{interface} pour avoir les différentes equations pour chaques Track
-Circuits et aiguillages.
+Voir \cite{interface} pour avoir les différentes équations pour chaque Track
+Circuits et pour les aiguillages.
 
 \subsubsection{\underline{Test Bench}}
 \label{sec:Test_Bench}
 
 Voici les différents scénarios que j'ai utilisé comme base de test,
-d'autres peuvent être créés plus tard grâce au générateur de test.
+d'autres scénarios peuvent être créés  grâce au générateur de test.
 
 \medskip
 
@@ -726,12 +741,12 @@ d'autres peuvent être créés plus tard grâce au générateur de test.
 \medskip
 
 Afin de pouvoir créer des tests facilement et de pouvoir essayer une
-grande quantitée de scénarios j'ai mis en place un générateur de test
+grande quantité de scénarios j'ai mis en place un générateur de test
 qui reprend le principe du générateur du moteur IXL.
 
 \smallskip
 
-Le générateur se crée de la même façon que l'autre :
+Le générateur se créé de la même façon que l'autre :
 
 \begin{lstlisting}
 
@@ -741,7 +756,7 @@ Le générateur se crée de la même façon que l'autre :
   
 \medskip
 
-Pour generer le fichier vhdl de simulation :
+Pour générer le fichier vhdl de simulation il faut lancer l'instruction suivante:
 
 \begin{lstlisting}
 
@@ -752,9 +767,9 @@ Pour generer le fichier vhdl de simulation :
 \medskip
 
 Le fichier de sortie doit absolument se nomer IXL\_tb.vhdl si l'on
-veut pouvoir utiliser le makefile générant le fichier.vcd permetant
-d'obtenir le chronogramme du test et d'avoir les resultats des
-différents test   
+veut pouvoir utiliser le makefile générant le fichier.vcd permettant
+d'obtenir le chronogramme du test et d'avoir les résultats des
+différents tests
 
 \medskip
 
@@ -789,11 +804,11 @@ sont indiquées dans le fichier lexer\_simul.mll
 Ensuite dans la partie \textbf{Outputs}, il faut indiquer les tests
 que nous voulons réaliser.
 Pour le générateur de test, si on veut que les test soient générés il
-faut mettre des commantaire ``--''.
+faut mettre des commentaires ``--''.
 
 \bigskip
 
-Pour chaques scenarios ajouter les chronogrammes et tout...
+Pour chaque scénario ajouter les chronogrammes et tout...
 
 \subsection{\underline{Conclusion}}
 \label{sec:Conclusion}
