@@ -157,11 +157,12 @@ Outputs
 Cycle 11 :
 Events
   SE_ID_3;  
-  SE_UP_4;  -- enter into TC4	
+  SE_UP_4;  -- enter into TC4
+  SW_CMD_NO_5; --
 Outputs
   TC_03 = Free; --
   TC_04 = Occ;  --
-  SW_AUT_RI_5 = Aut; --
+  SW_AUT_RI_5 = NoAut; --
 
 Cycle 12 :
 Events
@@ -170,7 +171,7 @@ Events
 Outputs
   TC_04 = Free; --
   TC_14 = Occ;  --
-  SW_AUT_RI_5 = Aut; --
+  SW_AUT_RI_5 = NoAut; --
 
 Cycle 13 :
 Events

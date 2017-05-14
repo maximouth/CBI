@@ -224,6 +224,8 @@ begin
       report "Cycle 10:";
       Sensor(2).dir <= "00";
       Sensor(3).dir <= "01";
+      Sw_Cmd_req(8) <= '0';
+      Sw_Cmd_Req(9) <= '0';
 
       CLK <= not CLK;
       wait for 1 ns;
@@ -242,7 +244,7 @@ begin
       wait for 1 ns;
       if (TC_out(2) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
       if (TC_out(3) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
-      if (Sw_Cmd_Aut(8) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (Sw_Cmd_Aut(8) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
 
 
       CLK <= not CLK;
@@ -256,7 +258,7 @@ begin
       wait for 1 ns;
       if (TC_out(3) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
       if (TC_out(13) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
-      if (Sw_Cmd_Aut(8) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (Sw_Cmd_Aut(8) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
 
 
       CLK <= not CLK;
