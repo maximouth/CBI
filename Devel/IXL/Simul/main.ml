@@ -45,7 +45,7 @@ let mainloop () =
           end
 	in
 	(* Print the parsed file, for debug purpose only *)
-        Utils_simul.print_cycles cycles;
+        (* Utils_simul.print_cycles cycles; *)
 	
 	(* Generate the VHDL from the simulation *)
 	Simulation.generate !out_Simul_channel cycles;

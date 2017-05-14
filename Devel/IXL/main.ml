@@ -44,7 +44,7 @@ let mainloop () =
       end
 	in
 	(* Print the parsed file, for debug purpose only *)
-        Utils_IXL.print_eqs equation_l;
+        (* Utils_IXL.print_eqs equation_l; *)
 	
 	(* Generate the VHDL from the boolean equations *)
 	Logic.generate !out_IXL_channel equation_l;

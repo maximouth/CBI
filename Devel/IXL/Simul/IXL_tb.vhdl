@@ -218,7 +218,7 @@ begin
       if (TC_out(0) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
       if (TC_out(1) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
       if (TC_out(2) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
-      if (Sw_Cmd_Aut(8) = '1') then report "-- " & " : Pass"; else report "-- " & " : Fail."; end if;
+      if (Sw_Cmd_Aut(8) = '1') then report "-- autorisation to move sw5" & " : Pass"; else report "-- autorisation to move sw5" & " : Fail."; end if;
 
 
       CLK <= '0';
@@ -228,12 +228,13 @@ begin
       Sensor(2).dir <= "01";
       Sw_Cmd_req(8) <= '0';
       Sw_Cmd_Req(9) <= '0';
+      Sw_Cmd_Req(9) <='1';
 
       CLK <= '1';
       wait for 1 ns;
       if (TC_out(1) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
       if (TC_out(2) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
-      if (Sw_Cmd_Aut(8) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (Sw_Cmd_Aut(8) = '0') then report "-- autorisation denied because TC3 occupied" & " : Pass"; else report "-- autorisation denied because TC3 occupied" & " : Fail."; end if;
 
 
       CLK <= '0';
@@ -241,6 +242,8 @@ begin
       report "Cycle 11:";
       Sensor(2).dir <= "00";
       Sensor(3).dir <= "01";
+      Sw_Cmd_req(8) <= '0';
+      Sw_Cmd_Req(9) <= '0';
 
       CLK <= '1';
       wait for 1 ns;
