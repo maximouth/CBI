@@ -142,12 +142,12 @@ qui décrit le fonctionnement du moteur IXL
 
 L'objectif du projet a consisté, dans un premier temps, à porter la
 \emph{centrale DCC} implément\'ee par d'autres \'etudiants sur une nouvelle
-carte mat\'erielle \emph{FPGA}. La version courante de la centrale tourne sur
-une carte \emph{Spartan 6}, elle est remplac\'ee par une \crt qui est
+carte mat\'erielle \emph{FPGA}. La version courante de la centrale tournant sur
+une carte \emph{Spartan 6}, elle devait être remplac\'ee par une \crt qui est
 une carte plus r\'ecente et possède une interface plus complète
 \emph{(switchs, boutons, afficheurs 7 segments...)}
 
-Dans un second temps, le projet a consisté à ajouter la commande en
+Dans un second temps, il fallait ajouter la commande en
 sécurité des aiguillages qui a été décomposé en deux phases.
 
 La première phase consistait à mettre en place une gestion manuelle des aiguillages avec
@@ -160,9 +160,9 @@ changer de voie si un autre train se trouve sur le chemin
 qu'il veut parcourir. 
 
 
-Je n'ai pas pu implémenter la version manuelle car les
-aiguillages n'étaient pas présent sur la voie, et on ne connaissait pas
-leur fonctionnement. Afin de ne pas être bloqué dans la réalisation de mon projet,
+Je n'ai pas pu implémenter la version manuelle de gestion des aiguillages  car ceux-ci
+ n'étaient pas présent sur la voie, et nous n'en connaissions pas
+le fonctionnement. Afin de ne pas être bloqué dans la réalisation de mon projet,
 j'ai opté pour une gestion automatique des
 aiguillages, dont le fonctionnement n'est visible qu'en simulation.
 
@@ -260,21 +260,21 @@ La coeur de la gestion
   contient pas de signaux, ils seront remplacés par des commandes de
   train. Un itinéraire peut être dans les états suivants:
   \begin{itemize}
-\item \emph{commandé}: L'opérateur demande au train de parcourir
+  \item \emph{commandé}: L'opérateur demande au train de parcourir
       l'itinéraire choisi. Il a par conséquent demandé la formation de
       l'itinéraire au système d'enclenchement. Si les conditions sur
       les aiguilles à manoeuvrer pour former l'itinéraire sont
       correctes, le système d'enclenchement passe à l'état de formation de
       l'itinéraire sinon il est rejeté.
-\item \emph{formé}: Les aiguilles sont positionnées dans la bonne
+  \item \emph{formé}: Les aiguilles sont positionnées dans la bonne
       direction. Il n'est plus possible de bouger les aiguilles tant
       que le train se situe dans une certaine zone.
-\item \emph{détruit}: Le train a parcouru l'itinéraire, celui-ci peut
+  \item \emph{détruit}: Le train a parcouru l'itinéraire, celui-ci peut
       être détruit de façon à autoriser le parcours d'un autre train sur les
       aiguilles.  
   \end{itemize}
 
-
+\medskip
 Un système d'enclenchement est composé d'enclenchements correspondant
 chacun à une condition à vérifier. Par exemple, l'{enclenchement
 d'approche d'une aiguille}; Il interdit la formation d'un 
@@ -328,7 +328,7 @@ projet. Elle est composée de 3 parties~:
 \label{archi}
 \end{figure}
 
-Le moteur DCC sera développé en VHDL. Le moteur d'instanciation sera
+Le moteur DCC a été développé en VHDL. Le moteur d'instanciation a été
 développé en OCaml \cite{OCAML}.
 
 
@@ -337,7 +337,7 @@ développé en OCaml \cite{OCAML}.
 \label{sec:archi}
 
 Voici le sch\'ema repr\'esentant l'installation ferroviaire utilis\'ee
-tout au long du projet. 
+tout au long du projet en mode simulation.
 
 \begin{figure}[h]
 \centering
@@ -360,7 +360,7 @@ Le dispositif peut accueillir jusqu'\`a 6 trains en m\^eme temps.
 \end{figure}
 
 Voici l'installation initiale dont je disposais lors de ce projet. Il n'y a pas
-d'aiguillage et seulement 4 capteurs.
+d'aiguillage et seulement 4 capteurs, donc incomplet pour les tests prévus.
 
 
 \begin{figure}[h]
@@ -402,6 +402,7 @@ si il y a un train qui bloque ou non la zone d'aiguillage qui nous concerne.
 \label{sec:outils}
 
 Lors de ce projet, les diff\'erents outils suivants ont été utilisés:
+\medskip
 \begin{itemize}
   \item La carte \crt comme plateforme de d\'eveloppement
   \item La locomotive \emph{Jouef ``Fret SNCF``}\cite{Jouef}, les capteurs de
@@ -409,7 +410,7 @@ Lors de ce projet, les diff\'erents outils suivants ont été utilisés:
   \item Le protocole DCC \cite{DCC}
   \item Le logiciel Vivado comme \emph{IDE}
 \end{itemize}
-
+\medskip
 ainsi que plusieurs langages:
 \begin{itemize}
   \item \emph{VHDL}\cite{VHDL} comme language de description pour mes diff\'erentes
@@ -437,31 +438,31 @@ Voici ce qui a \'et\'e r\'ealis\'e lors de ce projet.
 \begin{enumerate}[1]
   \item Portage de la centrale DCC (fait)
   \begin{itemize}
-    \item Dans un premier temps il faut cr\'eer une nouvelle Interface
+    \item Création d'une nouvelle Interface
       Homme Machine
-    \item Puis porter le code de l'ancienne centrale DCC et la
+    \item Portage du code de l'ancienne centrale DCC et de la
       gestion des capteurs
   \end{itemize}
 
-  \item Gestion des circuits de voie (réaliser uniquement en simulation)
+  \item Gestion des circuits de voie (réalisé uniquement en simulation)
   \begin{itemize}
-    \item D\'efinir une interface entre le moteur DCC et le moteur IXL pour
+    \item D\'efinition d'une interface entre le moteur DCC et le moteur IXL pour
       permettre la communication entre les 2 modules
-    \item Cr\'eer un langage de d\'efinition pour la gestion des circuits
+    \item Cr\'eation d'un langage de d\'efinition pour la gestion des circuits
       de voie
-    \item D\'efinir les \'equations g\'en\'eriques de gestion des circuits
+    \item D\'efinition des \'equations g\'en\'eriques de gestion des circuits
       de voie
-    \item Cr\'eer un langage pour la g\'en\'eration des sc\'enarios de
+    \item Cr\'eation d'un langage pour la g\'en\'eration des sc\'enarios de
       simulation
-    \item \'Ecrire les diff\'erents sc\'enarios de mouvements de trains.
+    \item \'Ecriture des diff\'erents sc\'enarios de mouvement des trains.
   \end{itemize}
 
   
-  \item Gestion des aiguillages (réaliser uniquement en simulation). Sur la
+  \item Gestion des aiguillages (réalisé uniquement en simulation). Sur la
   base de la gestion des circuits de voie  
     \begin{itemize} 
-      \item D\'efinir les \'equations g\'en\'eriques de gestion des aiguillages.
-    \item \'Ecrire les diff\'erents sc\'enarios de mouvements des aiguillages.
+      \item D\'efinition des \'equations g\'en\'eriques de gestion des aiguillages.
+    \item \'Ecriture des diff\'erents sc\'enarios de mouvements des aiguillages.
     \end{itemize}
 \end{enumerate}
 
@@ -475,8 +476,8 @@ d'enclenchement et d'\'ecriture des sc\'enarios de simulation est
 \subsection{\underline{Planning pr\'evisionnel}}
 \label{sec:planning}
 
-Voici les différentes t\^aches ainsi que le planning à
-respecter pour r\'eussir \`a mener \`a bien mon projet. La
+Voici les différentes t\^aches ainsi que le planning initial qui devait être
+respecté pour r\'eussir \`a mener \`a bien mon projet. La
 figure~\ref{gantt} pr\'esente le diagramme de Gantt du projet. Ce planning m'a permis de vérifier l'avancement de mon projet au fur et à mesure.
 
 \begin{figure}[h]
@@ -509,11 +510,13 @@ structures complexes.
 
 La centrale DCC a été créée afin de pouvoir contrôler les
 différents trains et équipements de voie dont nous pouvions
-disposer (en simulation ou en réél). La centrale se base sur celle qui a été réalisée lors du cours de FPGA  \emph{(voir \cite{rapport} et \cite{sujet})}
+disposer (en simulation ou en réél).
+\medskip
+La centrale se base sur celle qui a été réalisée lors du cours de FPGA  \emph{(voir \cite{rapport} et \cite{sujet})}
 
 La centrale est capable d'envoyer différentes \emph{trames DCC}
 pour contrôler plusieurs équipements à la fois. Voici les différentes
-commandes que l'on peut gérer avec mon interface.
+commandes que l'on peut gérer avec l'interface.
 
 
 \begin{itemize}
@@ -526,7 +529,6 @@ commandes que l'on peut gérer avec mon interface.
       projet. 
   \end{itemize}
 
-\newpage
 
 \begin{figure}[h]
     \begin{minipage}[c]{.46\linewidth}
@@ -555,6 +557,7 @@ bouton droit on incrémente la valeur du réglage choisi.
 Le premier switch de la carte sert à réinitialiser les différentes
 valeurs de la centrale \emph{(adresse, commande..)}.
 
+\newpage
 
 \subsubsection{\underline{Générateur moteur}}
 \label{sec:Générateur}
@@ -623,7 +626,7 @@ concentrer sur les équations voulues.
 
 \medskip
 
-Pour lancer l'application qui va créer le moteur IXL correspondant à la logique décrite:
+Pour lancer l'application qui va créer le moteur IXL correspondant à la logique décrite il faut taper l'instruction suivante:
 
 \begin{lstlisting}
 
@@ -812,6 +815,8 @@ Pour chaque scénario ajouter les chronogrammes et tout...
 
 \subsection{\underline{Conclusion}}
 \label{sec:Conclusion}
+
+Ce projet a été très compliqué à réaliser, mais vraiment très intéressant.Je me suis aperçu que la pré-étude était vraiment très importante car les questions que je me suis posées à ce moment-là m'ont permis d'anticiper un certain nombre de problèmes.
 
 
 \newpage
