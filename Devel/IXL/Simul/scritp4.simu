@@ -22,7 +22,16 @@ Events
   SE_ID_18;  
   SE_ID_19;  
   SE_ID_20;  
-  
+
+  SW_ST_LE_1;
+  SW_ST_LE_2;
+  SW_ST_LE_3;
+  SW_ST_LE_4;
+  SW_ST_LE_5;
+  SW_ST_LE_6;
+  SW_ST_LE_7;
+  SW_ST_LE_8;
+
 Outputs
 
   TC_01 = Free;  
@@ -41,6 +50,16 @@ Outputs
   TC_14 = Free;  
   TC_15 = Free;
   TC_16 = Free;	
+
+  SW_AUT_LE_1 = Aut;
+  SW_AUT_LE_2 = Aut;
+  SW_AUT_LE_3 = Aut;
+  SW_AUT_LE_4 = Aut;
+  SW_AUT_LE_5 = Aut;
+  SW_AUT_LE_6 = Aut;
+  SW_AUT_LE_7 = Aut;
+  SW_AUT_LE_8 = Aut;  
+  
 
 Cycle 2 : -- 2 trains block one switch with one and move it after to let the second train changing track
 Events
@@ -78,6 +97,7 @@ Cycle 5 : -- ask to open switch 5 ?
 Events
   SE_ID_3; 
   SE_UP_4;   -- Train 1 enter into TC3
+  SW_CMD_RI_5;
 Outputs
   TC_04 = Occ;
   TC_14 = Occ;
@@ -91,7 +111,8 @@ Outputs
   TC_05 = Occ;
   TC_14 = Occ;
   TC_04 = Free;
-  
+  SW_AUT_RI_5 = NoAut;
+
 Cycle 7 : -- Move Train 2
 Events
   SE_ID_5; 
@@ -128,6 +149,7 @@ Cycle 10 :  -- ask the switch 5 to change
 Events
   SE_ID_2;
   SE_UP_3;   
+  SW_CMD_RI_5;
 Outputs
   TC_03 = Occ;
   TC_10 = Occ;
@@ -136,16 +158,18 @@ Outputs
 Cycle 11 : 
 Events
   SE_ID_3;
-  SE_UP_4;   
+  SE_UP_4;     
 Outputs
   TC_04 = Occ;
   TC_10 = Occ;
   TC_03 = Free;
+  SW_AUT_RI_5 = Aut;
 
 Cycle 12 : 
 Events
   SE_ID_4;
   SE_UP_20;   
+  SW_CMD_LE_5;  
 Outputs
   TC_14 = Occ;
   TC_10 = Occ;
@@ -158,4 +182,14 @@ Events
 Outputs
   TC_09 = Occ;
   TC_10 = Occ;
-  TC_14 = Free;  
+  TC_14 = Free;
+
+Cycle 14 : -- end cycle
+Events
+
+Outputs
+
+Cycle 15 : -- end cycle
+Events
+
+Outputs

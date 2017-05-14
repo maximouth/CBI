@@ -22,7 +22,26 @@ Events
   SE_ID_18;  
   SE_ID_19;  
   SE_ID_20;  
-  
+
+  SW_CMD_LE_1;
+  SW_CMD_LE_2;
+  SW_CMD_LE_3;
+  SW_CMD_LE_4;
+  SW_CMD_LE_5;
+  SW_CMD_LE_6;
+  SW_CMD_LE_7;
+  SW_CMD_LE_8;
+
+  SW_ST_LE_1;
+  SW_ST_LE_2;
+  SW_ST_LE_3;
+  SW_ST_LE_4;
+  SW_ST_LE_5;
+  SW_ST_LE_6;
+  SW_ST_LE_7;
+  SW_ST_LE_8;
+
+
 Outputs
 
   TC_01 = Free;  
@@ -42,6 +61,17 @@ Outputs
   TC_15 = Free;
   TC_16 = Free;	
 
+
+  SW_AUT_LE_1 = Aut;
+  SW_AUT_LE_2 = Aut;
+  SW_AUT_LE_3 = Aut;
+  SW_AUT_LE_4 = Aut;
+  SW_AUT_LE_5 = Aut;
+  SW_AUT_LE_6 = Aut;
+  SW_AUT_LE_7 = Aut;
+  SW_AUT_LE_8 = Aut;  
+
+
 Cycle 2 : -- make 1 complete turn on the first track then go on the second
 Events
   SE_UP_1;  -- enter into TC1
@@ -54,97 +84,108 @@ Events
   SE_ID_1;  
   SE_UP_2;  -- enter into TC2	
 Outputs
-  TC_01 = Free;
-  TC_02 = Occ;  
+  TC_01 = Free; --
+  TC_02 = Occ;  --
 
 Cycle 4 :
 Events
   SE_ID_2;  
   SE_UP_3;  -- enter into TC3	
 Outputs
-  TC_02 = Free;
-  TC_03 = Occ;  
+  TC_02 = Free; --
+  TC_03 = Occ;  --
 
 Cycle 5 :
 Events
   SE_ID_3;  
   SE_UP_4;  -- enter into TC4	
 Outputs
-  TC_03 = Free;
-  TC_04 = Occ;  
+  TC_03 = Free; --
+  TC_04 = Occ;  --
 
 Cycle 6 :
 Events
   SE_ID_4;  
   SE_UP_5;  -- enter into TC5	
 Outputs
-  TC_01 = Free;
-  TC_02 = Occ;  
+  TC_01 = Free; --
+  TC_02 = Occ;  --
 
 Cycle 7 :
 Events
   SE_ID_5;  
   SE_UP_6;  -- enter into TC6	
 Outputs
-  TC_01 = Free;
-  TC_02 = Occ;  
+  TC_01 = Free; --
+  TC_02 = Occ;  --
 
 Cycle 8 : -- first turn complete
 Events
   SE_ID_6;  
   SE_UP_1;  -- enter into TC1	
 Outputs
-  TC_01 = Free;
-  TC_02 = Occ;  
+  TC_01 = Free; --
+  TC_02 = Occ;  --
 
 Cycle 9 :
 Events
   SE_ID_1;  
   SE_UP_2;  -- enter into TC2	
 Outputs
-  TC_01 = Free;
-  TC_02 = Occ;  
+  TC_01 = Free; --
+  TC_02 = Occ;  --
 
 Cycle 10 :
 Events
-  SE_ID_2; -- SW_RG_5;  -- ask to move the "aiguillage" to go on the second track 
+  SE_ID_2;
   SE_UP_3;  -- enter into TC3
-  
+  SW_CMD_RI_5;
 Outputs
-  TC_02 = Free;
-  TC_03 = Occ;  
-
+  TC_02 = Free; --
+  TC_03 = Occ;  --
+  SW_AUT_RI_5 = Aut; --
+  
 Cycle 11 :
 Events
   SE_ID_3;  
   SE_UP_4;  -- enter into TC4	
 Outputs
-  TC_03 = Free;
-  TC_04 = Occ;  
+  TC_03 = Free; --
+  TC_04 = Occ;  --
+  SW_AUT_RI_5 = Aut; --
 
 Cycle 12 :
 Events
   SE_ID_4;  
   SE_UP_20;  -- enter into TC14	
 Outputs
-  TC_04 = Free;
-  TC_14 = Occ;  
+  TC_04 = Free; --
+  TC_14 = Occ;  --
+  SW_AUT_RI_5 = Aut; --
 
 Cycle 13 :
 Events
   SE_ID_20;  -- go to the second track check  
   SE_UP_11;  -- enter into TC09	
+  SW_CMD_LE_5;
 Outputs
-  TC_14 = Free;
-  TC_09 = Occ;  
+  TC_14 = Free; --
+  TC_09 = Occ;  --
 
 Cycle 14 :
 Events
   SE_ID_11;  
   SE_UP_12;  -- enter into TC10	
 Outputs
-  TC_09 = Free;
-  TC_10 = Occ;  
+  TC_09 = Free; --
+  TC_10 = Occ;  --
 
 
+Cycle 15 :
+Events
+Outputs
+
+Cycle 16 :
+Events
+Outputs
 
