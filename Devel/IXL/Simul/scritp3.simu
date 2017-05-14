@@ -144,27 +144,29 @@ Cycle 9 :
 Events
   SE_ID_1;  
   SE_UP_2;  -- enter into TC2	
-  SW_CMD_RI_5;
+  SW_CMD_RI_5; -- request to move sw5
 Outputs
   TC_01 = Free; --
   TC_02 = Occ;  --
   TC_03 = Free; --
-  SW_AUT_RI_5 = Aut; -- 
+  SW_AUT_RI_5 = Aut; -- autorisation to move sw5
 
 Cycle 10 :
 Events
   SE_ID_2;
   SE_UP_3;  -- enter into TC3
-  SW_CMD_NO_5; --
+  SW_CMD_NO_5;
+  SW_CMD_LE_5; -- request to move sw5
 Outputs
   TC_02 = Free; --
   TC_03 = Occ;  --
-  SW_AUT_RI_5 = NoAut; --
+  SW_AUT_RI_5 = NoAut; -- autorisation denied because TC3 occupied
   
 Cycle 11 :
 Events
   SE_ID_3;  
   SE_UP_4;  -- enter into TC4
+  SW_CMD_NO_5;
 Outputs
   TC_03 = Free; --
   TC_04 = Occ;  --
