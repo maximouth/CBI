@@ -138,7 +138,7 @@ Julien \textsc{DENOULET} % Supervisor's Name
 Présentation des 3 interfaces~:
 \begin{itemize}
 \item Interface Homme Machine
-\item Interface Centrale DCC et le circcuit ferroviaire
+\item Interface Centrale DCC et le circuit ferroviaire
 \item Interface interne Centrale DCC - Moteur IXL
 \end{itemize}
 
@@ -227,7 +227,7 @@ Dans le design
 \subsection{\underline{Interface itinéraire}}
 \label{sec:ihm_iti}
 
-Elle n'a pas été implémenté, mais la base sur laquelle j'étais partie
+Elle n'a pas été implémentée, mais la base sur laquelle j'étais partie
 \'etait d'affecter un switch de la carte par itinéraire.
 Un itineraire correspondant à une suite de changement de positions
 d'aiguillages et passage sur certains capteurs.
@@ -241,7 +241,7 @@ d'aiguillages et passage sur certains capteurs.
 \label{sec:int_train}
 
 \bigskip
-Trames envoyéees 4 par 4 séparées chacunes par 400 us avec valeur 0.
+Trames envoyées 4 par 4 séparées chacune par 400 us avec comme valeur 0.
 \begin{center}
 \begin{tabular}{|l|l|l|}
   \hline
@@ -257,7 +257,7 @@ Trames envoyéees 4 par 4 séparées chacunes par 400 us avec valeur 0.
 \end{center}
 
 \medskip
-Les valeurs des trames à envoyer sont les mêmes jusqu'à un appuis sur
+Les valeurs des trames à envoyer sont les mêmes jusqu'à un appui sur
 le bouton central qui change la valeur courante des différentes
 commandes.
 
@@ -276,16 +276,17 @@ Paramètres à envoyer stockés dans \emph{Master}.
 
 Les différentes commandes viennent de l'IHM \emph{(voir
   \cite{rapport})}  et remplacent la valeur IDLE \emph{(si il y a eu
-  un reset)}et sont envoyés en continue tant que pas de nouvelle pression sur bouton Central.
+  un reset)}et sont envoyées en continue tant qu'il n'y a pas de nouvelles pression sur bouton Central.
 
 
 \subsection{\underline{Interface Capteurs}}
 \label{sec:int_cap}
 
-A garder??
-
-bla bla bla...
-
+Du coté de la centrale, on doit avoir une table de type Sensor
+contenant les différents états des capteurs à un moment donné. Cette
+table doit être mise à jour à chaque changement d'état d'un des
+capteurs puis passé au moteur IXL pour qu'il puisse avoir l'état des
+voies le plus récent. 
 
 \newpage
 \section{\underline{Interface Centrale DCC - Moteur IXL}}
@@ -309,7 +310,7 @@ circuit est dit ouvert).
 
 \medskip
 Pour le projet, un Circuit de voie sera délimité par 2 capteurs de
-passage(sauf en zone d'aiguille où le circuit de voie sera délimité
+passage (sauf en zone d'aiguille où le circuit de voie sera délimité
 par les capteurs de chaque branche). L'état d'occupation du CdV sera
 fourni pas le sens de parcours identifié par le capteur pour chaque
 train.
@@ -322,14 +323,14 @@ l'aiguillage, la position de son aiguille change pour permettre au train
 de circuler :
 \begin{itemize}
 \item sur la branche commandée en venant de la pointe de l'aiguillage
-\item vers la pointe en venant de la branche commandée. 
+\item vers la pointe de l'aiguillage en venant de la branche commandée.
 \end{itemize}
 
 \medskip
 Dans tous les autre cas (aiguille entrebaillée ou en mauvaise position), 
 il y a un risque de déraillement du train. Il existe également un autre 
 risque autour des aiguillages, c'est le risque de collision entre deux
-trains provenant de branches différentes en même temps. Le système 
+trains provenant de branches différentes et qui arrivent en même temps. Le système
 d'enclenchement doit permettre d'éviter ces deux risques.
 Dans un système d'enclenchement, une aiguille est représenté par une 
 machine à états. Les états possibles sont:
@@ -343,7 +344,8 @@ l'aiguillage depuis la pointe
 ni du coté gauche (aiguille en mouvement ou Hors Service).
 \end{itemize}
 
-\medskip
+\newpage
+
 L'interface entre la Centrale DCC et le Moteur IXL est bi-directionnelle. 
 
 \begin{itemize}
@@ -380,7 +382,8 @@ Il y a 8 aiguilles sur le circuit. L'indice du tableau correspond au
 numéro de l'aiguille.
 
 \medskip
-La déclaration VHDL
+\medskip
+Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
   
   signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (7 downto 0);
@@ -406,8 +409,9 @@ suivante~:
 Il y a 8 aiguilles sur le circuit. L'indice du tableau correspond au
 numéro de l'aiguille.
 
-\medskip
-La déclaration VHDL
+\newpage
+
+Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
 
   signal Sw_State   :   STD_LOGIC_VECTOR (7 downto 0);
@@ -437,7 +441,8 @@ Il y a 20 capteurs de passage sur la maquette de train. L'indice du
 tableau correspond au numéro du capteur de passage.
 
 \medskip
-La déclaration VHDL
+\medskip
+Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
 
   type sensor is
@@ -455,12 +460,13 @@ La déclaration VHDL
 \subsection{\underline{Autorisation de commande des aiguillages}}
 \label{sec:ixl_dem_aig}
 
-Une fois que le sustème d'enclenchement a vérifé que toutes les
+Une fois que le système d'enclenchement a vérifé que toutes les
 conditions requises pour bouger une aiguille sont remplies, il 
 retourne à la Centrale DCC son autorisation de commande des aiguillages.
 
+\newpage
 L'autorisation de commande d'un aiguillage sera représenté par
-1 bit avec la convention suivante~:
+1 bit selon la convention suivante~:
 \begin{itemize}
 \item 0 = autorisation de commande de aiguille à droite
 \item 1 = autorisation de commande de aiguille à gauche
@@ -468,9 +474,9 @@ L'autorisation de commande d'un aiguillage sera représenté par
  
 Il y a 8 aiguilles sur le circuit. L'indice du tableau correspond au
 numéro de l'aiguille.
-
 \medskip
-La déclaration VHDL
+\medskip
+Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
 
   Sw_Cmd_Aut : out STD_LOGIC_VECTOR (7 downto 0);
@@ -493,9 +499,9 @@ y a 6 trains au maximum. Les états sont codés come suit~:
 
 Il y a 16 circuits de voie sur la maquette de train. L'indice du
 tableau correspond au numéro du Circuit de Voie.
-
 \medskip
-La déclaration VHDL
+\medskip
+Déclaration VHDL
 \begin{lstlisting}[style=vhdl]
 
   --debug output
@@ -510,20 +516,20 @@ La déclaration VHDL
 \section{\underline{Logique Enclenchement}}
 \label{sec:log_enc}
 
-Cette secion présente la logique d'enclenchement, sa justification et
+Cette section présente la logique d'enclenchement, sa justification et
 les conversions de nommage utilisées dans les équations.
 
 \subsection{\underline{Circuit de Voie}}
 \label{sec:CdV}
 
 Un Circuit de Voie est la section de voie se trouvant entre 2 capteurs
-de présence consécutifs. Un capteur de présence permettent de
+de présence consécutifs. Un capteur de présence permet de
 connaître, le numéro du train et son sens de déplacement. Le sens de
-déplacement va permettre de savoir quel Circuit de voie occupé par le
+déplacement va permettre de savoir quel Circuit de voie est occupé par le
 train. Deux directions sont arbitrairement déclarées pour chaque
 capteur; Up et Down.
 
-Les convention de nommage des éléments~:
+Convention de nommage des éléments :
 \begin{itemize}
 \item $SE\_Up_{nn}$, 1 lorsqu'un train vient de passer le capteur numéro
   nn dans le sens Up
@@ -533,8 +539,8 @@ Les convention de nommage des éléments~:
   présent sur le CdV), 0 lorsque le circuit de voie est occupée. Cette
   logique va dans le sens de la sécurité, en cas de perte de courant
   ou de dysfonctionnement, il n'est pas possible de savoir si le
-  Circuit de VOie est occupé ou libre, donc on choisit la valeur la
-  plus sécuritaire; Occupé même si aucun train n'est présent.
+  Circuit De Voie est occupé ou libre, donc on choisit la valeur la
+  plus sécuritaire, occupé même si aucun train n'est présent.
 \end{itemize}
 
 \'A l'initialisation, tous les Circuits de Voie sont libres.
@@ -566,11 +572,11 @@ $$\boxed{
 \label{sec:esp}
 
 Il existe deux types de signaux; les signaux d'espacement qui
-garantissent que 2 trains ne vont pas se percuter et les sinaux de
+garantissent que 2 trains ne vont pas se percuter et les signaux de
 manoeuvre qui garantissent qu'un train ne va pas parcourir une
 aiguille qui n'est pas contrôlée.
 
-Les convention de nommage des éléments~:
+Convention de nommage des éléments :
 \begin{itemize}
 \item $SI_{nn}$, 1 lorsque le signal est Vert, 0 pour afficher un signal
   Rouge
@@ -613,7 +619,7 @@ fois la longueur d'arrêt d'un train.
 L'entrée dans un Circuit de Voie est protégée par un signal dit
 \emph{d'espacement}.
 
-Les convention de nommage des éléments~:
+Convention de nommage des éléments~:
 \begin{itemize}
 \item $SI\_SP_{nn}$, 1 lorsque le signal est Vert, 0 pour afficher un
   signal Rouge
@@ -655,7 +661,10 @@ sont libres.
 \medskip
 L'équation générale d'autorisation de commande d'une aiguille est~:
 $$\boxed{
-  SW\_AUT\_RI_{nn} \Leftarrow SW\_CMD\_RI_{nn} \land TC_{nn} \land TC_{mm} ;
+  SW\_AUT\_RI_{nn} \Leftarrow SW\_CMD\_RI_{nn} \land TC_{nn} \land
+  TC_{mm} ;
+}$$
+$$\boxed{
   SW\_AUT\_LE_{nn} \Leftarrow SW\_CMD\_LE_{nn} \land TC_{nn} \land TC_{mm} ;
 }$$
 
@@ -663,26 +672,29 @@ $$\boxed{
 \subsection{\underline{Itinéraire}}
 \label{sec:iti}
 
-Cette partie n'a pas été implementée mais voici comment elle aurait du
+Cette partie n'a pas été implémentée mais voici comment elle aurait dû
 fonctionner.
 
-Chaque itinairaire aurait été un tableau de n instructions.
-Le tableau aurait contenu une suite de valeur qu'il aurait fallut
-avoir sur le circuit pour passer à la suivante, c'est à dire l'état
-des aiguilles et la valeur des Tracks circuits occupé.
+Chaque itinéraire est un tableau de n instructions.
+Le tableau contient l’état des aiguilles et la valeur des Tracks
+circuits  occupés, quand les deux  valeurs sont identiques, il faut
+passer  à la case suivante du  tableau.
 
-Pour l'aiguillage il y aurait 3 états pour chauques aiguillages,
+Il y a 3 états pour chaque aiguillage,
 \begin{itemize}
   \item '0' Pour forcer un aiguillage à être fermé.
   \item '1' Pour forcer un aiguillage à être ouvert.
   \item 'DC' La valeur ne nous interesse pas.    
 \end{itemize}  
 
-Pareil pour les Tracks Circuits
+Idem pour les Tracks Circuits
 
-On tenterait d'obtenir les deux valeurs en même temps pour passer à la
-case suivante du tableau, une fois l'itineraire completé, on
-allumerait la led correspondant au switch pour signaler la fin.
+Le but est de tenter d’obtenir les deux valeurs en même temps pour
+passer à la case suivante du tableau, une fois l’itinéraire complété,
+on  allume la led correspondante au switch pour signaler la fin de
+l’itinéraire. 
+
+
 
 \section{Logique d'enclenchement}
 \label{sec:logic}
