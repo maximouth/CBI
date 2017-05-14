@@ -66,9 +66,6 @@ architecture Behavioral of Ixl is
   
   -- signals declaration
 
-  -- Track circuit state
-  signal TC : TC_St;          
-
 
 --------------------------------------------------------------------------------
   
@@ -82,7 +79,9 @@ begin
   
  process (CLK,reset)
  
-   -- variable declaration
+  -- variable declaration
+  -- Track circuit state
+  variable TC : TC_St;          
 
    
  begin
@@ -93,7 +92,7 @@ begin
 
      -- clear TC
      for i in 0 to 31 loop
-       TC(i) <= '1';
+       TC(i) := '1';
      end loop;
      -- reset the output value
      valid_out <= '0';
@@ -104,9 +103,6 @@ begin
 
    
    if rising_edge (CLK) then 
-
-     -- for debug
-     TC_out <= TC;
 
      -- reset the output value
      valid_out <= '0';
@@ -120,7 +116,10 @@ begin
 let print_trailer out_channel =
 Printf.fprintf out_channel
 "    
-       valid_out <= '1';    
+     -- for debug
+     TC_out <= TC;
+
+     valid_out <= '1';    
      -- end valid = 1
      end if;
    --end if rising edge
@@ -182,7 +181,7 @@ let print_equation out_channel equation =
   | Ixl.P_SE(_, _, _)    -> 
       raise( Failure "!@*&* Error writing Sensor." )
   | Ixl.P_TC(nb, _)      -> 
-      Printf.fprintf out_channel "        if (%s) then TC(%i) <= '1'; else  TC(%i) <= '0'; end if;\n" exp (nb - 1) (nb - 1)
+      Printf.fprintf out_channel "        if (%s) then TC(%i) := '1'; else  TC(%i) := '0'; end if;\n" exp (nb - 1) (nb - 1)
   | Ixl.P_SW_CMD(_, _) -> 
       raise( Failure "!@*&* Error writing Sw CMD." )
   | Ixl.P_SW_ST(_, _)  -> 

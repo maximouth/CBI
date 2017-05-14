@@ -51,10 +51,11 @@ begin
     reset <= '1';
     CLK <= '0';
     valid_in <= '0';
+
     wait for 1 ns;      
 
     -- Start cycle 1 
-    CLK <= not CLK;
+    CLK <= '1';
     wait for 1 ns;      
 
     -- end initialization
@@ -62,14 +63,14 @@ begin
     reset <= '0';
     
     -- Move 1 full cycle 
-    for i in 0 to 1 loop
-      CLK <= not CLK;
-      wait for 1 ns;      
-    end loop;
+    CLK <= '0';
+    wait for 1 ns;      
+    CLK <= '1';
+    wait for 1 ns;      
 	
 	-- start the simulation with a clock at low level
-    CLK <= not CLK;
-    wait for 1 ns;
+    CLK <= '0';
+    wait for 1 ns;      
 
     valid_in <= '1';
 
@@ -163,29 +164,29 @@ match c with
 (* Generate one cycle:
    - generate the event of the current cycle (cc)
    - rising edge of the clock (start cycle)
-   - check the outputs of the previous cycle (pc)
+   - check the outputs of the current cycle (cc)
    - falling of the clock
 *)
-let generate_cycle out_channel pc cc =
-  let outputs = print_outputs pc.Simul.outputs in
+let generate_cycle out_channel cc =
+  let outputs = print_outputs cc.Simul.outputs in
   let events = print_events cc.Simul.events in
 
   begin
-  match pc.Simul.comment with
-  | None -> Printf.fprintf out_channel "      report \"Cycle %i:\";\n" pc.Simul.cycle
-  | Some co -> Printf.fprintf out_channel "      report \"Cycle %i: %s\";\n" pc.Simul.cycle co;
+  match cc.Simul.comment with
+  | None -> Printf.fprintf out_channel "      report \"Cycle %i:\";\n" cc.Simul.cycle
+  | Some co -> Printf.fprintf out_channel "      report \"Cycle %i: %s\";\n" cc.Simul.cycle co;
   end;
 
   Printf.fprintf out_channel "%s" events;
   Printf.fprintf out_channel "
-      CLK <= not CLK;
+      CLK <= '1';
       wait for 1 ns;
 ";
-
   Printf.fprintf out_channel "%s" outputs;
   Printf.fprintf out_channel "
-      CLK <= not CLK;
+      CLK <= '0';
       wait for 1 ns;\n";
+
 ;;  
 
 
@@ -193,39 +194,14 @@ let generate_cycle out_channel pc cc =
 let rec generate_cycles out_channel cycles =
 match cycles with
 | [] -> ()
-| c::[] ->
-   let c0 = 
-      {Simul_t.Simul.cycle = 0;
-      Simul_t.Simul.comment = None;
-      Simul_t.Simul.events = [];
-      Simul_t.Simul.outputs = [];}
-   in
-   generate_cycle out_channel c c0
-| c1::c2::t -> 
-   generate_cycle out_channel c1 c2;
-   generate_cycles out_channel (c2::t)
+| c::t -> 
+   generate_cycle out_channel c;
+   generate_cycles out_channel t
 ;;
 
 
 let generate out_channel cycles =
   print_header out_channel;
-  match cycles with
-  | [] ->
-    (* Aucun cycle *)
-    Printf.fprintf out_channel ""
-  | c1::_ ->
-    begin
-    (* Generate the first inputs *)
-    let events = print_events c1.Simul.events 
-    in
-    Printf.fprintf out_channel "%s" events;
-    Printf.fprintf out_channel "
-      CLK <= not CLK;
-      wait for 1 ns;
-      CLK <= not CLK;
-      wait for 1 ns;
-";
-    end;
   generate_cycles out_channel cycles; 
   print_trailer out_channel
 ;;
