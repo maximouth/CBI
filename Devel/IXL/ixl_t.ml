@@ -14,6 +14,7 @@ type dir_def =
 type sw_state_def =
   | Right
   | Left
+  | Idle
 ;;
 
 type ident_def =

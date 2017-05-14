@@ -12,6 +12,7 @@ let print_sw_state st =
 match st with
 | Simul.Left  -> "Left"
 | Simul.Right -> "Right"
+| Simul.Idle -> "Idle"
 ;;
 
 let print_bool b =

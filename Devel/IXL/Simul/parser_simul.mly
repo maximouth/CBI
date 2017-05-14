@@ -21,6 +21,7 @@ let ind_eq = ref 0;;
 %token TC
 %token SW_CMD_RI
 %token SW_CMD_LE
+%token SW_CMD_NO
 %token SW_ST_RI
 %token SW_ST_LE
 %token SW_AUT_RI
@@ -82,6 +83,7 @@ ident:
  | TC INDEX          { Simul_t.Simul.P_TC(int_of_string($2), 0)}
  | SW_CMD_RI INDEX   { Simul_t.Simul.P_SW_CMD(int_of_string($2), Simul_t.Simul.Right)}
  | SW_CMD_LE INDEX   { Simul_t.Simul.P_SW_CMD(int_of_string($2), Simul_t.Simul.Left)}
+ | SW_CMD_NO INDEX   { Simul_t.Simul.P_SW_CMD(int_of_string($2), Simul_t.Simul.Idle)}
  | SW_ST_RI INDEX    { Simul_t.Simul.P_SW_ST(int_of_string($2), Simul_t.Simul.Right)}
  | SW_ST_LE INDEX    { Simul_t.Simul.P_SW_ST(int_of_string($2), Simul_t.Simul.Left)}
  | SW_AUT_RI INDEX   { Simul_t.Simul.P_SW_AUT(int_of_string($2), Simul_t.Simul.Right)}

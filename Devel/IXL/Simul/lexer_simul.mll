@@ -34,6 +34,7 @@ rule token = parse
  | "TC_"                   { TC }
  | "SW_CMD_RI_"            { SW_CMD_RI }
  | "SW_CMD_LE_"            { SW_CMD_LE }
+ | "SW_CMD_NO_"            { SW_CMD_NO }
  | "SW_ST_RI_"             { SW_ST_RI }
  | "SW_ST_LE_"             { SW_ST_LE }
  | "SW_AUT_RI_"            { SW_AUT_RI }

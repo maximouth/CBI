@@ -27,7 +27,7 @@ let parse_IXL in_IXL_channel =
 	      Format.printf "Lexical error at line '%i' @." !Lexer_IXL.line; exit 0
       | Lexer_IXL.Unterminated_comment -> 
 	      Format.printf "Unterminated comment@." ; exit 0
-	  | End_of_file -> exit 0
+      | End_of_file -> exit 0
   end;
 ;;
 
@@ -44,7 +44,7 @@ let mainloop () =
       end
 	in
 	(* Print the parsed file, for debug purpose only *)
-    Utils_IXL.print_eqs equation_l;
+        Utils_IXL.print_eqs equation_l;
 	
 	(* Generate the VHDL from the boolean equations *)
 	Logic.generate !out_IXL_channel equation_l;
@@ -64,4 +64,9 @@ Arg.parse
   (fun f_other -> ())
   "Glop pas glop..." ;
 
-mainloop () ;;
+
+try
+  mainloop ()
+with
+| Failure explanation -> Printf.fprintf stderr "%s" explanation
+;; 

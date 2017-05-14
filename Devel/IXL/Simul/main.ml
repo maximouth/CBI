@@ -65,4 +65,8 @@ Arg.parse
   (fun f_other -> ())
   "Glop pas glop..." ;
 
-mainloop () ;;
+try
+  mainloop ()
+with
+| Failure explanation -> Printf.fprintf stderr "%s" explanation 
+;;

@@ -23,13 +23,13 @@ architecture simu of IXL_tb is
 
   -- input
   signal valid_in   :   STD_LOGIC; 
-  signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (7 downto 0);
-  signal Sw_State   :   STD_LOGIC_VECTOR (7 downto 0);
+  signal Sw_Cmd_Req :   Sw_t;
+  signal Sw_State   :   Sw_t;
   signal Sensor     :   SE_state;
 
   -- output
   signal valid_out  :   STD_LOGIC;
-  signal Sw_Cmd_Aut :   Sw_cmd_aut_t;
+  signal Sw_Cmd_Aut :   Sw_t;
 
   --debug output
   signal TC_out     :   TC_St;
@@ -68,114 +68,230 @@ begin
 
     valid_in <= '1';
 
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      CLK <= not CLK;
-      wait for 1 ns;
-      report "Cycle 0:";
-      Sensor(7).dir <= "01";
-
-      CLK <= not CLK;
-      wait for 1 ns;
-
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      report "Cycle 1: -- Enter TC07 from SE_08";
+      Sensor(0).dir <= "00";
+      Sensor(1).dir <= "00";
+      Sensor(2).dir <= "00";
+      Sensor(3).dir <= "00";
+      Sensor(4).dir <= "00";
+      Sensor(5).dir <= "00";
+      Sensor(6).dir <= "00";
       Sensor(7).dir <= "00";
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
-
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      report "Cycle 2: -- Train in TC07";
-      Sensor(8).dir <= "01";
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
-
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      report "Cycle 3: -- Exit TC07 from SE_09";
       Sensor(8).dir <= "00";
+      Sensor(9).dir <= "00";
+      Sensor(10).dir <= "00";
+      Sensor(11).dir <= "00";
+      Sensor(12).dir <= "00";
+      Sensor(13).dir <= "00";
+      Sensor(14).dir <= "00";
+      Sensor(15).dir <= "00";
+      Sensor(16).dir <= "00";
+      Sensor(17).dir <= "00";
+      Sensor(18).dir <= "00";
+      Sensor(19).dir <= "00";
+      Sw_Cmd_req(0) <= '0';
+      Sw_Cmd_Req(1) <= '0';
+      Sw_Cmd_req(2) <= '0';
+      Sw_Cmd_Req(3) <= '0';
+      Sw_Cmd_req(4) <= '0';
+      Sw_Cmd_Req(5) <= '0';
+      Sw_Cmd_req(6) <= '0';
+      Sw_Cmd_Req(7) <= '0';
+      Sw_Cmd_req(8) <= '0';
+      Sw_Cmd_Req(9) <= '0';
+      Sw_Cmd_req(10) <= '0';
+      Sw_Cmd_Req(11) <= '0';
+      Sw_Cmd_req(12) <= '0';
+      Sw_Cmd_Req(13) <= '0';
+      Sw_Cmd_req(14) <= '0';
+      Sw_Cmd_Req(15) <= '0';
+      Sw_State(1) <= '1';
+      Sw_State(3) <= '1';
+      Sw_State(5) <= '1';
+      Sw_State(7) <= '1';
+      Sw_State(9) <= '1';
+      Sw_State(11) <= '1';
+      Sw_State(13) <= '1';
+      Sw_State(15) <= '1';
 
       CLK <= not CLK;
       wait for 1 ns;
-      if (TC_out(6) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
-      if (TC_out(7) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
-
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 1: --reset the circuit";
+      Sensor(0).dir <= "01";
 
       CLK <= not CLK;
       wait for 1 ns;
-      report "Cycle 4: -- train outside TC07 from SE_09";
-      Sensor(8).dir <= "10";
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      if (TC_out(6) = '1') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
-      if (TC_out(7) = '0') then report "-- TC08 is occupied" & " : Pass"; else report "-- TC08 is occupied" & " : Fail."; end if;
-
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      report "Cycle 5: -- train enter TC07 from SE_09";
-      Sensor(8).dir <= "00";
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
-      if (TC_out(7) = '1') then report "-- TC08 is free" & " : Pass"; else report "-- TC08 is free" & " : Fail."; end if;
-
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      report "Cycle 6: -- train inside TC07";
-      Sensor(7).dir <= "10";
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      if (TC_out(6) = '0') then report "-- TC07 is occupied" & " : Pass"; else report "-- TC07 is occupied" & " : Fail."; end if;
-      if (TC_out(7) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
-
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      report "Cycle 7: -- train exits TC07 from SE_08  ";
-      Sensor(7).dir <= "00";
-
-      CLK <= not CLK;
-      wait for 1 ns;
-      if (TC_out(6) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
-      if (TC_out(0) = '0') then report "-- TC01 is occupied" & " : Pass"; else report "-- TC01 is occupied" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
-      report "Cycle 8: -- Train outside TC07 ";
+      report "Cycle 2: -- make 1 complete turn on the first track then go on the second";
+      Sensor(0).dir <= "00";
+      Sensor(1).dir <= "01";
 
       CLK <= not CLK;
       wait for 1 ns;
-      if (TC_out(6) = '1') then report "-- TC07 is free" & " : Pass"; else report "-- TC07 is free" & " : Fail."; end if;
-      if (TC_out(0) = '0') then report "-- TC01 is occupied" & " : Pass"; else report "-- TC01 is occupied" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 3:";
+      Sensor(1).dir <= "00";
+      Sensor(2).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(0) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(1) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 4:";
+      Sensor(2).dir <= "00";
+      Sensor(3).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(1) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(2) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 5:";
+      Sensor(3).dir <= "00";
+      Sensor(4).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(2) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(3) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 6:";
+      Sensor(4).dir <= "00";
+      Sensor(5).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(0) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(1) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 7:";
+      Sensor(5).dir <= "00";
+      Sensor(0).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(0) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(1) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 8: -- first turn complete";
+      Sensor(0).dir <= "00";
+      Sensor(1).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(0) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(1) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
       report "Cycle 9:";
+      Sensor(1).dir <= "00";
+      Sensor(2).dir <= "01";
+      Sw_Cmd_Req(8) <='1';
 
       CLK <= not CLK;
       wait for 1 ns;
+      if (TC_out(0) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(1) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
 
 
       CLK <= not CLK;
       wait for 1 ns;
       report "Cycle 10:";
+      Sensor(2).dir <= "00";
+      Sensor(3).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(1) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(2) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (Sw_Cmd_Aut(8) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 11:";
+      Sensor(3).dir <= "00";
+      Sensor(19).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(2) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(3) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (Sw_Cmd_Aut(8) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 12:";
+      Sensor(19).dir <= "00";
+      Sensor(10).dir <= "01";
+      Sw_Cmd_Req(9) <='1';
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(3) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(13) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (Sw_Cmd_Aut(8) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 13:";
+      Sensor(10).dir <= "00";
+      Sensor(11).dir <= "01";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(13) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(8) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 14:";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      if (TC_out(8) = '1') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+      if (TC_out(9) = '0') then report "--" & " : Pass"; else report "--" & " : Fail."; end if;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 15:";
+
+      CLK <= not CLK;
+      wait for 1 ns;
+
+
+      CLK <= not CLK;
+      wait for 1 ns;
+      report "Cycle 16:";
 
       CLK <= not CLK;
       wait for 1 ns;

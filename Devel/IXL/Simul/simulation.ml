@@ -28,13 +28,13 @@ architecture simu of IXL_tb is
 
   -- input
   signal valid_in   :   STD_LOGIC; 
-  signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (7 downto 0);
-  signal Sw_State   :   STD_LOGIC_VECTOR (7 downto 0);
+  signal Sw_Cmd_Req :   Sw_t;
+  signal Sw_State   :   Sw_t;
   signal Sensor     :   SE_state;
 
   -- output
   signal valid_out  :   STD_LOGIC;
-  signal Sw_Cmd_Aut :   Sw_cmd_aut_t;
+  signal Sw_Cmd_Aut :   Sw_t;
 
   --debug output
   signal TC_out     :   TC_St;
@@ -96,20 +96,24 @@ match ident with
   | Simul.Down -> "      Sensor("^string_of_int(nb-1)^").dir <= \"10\";\n"
   | Simul.Idle -> "      Sensor("^string_of_int(nb-1)^").dir <= \"00\";\n"
   end
-| Simul.P_TC(nb, _)      -> "?*&%$!! Error TC not an input"
+| Simul.P_TC(nb, _)      -> raise( Failure "?*&%$!! Error TC not an input" )
 | Simul.P_SW_CMD(nb, st) ->
   begin
   match st with 
-  | Simul.Right -> "      Sw_Cmd_Req("^string_of_int(nb-1)^") <='1';\n"
-  | Simul.Left  -> "      Sw_Cmd_Req("^string_of_int(nb-1)^") <='0';\n;"
+  | Simul.Right -> "      Sw_Cmd_Req("^string_of_int((nb-1)*2)^") <='1';\n"
+  | Simul.Left  -> "      Sw_Cmd_Req("^string_of_int((nb-1)*2+1)^") <='1';\n"
+  | Simul.Idle  -> "      Sw_Cmd_req("^string_of_int((nb-1)*2)^") <= '0';
+      Sw_Cmd_Req("^string_of_int((nb-1)*2+1)^") <= '0';\n"
   end
 | Simul.P_SW_ST(nb, st)  -> 
   begin
   match st with 
-  | Simul.Right -> "      Sw_State("^string_of_int(nb-1)^") <= '1';\n"
-  | Simul.Left  -> "      Sw_State("^string_of_int(nb-1)^") <= '0';\n"
+  | Simul.Right -> "      Sw_State("^string_of_int((nb-1)*2)^") <= '1';\n"
+  | Simul.Left  -> "      Sw_State("^string_of_int((nb-1)*2+1)^") <= '1';\n"
+  | Simul.Idle  -> "      Sw_State("^string_of_int((nb-1)*2)^") <= '0';
+      Sw_State("^string_of_int((nb-1)*2+1)^") <= '0';\n"
   end
-| Simul.P_SW_AUT(nb, st) -> "!@*&* Error SW_AUT never in"
+| Simul.P_SW_AUT(nb, st) -> raise( Failure "!@*&* Error SW_AUT never in" )
 ;;
 
 
@@ -125,15 +129,16 @@ match c with
 
 let print_ident_out ident =
 match ident with
-| Simul.P_SE(nb, _, dir) ->  "!@*&* Error TC never in"
+| Simul.P_SE(nb, _, dir) ->  raise( Failure "!@*&* Error TC never in")
 | Simul.P_TC(nb, _)      -> "TC_out("^string_of_int(nb-1)^")"
-| Simul.P_SW_CMD(nb, st) ->  "!@*&* Error SW_CMD never out"
-| Simul.P_SW_ST(nb, st)  ->  "!@*&* Error SW_ST never in" 
+| Simul.P_SW_CMD(nb, st) ->  raise( Failure "!@*&* Error SW_CMD never out" )
+| Simul.P_SW_ST(nb, st)  ->  raise( Failure "!@*&* Error SW_ST never in" )
 | Simul.P_SW_AUT(nb, st) ->
   begin
   match st with 
     | Simul.Right -> "Sw_Cmd_Aut("^string_of_int((nb-1)*2)^")"
     | Simul.Left ->  "Sw_Cmd_Aut("^string_of_int((nb-1)*2 + 1)^")"
+    | Simul.Idle -> raise( Failure "*&!%$ Error Sw_Aut Idle never out." )
   end
 ;;
 

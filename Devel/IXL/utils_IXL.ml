@@ -12,6 +12,7 @@ let print_sw_state st =
 match st with
 | Ixl.Left  -> "Left"
 | Ixl.Right -> "Right"
+| Ixl.Idle -> "Idle"
 ;;
 
 let print_ident id =

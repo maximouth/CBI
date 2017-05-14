@@ -23,14 +23,14 @@ Events
   SE_ID_19;  
   SE_ID_20;  
 
-  SW_CMD_LE_1;
-  SW_CMD_LE_2;
-  SW_CMD_LE_3;
-  SW_CMD_LE_4;
-  SW_CMD_LE_5;
-  SW_CMD_LE_6;
-  SW_CMD_LE_7;
-  SW_CMD_LE_8;
+  SW_CMD_NO_1;
+  SW_CMD_NO_2;
+  SW_CMD_NO_3;
+  SW_CMD_NO_4;
+  SW_CMD_NO_5;
+  SW_CMD_NO_6;
+  SW_CMD_NO_7;
+  SW_CMD_NO_8;
 
   SW_ST_LE_1;
   SW_ST_LE_2;
@@ -62,14 +62,23 @@ Outputs
   TC_16 = Free;	
 
 
-  SW_AUT_LE_1 = Aut;
-  SW_AUT_LE_2 = Aut;
-  SW_AUT_LE_3 = Aut;
-  SW_AUT_LE_4 = Aut;
-  SW_AUT_LE_5 = Aut;
-  SW_AUT_LE_6 = Aut;
-  SW_AUT_LE_7 = Aut;
-  SW_AUT_LE_8 = Aut;  
+  SW_AUT_LE_1 = NoAut;
+  SW_AUT_LE_2 = NoAut;
+  SW_AUT_LE_3 = NoAut;
+  SW_AUT_LE_4 = NoAut;
+  SW_AUT_LE_5 = NoAut;
+  SW_AUT_LE_6 = NoAut;
+  SW_AUT_LE_7 = NoAut;
+  SW_AUT_LE_8 = NoAut;  
+
+  SW_AUT_RI_1 = NoAut;
+  SW_AUT_RI_2 = NoAut;
+  SW_AUT_RI_3 = NoAut;
+  SW_AUT_RI_4 = NoAut;
+  SW_AUT_RI_5 = NoAut;
+  SW_AUT_RI_6 = NoAut;
+  SW_AUT_RI_7 = NoAut;
+  SW_AUT_RI_8 = NoAut;  
 
 
 Cycle 2 : -- make 1 complete turn on the first track then go on the second
