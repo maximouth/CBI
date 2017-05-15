@@ -140,37 +140,42 @@ qui décrit le fonctionnement du moteur IXL
 
 \subsection{\underline{Objectifs}}
 
-L'objectif du projet a consisté, dans un premier temps, à porter la
+L'objectif du projet était de porter l'ancienne centrale et de mettre en place la commande en sécurité des aiguillages.
+J'ai décomposé ce projet en plusieurs parties afin de pouvoir comprendre et résoudre plus facilement les problèmes que je pouvais rencontrer.
+
+\smallskip
+
+Dans un premier temps il fallait porter la
 \emph{centrale DCC} implément\'ee par d'autres \'etudiants sur une nouvelle
 carte mat\'erielle \emph{FPGA}. La version courante de la centrale tournant sur
 une carte \emph{Spartan 6}, elle devait être remplac\'ee par une \crt qui est
 une carte plus r\'ecente et possède une interface plus complète
 \emph{(switchs, boutons, afficheurs 7 segments...)}
 
-Dans un second temps, il fallait ajouter la commande en
-sécurité des aiguillages qui devait être décomposée en deux parties.
+\smallskip
 
-     - La première partie consistait à mettre en place une gestion manuelle des aiguillages avec
-les diff\'erents switchs de la carte sans v\'erification de
+Dans un second temps, il fallait ajouter la commande en
+sécurité des aiguillages décomposée en deux parties.
+
+\smallskip
+
+La première partie consistait à mettre en place une gestion manuelle
+des aiguillages avec les diff\'erents switchs de la carte sans v\'erification de
 s\'ecurit\'e.
-     - La seconde partie consistait à réaliser une gestion des
+
+La seconde partie consistait à réaliser une gestion des
 enclenchements ferroviaires grâce aux différents capteurs pr\'esents sur
 les rails. Ceci permettant de garantir qu'un train ne pourra pas
 changer de voie si un autre train se trouve sur le chemin
 qu'il veut parcourir. 
 
+\smallskip
 
 Je n'ai pas pu implémenter la version manuelle de gestion des aiguillages  car ceux-ci
  n'étaient pas présents sur la voie, et nous n'en connaissions pas
 le fonctionnement. Afin de ne pas être bloqué dans la réalisation de mon projet,
 j'ai opté pour une gestion automatique des
 aiguillages, dont le fonctionnement n'est visible qu'en simulation.
-
-
-Les domaines de comp\'etences requis sont multiples; la connaissance
-du langage VHDL et de la plateforme \emph{FPGA} pour l'impl\'ementation
-de la centrale DCC et la connaissance de la gestion des enclenchements
-ferroviaires.
 
 
 \newpage
@@ -429,7 +434,7 @@ ainsi que plusieurs langages:
 
 Comme dit précédemment \emph{(voir \ref{sec:logixl})} le projet a \'et\'e
 découp\'e en plusieurs \'etapes diff\'erentes, mais toutes n'ont pas été
-possible à réaliser concrêtement car la maquette n'\'etait pas en \'etat de
+possibles à réaliser concrêtement car la maquette n'\'etait pas en \'etat de
 fonctionnement complet.
 
 
@@ -458,7 +463,7 @@ Voici ce qui a \'et\'e r\'ealis\'e lors de ce projet.
   \end{itemize}
 
   
-  \item Gestion des aiguillages (réalisé uniquement en simulation). Sur la
+  \item Gestion des aiguillages (réalisé uniquement en simulation), sur la
   base de la gestion des circuits de voie  
     \begin{itemize} 
       \item D\'efinition des \'equations g\'en\'eriques de gestion des aiguillages.
@@ -501,6 +506,7 @@ Les outils de g\'en\'eration de VHDL ont \'et\'e \'ecrit en \emph{OCaml}. Ce
 langage permet un d\'eveloppement rapide de programme de manipulation de
 structures complexes.
 
+\newpage
 
 \subsection{\underline{Réalisation}}
 \label{sec:Réal}
@@ -509,7 +515,7 @@ structures complexes.
 \label{sec:Centrale}
 
 La centrale DCC a été créée afin de pouvoir contrôler les
-différents trains et équipements de voie dont nous pouvions
+différents trains et équipements de voie dont nous pouvons
 disposer (en simulation ou en réél).
 \medskip
 La centrale se base sur celle qui a été réalisée lors du cours de FPGA  \emph{(voir \cite{rapport} et \cite{sujet})}
@@ -647,7 +653,7 @@ différentes équations du fichier d'entrée.
 \subsubsection{\underline{moteur IXL}}
 \label{sec:IXL}
 
-Voici l'interface du moteur IXL que nous allons utiliser :
+Voici l'interface du moteur IXL que nous avons utiliser :
 
 \begin{lstlisting}[language=vhdl]
 entity Ixl is  
@@ -689,7 +695,7 @@ Il y a 4 signaux d'entrée :
     un instant donné.
 \end{itemize}  
 
-\medskip
+\newpage
 
 Et 2 signaux de sortie :
 
@@ -757,14 +763,12 @@ Le générateur se créé de la même façon que l'autre :
 
 \end{lstlisting}
   
-\medskip
+\newpage
 
 Pour générer le fichier vhdl de simulation il faut lancer l'instruction suivante:
-
 \begin{lstlisting}
-
-   ./simul.x -i fichier.simu -o IXL_tb.vhdl 
-
+  ./simul.x -i fichier.simu -o IXL_tb.vhdl
+  
 \end{lstlisting}
 
 \medskip
@@ -874,8 +878,26 @@ Syntaxe des attributs:
 \subsection{\underline{Conclusion}}
 \label{sec:Conclusion}
 
-Ce projet a été très compliqué à réaliser, mais vraiment très intéressant.Je me suis aperçu que la pré-étude était vraiment très importante car les questions que je me suis posées à ce moment-là m'ont permis d'anticiper un certain nombre de problèmes.
+\bigskip
 
+Ce projet a été très compliqué à réaliser, mais vraiment très
+intéressant.
+Je me  suis aperçu que la pré-étude était vraiment très
+importante car les questions qu e je me suis posées à ce moment-là
+m'ont permis d'anticiper un certain nombre de  problèmes comme par
+exemple faire le choix de réaliser le codage des capteurs et des
+aiguilles de façon automatique en simulation car il était impossible
+de réaliser la gestion manuelle des aiguillages.
+
+\smallskip
+
+Le fait d'avoir divisé le projet en plusieurs parties m'a permis de
+gérer  séparemment tous les morceaux de mon  projet et de continuer d'avancer
+de façon efficace en abandonnant les parties impossibles à réaliser à
+cause de la  maquette réélle indisponible.
+
+Le document d'interface permet de comprendre en détail les choix que j'ai fait
+pour pouvoir atteindre l'objectif fixé au départ de ce projet.
 
 
 \newpage

@@ -135,7 +135,7 @@ Julien \textsc{DENOULET} % Supervisor's Name
 
 \section{Introduction}
 \label{sec:introduction}
-ce document présente les  3 interfaces utilisées dans le projet~:
+Ce document présente les  3 interfaces utilisées dans le projet~:
 \begin{itemize}
 \item Interface Homme Machine
 \item Interface Centrale DCC et le circuit ferroviaire
@@ -176,7 +176,7 @@ Design de l'interface de l'IHM :
 
 \subsection{\underline{Interface commande train}}
 \label{sec:ihm-train}
-On peut envoyer 8 vitesses à 6 trains différents suivant les adresses suivantes et les fonctions définies:
+On peut envoyer 8 vitesses à 6 trains différents suivant les adresses  et les fonctions définies suivantes:
 \bigskip
 
 8 vitesses
@@ -271,7 +271,9 @@ le bouton central qui change la valeur courante des différentes
 commandes.
 
 Ces paramètres à envoyer sont stockés dans \emph{Master}.
+
 \medskip
+
 Les différentes commandes viennent de l'IHM \emph{(voir
   \cite{rapport})}  et remplacent la valeur IDLE \emph{(si il y a eu
   un reset)}et sont envoyées en continue tant qu'il n'y a pas de nouvelles pression sur bouton Central.
@@ -406,6 +408,7 @@ Déclaration VHDL:
   
 \end{lstlisting}
 
+\newpage
 
 \subsection{\underline{\'Etat des aiguillages}}
 \label{sec:ixl_aig}
@@ -467,8 +470,8 @@ Il y a 6 trains au maximum. Les capteurs sont codés comme suit~:
 Il y a 20 capteurs de passage sur la maquette de train. L'indice du
 tableau correspond au numéro du capteur de passage.
 
-\medskip
-\medskip
+\newpage
+
 Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
 
@@ -523,7 +526,7 @@ Déclaration VHDL:
 
 \end{lstlisting}
 
-
+\newpage
   
 \subsection{\underline{\'Etat des Circuits de Voie}}
 \label{sec:st_sig}
