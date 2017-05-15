@@ -148,12 +148,12 @@ une carte plus r\'ecente et possède une interface plus complète
 \emph{(switchs, boutons, afficheurs 7 segments...)}
 
 Dans un second temps, il fallait ajouter la commande en
-sécurité des aiguillages qui a été décomposé en deux phases.
+sécurité des aiguillages qui devait être décomposée en deux parties.
 
-La première phase consistait à mettre en place une gestion manuelle des aiguillages avec
+     - La première partie consistait à mettre en place une gestion manuelle des aiguillages avec
 les diff\'erents switchs de la carte sans v\'erification de
 s\'ecurit\'e.
-La seconde phase consistait à réaliser une gestion des
+     - La seconde partie consistait à réaliser une gestion des
 enclenchements ferroviaires grâce aux différents capteurs pr\'esents sur
 les rails. Ceci permettant de garantir qu'un train ne pourra pas
 changer de voie si un autre train se trouve sur le chemin
@@ -161,7 +161,7 @@ qu'il veut parcourir.
 
 
 Je n'ai pas pu implémenter la version manuelle de gestion des aiguillages  car ceux-ci
- n'étaient pas présent sur la voie, et nous n'en connaissions pas
+ n'étaient pas présents sur la voie, et nous n'en connaissions pas
 le fonctionnement. Afin de ne pas être bloqué dans la réalisation de mon projet,
 j'ai opté pour une gestion automatique des
 aiguillages, dont le fonctionnement n'est visible qu'en simulation.
@@ -620,7 +620,7 @@ en extraire les différentes équations qui seront ensuite transformées en
 
 \medskip
 
-Il y a déja l'entête et l'épilogue du fichier écrit dans ``ff`` qui
+Il y a déja l'entête et l'épilogue du fichier écrit dans ``logic.ml`` qui
 permet à l'utilisateur de ne pas s'occuper de l'interface et de se
 concentrer sur les équations voulues.
 
@@ -659,8 +659,8 @@ entity Ixl is
 
          -- input
          valid_in   : in  STD_LOGIC; 
-         Sw_Cmd_Req : in  STD_LOGIC_VECTOR (7 downto 0);
-         Sw_State   : in  STD_LOGIC_VECTOR (7 downto 0);
+         Sw_Cmd_Req : in  STD_LOGIC_VECTOR (15 downto 0);
+         Sw_State   : in  STD_LOGIC_VECTOR (15 downto 0);
          Sensor     : in  SE_state;
          
          -- output
@@ -743,8 +743,8 @@ d'autres scénarios peuvent être créés  grâce au générateur de test.
 
 \medskip
 
-Afin de pouvoir créer des tests facilement et de pouvoir essayer une
-grande quantité de scénarios j'ai mis en place un générateur de test
+Afin de pouvoir créer des tests facilement et afin de pouvoir essayer une
+grande quantité de scénarios j'ai mis en place un générateur de tests
 qui reprend le principe du générateur du moteur IXL.
 
 \smallskip
@@ -792,7 +792,7 @@ Voici la syntaxe des fichiers .simu pour un cycle donné.
 
 \medskip
 
-Il faut commencer par indiquer le numéro de cycle que l'on est entrain
+Il faut commencer par indiquer le numéro de cycle que l'on est en train
 d'écrire, cela servira pour le debug de l'application et l'affichage
 des tests.
 
@@ -806,17 +806,76 @@ sont indiquées dans le fichier lexer\_simul.mll
 
 Ensuite dans la partie \textbf{Outputs}, il faut indiquer les tests
 que nous voulons réaliser.
-Pour le générateur de test, si on veut que les test soient générés il
+Pour le générateur de test, si on veut que les tests soient générés il
 faut mettre des commentaires ``--''.
 
 \bigskip
 
-Pour chaque scénario ajouter les chronogrammes et tout...
+La \emph{figure~\ref{simul}}  montre un exemple de simulation avec comme
+fichier d'entrée ``script3.simu''.
+Un tour complet au train sur le circuit est effectué, puis nous
+essayons de le faire passer sur le circuit suivant.
+
+On remarque qu'à la nano seconde 11 on essaye de faire bouger
+l'aiguille numéro 4 vers la droite et que celle-ci peut le faire, car le train
+n'occupe aucun des Tracks Circuits la génant.
+
+On essaye ensuite de bouger l'aiguille 5 à la nano seconde 21 afin de
+pouvoir laisser passer le train sur le circuit suivant, la encore
+l'autorisation est donnée.
+Au cycle suivant nous essayons de la faire revenir à l'état
+gauche mais cette fois-ci l'autorisation n'est pas donnée car le train est déjà
+rentré dans la zone d'aiguillage.
+
+\newpage
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.36]{chrono.png}
+\caption{Exemple de simulation}
+\label{simul}
+\end{figure}
+
+\bigskip
+
+Tout les scénarios décrit précédemment ont tous été testés et se trouvent
+dans le répertoire \emph{Simul}.
+Pour chaque simulation des tests sont réalisés afin de vérifier si nous
+obtenons bien les bonnes valeurs.
+
+\medskip
+
+Syntaxe des fichiers \emph{.simu}:
+
+\begin{itemize}
+  \item \emph{TC\_} pour Track Circuit suivi du numero que l'on veut
+  \item \emph{SE\_} pour le sensor numero x
+  \item \emph{SW\_} pour l'aiguillage. \emph{CMD} pour la commande d'entrée, \emph{ST} pour
+    l'état courant de la voie et \emph{AUT} pour la sortie
+\end{itemize}
+
+\medskip
+
+Syntaxe des attributs:
+
+\begin{itemize}
+  \item \emph{ID} pour idle, personne n'est passé par là
+  \item \emph{UP} pour dire qu'un train est passé dans le sens \textbf{Up}
+  \item \emph{DO} pour dire qu'un train est passé dans le sens \textbf{Down}    
+  \item \emph{RI} pour indiquer que l'on veut bouger l'aiguille vers la
+    droite
+  \item \emph{LE} pour indiquer que l'on veut bouger l'aiguille vers la
+    gauche
+  \item \emph{NO} pour indiquer que l'on ne veut pas bouger l'aiguille       
+\end{itemize}
+
+\newpage
 
 \subsection{\underline{Conclusion}}
 \label{sec:Conclusion}
 
 Ce projet a été très compliqué à réaliser, mais vraiment très intéressant.Je me suis aperçu que la pré-étude était vraiment très importante car les questions que je me suis posées à ce moment-là m'ont permis d'anticiper un certain nombre de problèmes.
+
 
 
 \newpage
