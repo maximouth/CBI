@@ -135,19 +135,19 @@ Julien \textsc{DENOULET} % Supervisor's Name
 
 \section{Introduction}
 \label{sec:introduction}
-Présentation des 3 interfaces~:
+ce document présente les  3 interfaces utilisées dans le projet~:
 \begin{itemize}
 \item Interface Homme Machine
 \item Interface Centrale DCC et le circuit ferroviaire
 \item Interface interne Centrale DCC - Moteur IXL
 \end{itemize}
 
-et présentation des règles de la logique d'enclenchement.
+et détaille les règles de la logique d'enclenchement.
 
 
 \section{Interface Homme Machine}
 \label{sec:int-dcc}
-Sur la carte
+Ce qui est utilisé sur la carte:
 \begin{itemize}
 \item Bouton gauche -> changement du paramètre
 \item Bouton droit  -> changement de la valeur du paramètre
@@ -155,7 +155,7 @@ Sur la carte
 
 \hrulefill
 
-Dans le design
+Design de l'interface de l'IHM :
 \begin{enumerate}
 \item en sortie :
   \begin{itemize}  
@@ -176,7 +176,7 @@ Dans le design
 
 \subsection{\underline{Interface commande train}}
 \label{sec:ihm-train}
-
+On peut envoyer 8 vitesses à 6 trains différents suivant les adresses suivantes et les fonctions définies:
 \bigskip
 
 8 vitesses
@@ -241,7 +241,7 @@ d'aiguillages et passage sur certains capteurs.
 \label{sec:int_train}
 
 \bigskip
-Trames envoyées 4 par 4 séparées chacune par 400 us avec comme valeur 0.
+Les trames sont envoyées 4 par 4 séparées chacune par 400 us avec comme valeur initiale 0.
 \begin{center}
 \begin{tabular}{|l|l|l|}
   \hline
@@ -257,12 +257,6 @@ Trames envoyées 4 par 4 séparées chacune par 400 us avec comme valeur 0.
 \end{center}
 
 \medskip
-Les valeurs des trames à envoyer sont les mêmes jusqu'à un appui sur
-le bouton central qui change la valeur courante des différentes
-commandes.
-
-
-\medskip
 \begin{center}
 \begin{tabular}{lll}
 adresse & => & ``11111111'' \\
@@ -272,8 +266,12 @@ CRC     & => & ``11111111'' \\
 \end{center}
 
 \medskip
-Paramètres à envoyer stockés dans \emph{Master}.
+Les valeurs des trames à envoyer sont les mêmes jusqu'à un appui sur
+le bouton central qui change la valeur courante des différentes
+commandes.
 
+Ces paramètres à envoyer sont stockés dans \emph{Master}.
+\medskip
 Les différentes commandes viennent de l'IHM \emph{(voir
   \cite{rapport})}  et remplacent la valeur IDLE \emph{(si il y a eu
   un reset)}et sont envoyées en continue tant qu'il n'y a pas de nouvelles pression sur bouton Central.
@@ -282,7 +280,7 @@ Les différentes commandes viennent de l'IHM \emph{(voir
 \subsection{\underline{Interface Capteurs}}
 \label{sec:int_cap}
 
-Du coté de la centrale, on doit avoir une table de type Sensor
+Concernant la centrale, nous avons  une table de type Sensor
 contenant les différents états des capteurs à un moment donné. Cette
 table doit être mise à jour à chaque changement d'état d'un des
 capteurs puis passé au moteur IXL pour qu'il puisse avoir l'état des
@@ -333,7 +331,9 @@ risque autour des aiguillages, c'est le risque de collision entre deux
 trains provenant de branches différentes et qui arrivent en même temps. Le système
 d'enclenchement doit permettre d'éviter ces deux risques.
 Dans un système d'enclenchement, une aiguille est représenté par une 
-machine à états. Les états possibles sont:
+machine à états.
+
+Les états possibles sont:
 
 \begin{itemize}
 \item \emph{droite}. L'aiguille est positionnée du côté droit en regardant
@@ -371,22 +371,22 @@ L'interface entre la Centrale DCC et le Moteur IXL est bi-directionnelle.
 L'opérateur peut demander de commander un aiguillage dans une certaine
 position pour permettre au train de changer de voie.
 
-Une demande de commande d'un aiguillage sera représenté par
-2 bit avec la convention suivante~:
+Une demande de commande d'un aiguillage sera représentée par
+2 bits avec la convention suivante~:
 
-Chaque aiguille est représenté sur 2 bits. Le \textbf{bit paire} représente la
+Chaque aiguille est représentée sur 2 bits. Le \textbf{bit paire} représente la
 demande d'aiguillage à gauche. Le \textbf{bit impaire} représente la demande
 d'aiguillage à droite.
 
 \medskip
 
-Pour chaque bit voici ce que leur valeurs représente :
+Pour chaque bit voici ce que la valeur représente :
 \begin{itemize}
 \item 0 = \textbf{pas de demande} de commande de aiguille
 \item 1 = \textbf{demande} de commande de aiguille
 \end{itemize}
-Les deux bit doivent être exclusif mutuelement, il ne peut y en avoir
-qu'un à '1' sur les deux
+Les deux bits doivent être exclusifs mutuellement, c'est-à-dire qu'il ne peut y en avoir
+qu'un à '1' sur les deux.
 
 \medskip
 
@@ -415,7 +415,7 @@ maquette.  Par conséquent, l'état d'un aiguillage correspondra à l'état
 de la dernière commande envoyée à l'aiguillage depuis la Centrale DCC.
 L'état \emph{décontrôlé} ne sera pas utilisé.
  
-L'état d'un aiguillage sera représenté par 2 bit avec la même
+L'état d'un aiguillage sera représenté par 2 bits avec la même
 convention que la demande de commande d'aiguillage. 
 
 Bit paire / commande aiguille gauche.
@@ -425,8 +425,8 @@ Bit impaire / commande aiguille droite.
 \medskip
 
 \begin{itemize}
-\item 0 = \textbf{pas de demande} de commande de aiguille
-\item 1 = \textbf{demande} de commande de aiguille
+\item 0 = \textbf{pas de demande} de commande de l'aiguille
+\item 1 = \textbf{demande} de commande de l'aiguille
 \end{itemize}
 
 \medskip
@@ -573,7 +573,7 @@ Convention de nommage des éléments :
 \item $SE\_Do_{nn}$, 1 lorsqu'un train vient de passer le capteur numéro
   nn dans le sens Down
 \item $TC_{nn}$, 1 lorsque le Circuit de Voie est libre (aucun train
-  présent sur le CdV), 0 lorsque le circuit de voie est occupée. Cette
+  présent sur le CdV), 0 lorsque le circuit de voie est occupé. Cette
   logique va dans le sens de la sécurité, en cas de perte de courant
   ou de dysfonctionnement, il n'est pas possible de savoir si le
   Circuit De Voie est occupé ou libre, donc on choisit la valeur la
@@ -583,7 +583,7 @@ Convention de nommage des éléments :
 \'A l'initialisation, tous les Circuits de Voie sont libres.
 
 \medskip
-Le Circuit de voie $TC_{nn}$ est occupé si une des condition suivantes
+Le Circuit de voie $TC_{nn}$ est occupé si l'une des conditions suivantes
 est vérifiée~:
 \begin{itemize}
 \item le capteur $SE\_Up_{nn}$ passe à 1, un train vient de rentrer dans
@@ -814,7 +814,7 @@ permettre de definir l'état de chacune des 8 aiguilles.
 \end{center}
 
 On obtient ainsi en sortie de notre module ce qu'il faut envoyer sur
-chaque aiguillages pour eviter d'avoir deux trains se rentrant dedans.
+chaque aiguillage pour éviter que deux trains se  rentrent dedans.
 
 \newpage
 
