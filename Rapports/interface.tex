@@ -372,21 +372,37 @@ L'opérateur peut demander de commander un aiguillage dans une certaine
 position pour permettre au train de changer de voie.
 
 Une demande de commande d'un aiguillage sera représenté par
-1 bit avec la convention suivante~:
-\begin{itemize}
-\item 0 = demande de commande de aiguille à droite
-\item 1 = demande de commande de aiguille à gauche
-\end{itemize}
- 
-Il y a 8 aiguilles sur le circuit. L'indice du tableau correspond au
-numéro de l'aiguille.
+2 bit avec la convention suivante~:
+
+Chaque aiguille est représenté sur 2 bits. Le \textbf{bit paire} représente la
+demande d'aiguillage à gauche. Le \textbf{bit impaire} représente la demande
+d'aiguillage à droite.
 
 \medskip
+
+Pour chaque bit voici ce que leur valeurs représente :
+\begin{itemize}
+\item 0 = \textbf{pas de demande} de commande de aiguille
+\item 1 = \textbf{demande} de commande de aiguille
+\end{itemize}
+Les deux bit doivent être exclusif mutuelement, il ne peut y en avoir
+qu'un à '1' sur les deux
+
 \medskip
+
+
+Il y a 8 aiguilles sur le circuit. Pour obtenir \emph{l'aiguille gauche} de
+l'aiguillage \emph{``n''} on va à l'indice $``(n-1)*2''$.
+
+Pour \emph{l'aiguille droite}, on va à l'indice $``((n-1)*2) + 1''$.
+
+\bigskip
+
+
 Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
   
-  signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (7 downto 0);
+  signal Sw_Cmd_Req :   STD_LOGIC_VECTOR (15 downto 0);
   
 \end{lstlisting}
 
@@ -399,22 +415,33 @@ maquette.  Par conséquent, l'état d'un aiguillage correspondra à l'état
 de la dernière commande envoyée à l'aiguillage depuis la Centrale DCC.
 L'état \emph{décontrôlé} ne sera pas utilisé.
  
-L'état d'un aiguillage sera représenté par 1 bit avec la convention
-suivante~:
-\begin{itemize}
-\item 0 = aiguille positionnée à droite
-\item 1 = aiguille positionnée à gauche
-\end{itemize}
- 
-Il y a 8 aiguilles sur le circuit. L'indice du tableau correspond au
-numéro de l'aiguille.
+L'état d'un aiguillage sera représenté par 2 bit avec la même
+convention que la demande de commande d'aiguillage. 
 
-\newpage
+Bit paire / commande aiguille gauche.
+
+Bit impaire / commande aiguille droite.
+
+\medskip
+
+\begin{itemize}
+\item 0 = \textbf{pas de demande} de commande de aiguille
+\item 1 = \textbf{demande} de commande de aiguille
+\end{itemize}
+
+\medskip
+
+Il y a 8 aiguilles sur le circuit. Pour obtenir \emph{l'aiguille gauche} de
+l'aiguillage \emph{``n''} on va à l'indice $``(n-1)*2''$.
+
+Pour \emph{l'aiguille droite}, on va à l'indice $``((n-1)*2) + 1''$.
+
+\bigskip
 
 Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
 
-  signal Sw_State   :   STD_LOGIC_VECTOR (7 downto 0);
+  signal Sw_State   :   STD_LOGIC_VECTOR (15 downto 0);
   
 \end{lstlisting}
 
@@ -464,22 +491,35 @@ Une fois que le système d'enclenchement a vérifé que toutes les
 conditions requises pour bouger une aiguille sont remplies, il 
 retourne à la Centrale DCC son autorisation de commande des aiguillages.
 
-\newpage
 L'autorisation de commande d'un aiguillage sera représenté par
-1 bit selon la convention suivante~:
+2 bit selon la même convention convention que la demande de commande
+d'aiguillage.
+
+Bit paire / commande aiguille gauche.
+
+Bit impaire / commande aiguille droite.
+
+\medskip
+
 \begin{itemize}
-\item 0 = autorisation de commande de aiguille à droite
-\item 1 = autorisation de commande de aiguille à gauche
+\item 0 = \textbf{pas de demande} de commande de aiguille
+\item 1 = \textbf{demande} de commande de aiguille
 \end{itemize}
- 
-Il y a 8 aiguilles sur le circuit. L'indice du tableau correspond au
-numéro de l'aiguille.
+
 \medskip
-\medskip
+
+
+Il y a 8 aiguilles sur le circuit. Pour obtenir \emph{l'aiguille gauche} de
+l'aiguillage \emph{``n''} on va à l'indice $``(n-1)*2''$.
+
+Pour \emph{l'aiguille droite}, on va à l'indice $``((n-1)*2) + 1''$.
+
+\bigskip
+
 Déclaration VHDL:
 \begin{lstlisting}[style=vhdl]
 
-  Sw_Cmd_Aut : out STD_LOGIC_VECTOR (7 downto 0);
+  Sw_Cmd_Aut : out STD_LOGIC_VECTOR (15 downto 0);
 
 \end{lstlisting}
 
@@ -489,12 +529,11 @@ Déclaration VHDL:
 \label{sec:st_sig}
 
 Chaque circuit de voie possède 2 états; \emph{Libre} ou
-\emph{Occupé}. De façon à pouvoir effectuer la gestion des trains, il
-est nécessaire d'identifier quel train occupe le circuit de voie.  Il
-y a 6 trains au maximum. Les états sont codés come suit~:
+\emph{Occupé}. De façon à pouvoir effectuer la gestion des trains.
+Les états sont codés come suit~:
 \begin{itemize}
-  \item libre : 0x07
-  \item occupé : numéro du train 0x01 à 0x06
+  \item libre : 1
+  \item occupé : 0
 \end{itemize}  
 
 Il y a 16 circuits de voie sur la maquette de train. L'indice du
@@ -505,14 +544,12 @@ Déclaration VHDL
 \begin{lstlisting}[style=vhdl]
 
   --debug output
-  TC_out     : out STD_LOGIC_VECTOR (7 downto 0)
+  TC_out     : out STD_LOGIC_VECTOR (15 downto 0);
 
 \end{lstlisting}
 
-
-
-
 \newpage
+
 \section{\underline{Logique Enclenchement}}
 \label{sec:log_enc}
 
