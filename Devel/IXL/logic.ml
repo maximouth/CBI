@@ -134,80 +134,81 @@ end Behavioral;
 let print_sw_state st =
   ""
 ;;
-
+  
 
 let print_ident_in ident =
-match ident with
-| Ixl.P_SE(nb, _, dir) -> 
-  begin
-  match dir with
-  | Ixl.Up -> "Sensor("^string_of_int(nb-1)^").dir = \"01\""
-  | Ixl.Down -> "Sensor("^string_of_int(nb-1)^").dir = \"10\""
-  | Ixl.Idle -> raise( Failure "!@*&* Error Sensor Idle" )
-  end
-
-| Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb-1)^")='1'"
-
-| Ixl.P_SW_CMD(nb, st) ->
-  begin
-  match st with 
-  | Ixl.Right -> "Sw_Cmd_Req("^string_of_int((nb-1)*2)^")='1'"
-  | Ixl.Left -> "Sw_Cmd_Req("^string_of_int((nb-1)*2+1)^")='1'"
-  | Ixl.Idle -> raise( Failure "!@*&* Error Sensor Idle" )
-  end
-
-| Ixl.P_SW_ST(nb, st)  -> 
-  begin
-  match st with 
-  | Ixl.Right -> "Sw_State("^string_of_int((nb-1)*2)^")='1'"
-  | Ixl.Left -> "Sw_State("^string_of_int((nb-1)*2+1)^")='1'"
-  | Ixl.Idle -> raise( Failure "!@*&* Error Sensor Idle" )
-  end
-
-| Ixl.P_SW_AUT(nb, st) -> raise( Failure "!@*&* Error SW_AUT never in" )
+  match ident with
+  | Ixl.P_SE(nb, _, dir) -> 
+     begin
+       match dir with
+       | Ixl.Up -> "Sensor("^string_of_int(nb-1)^").dir = \"01\""
+       | Ixl.Down -> "Sensor("^string_of_int(nb-1)^").dir = \"10\""
+       | Ixl.Idle -> raise( Failure "!@*&* Error Sensor Idle" )
+     end
+       
+  | Ixl.P_TC(nb, _)      -> "TC("^string_of_int(nb-1)^")='1'"
+							
+  | Ixl.P_SW_CMD(nb, st) ->
+     begin
+       match st with 
+       | Ixl.Right -> "Sw_Cmd_Req("^string_of_int((nb-1)*2)^")='1'"
+       | Ixl.Left -> "Sw_Cmd_Req("^string_of_int((nb-1)*2+1)^")='1'"
+       | Ixl.Idle -> raise( Failure "!@*&* Error Sensor Idle" )
+     end
+       
+  | Ixl.P_SW_ST(nb, st)  -> 
+     begin
+       match st with 
+       | Ixl.Right -> "Sw_State("^string_of_int((nb-1)*2)^")='1'"
+       | Ixl.Left -> "Sw_State("^string_of_int((nb-1)*2+1)^")='1'"
+       | Ixl.Idle -> raise( Failure "!@*&* Error Sensor Idle" )
+     end
+       
+  | Ixl.P_SW_AUT(nb, st) -> raise( Failure "!@*&* Error SW_AUT never in" )
 ;;
-
+  
 let rec print_bool_exp bool_exp =
-match bool_exp with
-| Ixl.P_IDENT(id)   -> print_ident_in id
-| Ixl.P_NOT(id)     -> "NOT ("^(print_ident_in id)^")"
-| Ixl.P_AND(e1, e2) -> "("^(print_bool_exp e1)^") AND ("^(print_bool_exp e2)^")"
-| Ixl.P_OR(e1, e2)  -> "("^(print_bool_exp e1)^") OR ("^(print_bool_exp e2)^")"
+  match bool_exp with
+  | Ixl.P_IDENT(id)   -> print_ident_in id
+  | Ixl.P_NOT(id)     -> "NOT ("^(print_ident_in id)^")"
+  | Ixl.P_AND(e1, e2) -> "("^(print_bool_exp e1)^") AND ("^(print_bool_exp e2)^")"
+  | Ixl.P_OR(e1, e2)  -> "("^(print_bool_exp e1)^") OR ("^(print_bool_exp e2)^")"
 ;;
-
+  
 let print_equation out_channel equation =
   let exp = print_bool_exp equation.Ixl.boolexpr in
   match equation.Ixl.exprname with
   | Ixl.P_SE(_, _, _)    -> 
-      raise( Failure "!@*&* Error writing Sensor." )
+     raise( Failure "!@*&* Error writing Sensor." )
   | Ixl.P_TC(nb, _)      -> 
-      Printf.fprintf out_channel "        if (%s) then TC(%i) := '1'; else  TC(%i) := '0'; end if;\n" exp (nb - 1) (nb - 1)
+     Printf.fprintf out_channel "        if (%s) then TC(%i) := '1'; else  TC(%i) := '0'; end if;\n" exp (nb - 1) (nb - 1)
   | Ixl.P_SW_CMD(_, _) -> 
-      raise( Failure "!@*&* Error writing Sw CMD." )
+     raise( Failure "!@*&* Error writing Sw CMD." )
   | Ixl.P_SW_ST(_, _)  -> 
-      raise( Failure "!@*&* Error writing Sw State." )
+     raise( Failure "!@*&* Error writing Sw State." )
   | Ixl.P_SW_AUT(nb, st) -> 
-      let out_range = 
-      match st with 
-        | Ixl.Right -> (nb-1)*2
-        | Ixl.Left -> (nb-1)*2 + 1
-        | Ixl.Idle -> raise(Failure "!@*&* Error writing Sw State.")
-      in
-      Printf.fprintf out_channel "        if (%s) then Sw_Cmd_Aut(%i) <= '1'; else Sw_Cmd_Aut(%i) <= '0'; end if;\n"  exp out_range out_range 
+     let out_range = 
+       match st with 
+       | Ixl.Right -> (nb-1)*2
+       | Ixl.Left -> (nb-1)*2 + 1
+       | Ixl.Idle -> raise(Failure "!@*&* Error writing Sw State.")
+     in
+     Printf.fprintf out_channel "        if (%s) then Sw_Cmd_Aut(%i) <= '1'; else Sw_Cmd_Aut(%i) <= '0'; end if;\n"  exp out_range out_range 
 ;;
-
+  
 (* Generate each equation one per one *)
 let rec print_equations out_channel equations =
-match equations with
-| [] -> ()
-| t::q -> 
-    print_equation out_channel t;
-	print_equations out_channel q
+  match equations with
+  | [] -> ()
+  | t::q -> 
+     print_equation out_channel t;
+     print_equations out_channel q
 ;;
-
-
+  
+  
 let generate out_channel equations =
   print_header out_channel;
   print_equations out_channel equations; 
   print_trailer out_channel
 ;;
+  
