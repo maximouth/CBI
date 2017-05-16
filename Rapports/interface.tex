@@ -276,7 +276,7 @@ Ces paramètres à envoyer sont stockés dans \emph{Master}.
 
 Les différentes commandes viennent de l'IHM \emph{(voir
   \cite{rapport})}  et remplacent la valeur IDLE \emph{(si il y a eu
-  un reset)}et sont envoyées en continue tant qu'il n'y a pas de nouvelles pression sur bouton Central.
+  un reset)} et sont envoyées en continue tant qu'il n'y a pas de nouvelle pression sur bouton Central.
 
 
 \subsection{\underline{Interface Capteurs}}
@@ -285,7 +285,7 @@ Les différentes commandes viennent de l'IHM \emph{(voir
 Concernant la centrale, nous avons  une table de type Sensor
 contenant les différents états des capteurs à un moment donné. Cette
 table doit être mise à jour à chaque changement d'état d'un des
-capteurs puis passé au moteur IXL pour qu'il puisse avoir l'état des
+capteurs puis passée au moteur IXL pour qu'il puisse avoir l'état des
 voies le plus récent. 
 
 \newpage
@@ -490,11 +490,11 @@ Déclaration VHDL:
 \subsection{\underline{Autorisation de commande des aiguillages}}
 \label{sec:ixl_dem_aig}
 
-Une fois que le système d'enclenchement a vérifé que toutes les
+Une fois que le système d'enclenchement a vérifié que toutes les
 conditions requises pour bouger une aiguille sont remplies, il 
 retourne à la Centrale DCC son autorisation de commande des aiguillages.
 
-L'autorisation de commande d'un aiguillage sera représenté par
+L'autorisation de commande d'un aiguillage sera représentée par
 2 bit selon la même convention convention que la demande de commande
 d'aiguillage.
 
@@ -533,7 +533,7 @@ Déclaration VHDL:
 
 Chaque circuit de voie possède 2 états; \emph{Libre} ou
 \emph{Occupé}. De façon à pouvoir effectuer la gestion des trains.
-Les états sont codés come suit~:
+Les états sont codés comme suit~:
 \begin{itemize}
   \item libre : 1
   \item occupé : 0
@@ -562,7 +562,7 @@ les conversions de nommage utilisées dans les équations.
 \subsection{\underline{Circuit de Voie}}
 \label{sec:CdV}
 
-Un Circuit de Voie est la section de voie se trouvant entre 2 capteurs
+Un Circuit de Voie(Track Circuit) est la section de voie se trouvant entre 2 capteurs
 de présence consécutifs. Un capteur de présence permet de
 connaître, le numéro du train et son sens de déplacement. Le sens de
 déplacement va permettre de savoir quel Circuit de voie est occupé par le

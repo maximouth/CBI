@@ -136,7 +136,7 @@ J'ai r\'ealis\'e ce projet seul, encadr\'e par M. Denoulet. Ce projet s'est d\'e
 Il est r\'ealis\'e dans le cadre d'un projet SESI.
 
 En complément de ce document j'ai rédigé un tutoriel \cite{interface}
-qui décrit le fonctionnement du moteur IXL
+qui décrit le fonctionnement du moteur IXL.
 
 \subsection{\underline{Objectifs}}
 
@@ -585,7 +585,6 @@ indiquées dans le fichier lexer\_simul.mll du répertoire Simul, suivi
 d'un ``<='' 
 
 Ensuite on met l'équation logique qui nous intéresse suivant la syntaxe suivante:
-syntaxe :
 \begin{enumerate}[->]
     \item \emph{\~} pour le \textbf{not}
     \item \emph{+} pour le \textbf{ou}
@@ -644,7 +643,7 @@ Pour lancer l'application qui va créer le moteur IXL correspondant à la logiqu
 
 
 Le fichier en entrée est un fichier.eq qui reprend la syntaxe des
-équations logiques dont la définition a été indiquée précédemment  \cite{}.
+équations logiques dont la définition a été indiquée précédemment  \cite{Générateur}.
 Et le fichier de sortie sera le moteur IXL généré contenant les
 différentes équations du fichier d'entrée.
 
@@ -653,7 +652,7 @@ différentes équations du fichier d'entrée.
 \subsubsection{\underline{moteur IXL}}
 \label{sec:IXL}
 
-Voici l'interface du moteur IXL que nous avons utiliser :
+Voici l'interface du moteur IXL que nous avons utilisé :
 
 \begin{lstlisting}[language=vhdl]
 entity Ixl is  
@@ -733,8 +732,8 @@ Circuits et pour les aiguillages.
 \subsubsection{\underline{Test Bench}}
 \label{sec:Test_Bench}
 
-Voici les différents scénarios que j'ai utilisé comme base de test,
-d'autres scénarios peuvent être créés  grâce au générateur de test.
+Voici les différents scénarios que j'ai utilisé comme base de tests,
+d'autres scénarios peuvent être créés  grâce au générateur de tests.
 
 \medskip
 
@@ -810,7 +809,7 @@ sont indiquées dans le fichier lexer\_simul.mll
 
 Ensuite dans la partie \textbf{Outputs}, il faut indiquer les tests
 que nous voulons réaliser.
-Pour le générateur de test, si on veut que les tests soient générés il
+Pour le générateur de tests, si on veut que les tests soient générés il
 faut mettre des commentaires ``--''.
 
 \bigskip
@@ -852,8 +851,8 @@ obtenons bien les bonnes valeurs.
 Syntaxe des fichiers \emph{.simu}:
 
 \begin{itemize}
-  \item \emph{TC\_} pour Track Circuit suivi du numero que l'on veut
-  \item \emph{SE\_} pour le sensor numero x
+  \item \emph{TC\_} pour Track Circuit suivi du numéro que l'on veut
+  \item \emph{SE\_} pour le sensor numéro x
   \item \emph{SW\_} pour l'aiguillage. \emph{CMD} pour la commande d'entrée, \emph{ST} pour
     l'état courant de la voie et \emph{AUT} pour la sortie
 \end{itemize}
@@ -883,7 +882,7 @@ Syntaxe des attributs:
 Ce projet a été très compliqué à réaliser, mais vraiment très
 intéressant.
 Je me  suis aperçu que la pré-étude était vraiment très
-importante car les questions qu e je me suis posées à ce moment-là
+importante car les questions que je me suis posé à ce moment-là
 m'ont permis d'anticiper un certain nombre de  problèmes comme par
 exemple faire le choix de réaliser le codage des capteurs et des
 aiguilles de façon automatique en simulation car il était impossible
@@ -894,7 +893,7 @@ de réaliser la gestion manuelle des aiguillages.
 Le fait d'avoir divisé le projet en plusieurs parties m'a permis de
 gérer  séparemment tous les morceaux de mon  projet et de continuer d'avancer
 de façon efficace en abandonnant les parties impossibles à réaliser à
-cause de la  maquette réélle indisponible.
+cause de la  maquette réelle indisponible.
 
 Le document d'interface permet de comprendre en détail les choix que j'ai fait
 pour pouvoir atteindre l'objectif fixé au départ de ce projet.
